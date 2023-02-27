@@ -28,7 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# cred = credentials.Certificate("firebase_book.json")
+cred = credentials.Certificate("firebase_sec.json")
 firebase_admin.initialize_app()
 
 def verify_login(id_token):
