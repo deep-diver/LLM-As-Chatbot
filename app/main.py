@@ -1,6 +1,7 @@
 import time
 import json
 import asyncio
+from functools import partial
 
 from fastapi import FastAPI, Response
 from fastapi.responses import StreamingResponse
@@ -23,7 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-async def generate():
+async def generate(text):
     number_of_yields = len(text) // characters_per_second
     for i in range(number_of_yields):
         from_index = i*characters_per_second
@@ -39,8 +40,12 @@ async def generate():
 
 @app.get("/echo")
 async def echo1(text: str):
-    return StreamingResponse(generate(), media_type="text/event-stream")
+    gen = partial(generate, text)
+
+    return StreamingResponse(gen(), media_type="text/event-stream")
   
 @app.post("/echo")
 async def echo2(text: str):
-    return StreamingResponse(generate(), media_type="text/event-stream")  
+    gen = partial(generate, text)
+    
+    return StreamingResponse(gen(), media_type="text/event-stream")  
