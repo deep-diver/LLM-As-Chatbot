@@ -38,9 +38,9 @@ async def generate():
     yield "[DONE]"
 
 @app.get("/echo")
-async def echo(text: str):
+async def echo1(text: str):
     return StreamingResponse(generate(), media_type="text/event-stream")
   
 @app.post("/echo")
-async def echo(text: str):
+async def echo2(text: str):
     return StreamingResponse(generate(), media_type="text/event-stream")  
