@@ -29,7 +29,7 @@ app.add_middleware(
 )
 
 cred = credentials.Certificate("firebase_sec.json")
-firebase_admin.initialize_app()
+firebase_admin.initialize_app(cred)
 
 def verify_login(id_token):
     try:
