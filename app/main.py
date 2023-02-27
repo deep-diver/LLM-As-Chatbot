@@ -69,9 +69,7 @@ async def generate(text):
     yield "[DONE]"
 
 @app.get("/echo")
-async def echo1(text: str, request: Request):
-    check_auth(request)
-    
+async def echo1(text: str):
     gen = partial(generate, text)
 
     return StreamingResponse(gen(), media_type="text/event-stream")
