@@ -11,6 +11,8 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import auth
 
+from gen import get_pretrained_models, get_output
+
 characters_per_second = 5
 app = FastAPI()
 
@@ -31,6 +33,8 @@ app.add_middleware(
 
 cred = credentials.Certificate("./firebase_sec.json")
 firebase_admin.initialize_app(cred)
+
+model, tokenizer = get_pretrained_models()
 
 def verify_login(id_token):
     try:
@@ -56,14 +60,16 @@ def check_auth(request: Request):
         raise HTTPException(status_code=402, detail="402 Payment Required")
 
 async def generate(text):
-    number_of_yields = len(text) // characters_per_second
+    output_text = get_output(model, tokenizer, text)
+    
+    number_of_yields = len(output_text) // characters_per_second
     for i in range(number_of_yields):
         from_index = i*characters_per_second
         to_index = i*characters_per_second+characters_per_second
         await asyncio.sleep(0.1)
         yield "data: " + json.dumps(text[from_index:to_index]) + "\n\n"
 
-    if len(text) % characters_per_second != 0:
+    if len(output_text) % characters_per_second != 0:
         await asyncio.sleep(0.1)
         yield "data: " + json.dumps(text[number_of_yields*characters_per_second:]) + "\n\n"
 
