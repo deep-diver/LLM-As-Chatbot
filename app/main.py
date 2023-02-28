@@ -17,7 +17,8 @@ app = FastAPI()
 origins = [
     "http://localhost:8080",
     "https://localhost:8080",
-    "https://giftup.web.app"
+    "https://giftup.web.app",
+    "https://llama-up.web.app"
 ]
 
 app.add_middleware(
@@ -28,7 +29,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-cred = credentials.Certificate("firebase_sec.json")
+cred = credentials.Certificate("./firebase_sec.json")
 firebase_admin.initialize_app(cred)
 
 def verify_login(id_token):
@@ -47,12 +48,12 @@ def check_auth(request: Request):
         try:
             verified = verify_login(id_token) # Verify login
             if not verified:
-                raise HTTPException(status_code=403, detail="403")
+                raise HTTPException(status_code=403, detail="403 Forbidden")
         except Exception as e:
-            raise HTTPException(status_code=401, detail="401")
+            raise HTTPException(status_code=401, detail="401 Unauthorized")
     else:
         # Return 402 Payment Required with message
-        raise HTTPException(status_code=402, detail="402")
+        raise HTTPException(status_code=402, detail="402 Payment Required")
 
 async def generate(text):
     number_of_yields = len(text) // characters_per_second
@@ -76,7 +77,10 @@ async def echo1(text: str):
   
 @app.post("/echo")
 async def echo2(text: str, request: Request):
-    check_auth(request)
+    try:
+        check_auth(request)
+    except HTTPException as e:
+        raise e
     
     gen = partial(generate, text)
     
