@@ -67,7 +67,7 @@ async def generate(text):
         await asyncio.sleep(0.1)
         yield "data: " + json.dumps(text[number_of_yields*characters_per_second:]) + "\n\n"
 
-    yield "[DONE]"
+    yield "[DONE]" + "\n\n"
 
 @app.get("/echo")
 async def echo1(text: str):
