@@ -67,10 +67,12 @@ async def generate(text):
         await asyncio.sleep(0.1)
         yield "data: " + json.dumps(text[number_of_yields*characters_per_second:]) + "\n\n"
 
+    await asyncio.sleep(0.1)
+    yield "[DONE]" + "\n\n"
     yield "[DONE]" + "\n\n"
 
 @app.get("/echo")
-async def echo1(text: str):
+async def echo1(text: str, request: Request):
     gen = partial(generate, text)
 
     return StreamingResponse(gen(), media_type="text/event-stream")
