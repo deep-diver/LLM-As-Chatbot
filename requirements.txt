@@ -2,3 +2,5 @@ fastapi
 pydantic
 uvicorn
 firebase_admin
+transformers
+acclerate
