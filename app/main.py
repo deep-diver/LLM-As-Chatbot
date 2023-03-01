@@ -11,7 +11,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import auth
 
-from gen import get_pretrained_models, get_output
+from app.gen import get_pretrained_models, get_output
 
 characters_per_second = 5
 app = FastAPI()
@@ -60,22 +60,29 @@ def check_auth(request: Request):
         raise HTTPException(status_code=402, detail="402 Payment Required")
 
 async def generate(text):
-    output_text = get_output(model, tokenizer, text)
+    output_text = get_output(model, tokenizer, text)[0]
     
     number_of_yields = len(output_text) // characters_per_second
     for i in range(number_of_yields):
         from_index = i*characters_per_second
         to_index = i*characters_per_second+characters_per_second
         await asyncio.sleep(0.1)
-        yield "data: " + json.dumps(text[from_index:to_index]) + "\n\n"
+        yield "data: " + json.dumps({"text": output_text[from_index:to_index]}) + "\n\n"
 
     if len(output_text) % characters_per_second != 0:
         await asyncio.sleep(0.1)
-        yield "data: " + json.dumps(text[number_of_yields*characters_per_second:]) + "\n\n"
+        yield "data: " + json.dumps({"text": output_text[number_of_yields*characters_per_second:]}) + "\n\n"
 
     await asyncio.sleep(0.1)
     yield "[DONE]" + "\n\n"
     yield "[DONE]" + "\n\n"
+
+async def exception_gen(e):
+    response = {
+        "code": e.status_code,
+        "error": e.detail
+    }
+    yield "data: " + json.dumps(response) + "\n\n"
 
 @app.get("/echo")
 async def echo1(text: str, request: Request):
@@ -84,12 +91,12 @@ async def echo1(text: str, request: Request):
     return StreamingResponse(gen(), media_type="text/event-stream")
   
 @app.post("/echo")
-async def echo2(text: str, request: Request):
+async def echo2(prompt: str, conv_id: str, message_id: str, request: Request):
     try:
         check_auth(request)
     except HTTPException as e:
-        raise e
+        return StreamingResponse(exception_gen(e), media_type="text/event-stream")
     
-    gen = partial(generate, text)
+    gen = partial(generate, prompt)
     
     return StreamingResponse(gen(), media_type="text/event-stream")  
