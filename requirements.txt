@@ -1,7 +1,9 @@
+torch
+fairscale
+fire
+sentencepiece
+
 fastapi
 pydantic
 uvicorn
 firebase_admin
-torch
-transformers
-accelerate
