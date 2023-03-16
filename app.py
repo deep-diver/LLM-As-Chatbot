@@ -79,17 +79,31 @@ with gr.Blocks(css = """#col_container {width: 95%; margin-left: auto; margin-ri
         context_txtbox = gr.Textbox(placeholder="Explain surrounding information to AI", label="Enter Context")
         chatbot = gr.Chatbot(elem_id='chatbot', label="Alpaca-LoRA")
         instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Enter Instruction")
+        send_prompt_btn = gr.Button(value="Send Prompt")
+
+        gr.Examples(
+            examples=[
+                ["Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.", "List all Canadian provinces in alphabetical order."],
+                ["Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.", "Tell me about the king of France in 2019."],
+                ["Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.", "Write a Python program that prints the first 10 Fibonacci numbers."],
+                ["Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.", "Tell me about alpacas."]
+            ], 
+            inputs=[
+                context_txtbox, 
+                instruction_txtbox
+            ]
+        )
 
         gr.Markdown(f"{BOTTOM_LINE}")
 
-    instruction_txtbox.submit(
+    send_prompt_btn.click(
         chat, 
         [context_txtbox, instruction_txtbox, state_chatbot],
         [state_chatbot, chatbot],
         batch=True,
         max_batch_size=4
     )
-    instruction_txtbox.submit(
+    send_prompt_btn.click(
         reset_textbox, 
         [], 
         [instruction_txtbox],
