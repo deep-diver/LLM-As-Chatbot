@@ -85,6 +85,7 @@ with gr.Blocks(css = """#col_container {width: 95%; margin-left: auto; margin-ri
         [textbox, state_chatbot],
         [state_chatbot, chatbot],
         batch=True,
+        max_batch_size=4
     )
     textbox.submit(
         reset_textbox, 
