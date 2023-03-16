@@ -1,6 +1,7 @@
 from strings import TITLE, ABSTRACT, BOTTOM_LINE
 
 import os
+import re
 import sys
 import argparse
 import time
@@ -30,7 +31,11 @@ def generate_prompt(prompt, ctx=None):
 
 def post_process(bot_response):
     bot_response = bot_response.split("### Response:")[1].strip()
-    return bot_response.replace("\n", "<br>").replace(" ", "&nbsp;")    
+    bot_response = bot_response.replace("\n", "<br>")     # .replace(" ", "&nbsp;")
+    
+    pattern = r"(  )"
+    replacement = r'<span class="chat_wrap_space">  <span>'
+    return re.sub(pattern, replacement, bot_response)
 
 def post_processes(bot_responses):
     return [post_process(r) for r in bot_responses]
@@ -69,7 +74,8 @@ def reset_textbox():
     return gr.Textbox.update(value='')
 
 with gr.Blocks(css = """#col_container {width: 95%; margin-left: auto; margin-right: auto;}
-                #chatbot {height: 500px; overflow: auto;}""") as demo:
+                #chatbot {height: 500px; overflow: auto;}
+                .chat_wrap_space {margin-left: 0.5em} """) as demo:
 
     state_chatbot = gr.State([])
 
