@@ -69,7 +69,7 @@ def reset_textbox():
     return gr.Textbox.update(value='')
 
 with gr.Blocks(css = """#col_container {width: 95%; margin-left: auto; margin-right: auto;}
-                #chatbot {height: 600px; overflow: auto;}""") as demo:
+                #chatbot {height: 500px; overflow: auto;}""") as demo:
 
     state_chatbot = gr.State([])
 
