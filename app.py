@@ -1,4 +1,4 @@
-from strings import TITLE, ABSTRACT
+from strings import TITLE, ABSTRACT, BOTTOM_LINE
 
 import os
 import sys
@@ -15,7 +15,7 @@ from gen import get_output
 model, tokenizer = load_model()
 
 def generate_prompt(prompt, ctx=None):
-    if ctx is None:
+    if ctx.strip() == "":
         ctx = "This is the initial conversation"
 
     return f"""Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
@@ -36,14 +36,13 @@ def post_processes(bot_responses):
     return [post_process(r) for r in bot_responses]
 
 def chat(
-    prompts,
+    contexts,
+    instructions, 
     state_chatbots
 ):
-    print(prompts)
-    print(state_chatbots)
     results = []
 
-    instruct_prompts = [generate_prompt(prompt, None) for prompt in prompts]
+    instruct_prompts = [generate_prompt(instruct, ctx) for ctx, instruct in zip(contexts, instructions)]
 
     bot_responses = get_output(
         model, tokenizer, instruct_prompts, None
@@ -53,11 +52,11 @@ def chat(
 
     print("zipping...")
     sub_results = []
-    for prompt, bot_response, state_chatbot in zip(prompts, bot_responses, state_chatbots):
-        print(prompt)
+    for instruction, bot_response, state_chatbot in zip(instructions, bot_responses, state_chatbots):
+        print(instruction)
         print(bot_response)
         print(state_chatbot)
-        new_state_chatbot = state_chatbot + [(prompt, bot_response)]
+        new_state_chatbot = state_chatbot + [(instruction, bot_response)]
         print(new_state_chatbot)
         results.append(new_state_chatbot)
 
@@ -77,20 +76,23 @@ with gr.Blocks(css = """#col_container {width: 95%; margin-left: auto; margin-ri
     with gr.Column(elem_id='col_container'):
         gr.Markdown(f"## {TITLE}\n\n\n{ABSTRACT}")
 
+        context_txtbox = gr.Textbox(placeholder="Explain surrounding information to AI", label="Enter Context")
         chatbot = gr.Chatbot(elem_id='chatbot', label="Alpaca-LoRA")
-        textbox = gr.Textbox(placeholder="Enter a prompt")
+        instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Enter Instruction")
 
-    textbox.submit(
+        gr.Markdown(f"{BOTTOM_LINE}")
+
+    instruction_txtbox.submit(
         chat, 
-        [textbox, state_chatbot],
+        [context_txtbox, instruction_txtbox, state_chatbot],
         [state_chatbot, chatbot],
         batch=True,
         max_batch_size=4
     )
-    textbox.submit(
+    instruction_txtbox.submit(
         reset_textbox, 
         [], 
-        [textbox],
+        [instruction_txtbox],
     )
 
 demo.queue().launch(server_port=6006)
