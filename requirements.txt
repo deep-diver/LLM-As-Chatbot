@@ -1,9 +1,7 @@
-torch
-fairscale
-fire
+bitsandbytes
+datasets
+loralib 
 sentencepiece
-
-fastapi
-pydantic
-uvicorn
-firebase_admin
+git+https://github.com/zphang/transformers@c3dc391
+git+https://github.com/huggingface/peft.git
+gradio==3.20.0
