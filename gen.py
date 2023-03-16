@@ -1,3 +1,4 @@
+import torch
 from transformers import GenerationConfig
 
 def get_output(
@@ -26,25 +27,23 @@ def get_output(
         generated_id = model.generate(
             input_ids=input_ids,
             generation_config=generation_config,
-            max_new_tokens=256
+            max_new_tokens=200
         )
 
-        print("generated_id")
-        print(generated_id)
-        print(tokenizer.batch_decode(generated_id))
-
-        return tokenizer.batch_decode(generated_id)
+        decoded = tokenizer.batch_decode(generated_id)
+        del input_ids, generated_id
+        torch.cuda.empty_cache()
+        return decoded
     else:
         print("there are multiple prompts")
         encodings = tokenizer(prompts, padding=True, return_tensors="pt").to('cuda')
         generated_ids = model.generate(
             **encodings,
             generation_config=generation_config,
-            max_new_tokens=256
+            max_new_tokens=200
         )
 
-        print("generated_ids")
-        print(generated_ids)
-        print(tokenizer.batch_decode(generated_ids))
-
-        return tokenizer.batch_decode(generated_ids)
+        decoded = tokenizer.batch_decode(generated_ids)
+        del encodings, generated_ids
+        torch.cuda.empty_cache()
+        return decoded
