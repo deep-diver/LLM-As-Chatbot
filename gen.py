@@ -27,7 +27,7 @@ def get_output(
         generated_id = model.generate(
             input_ids=input_ids,
             generation_config=generation_config,
-            max_new_tokens=200
+            max_new_tokens=256
         )
 
         decoded = tokenizer.batch_decode(generated_id)
@@ -40,7 +40,7 @@ def get_output(
         generated_ids = model.generate(
             **encodings,
             generation_config=generation_config,
-            max_new_tokens=200
+            max_new_tokens=256
         )
 
         decoded = tokenizer.batch_decode(generated_ids)
