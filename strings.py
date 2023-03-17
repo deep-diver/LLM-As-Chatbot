@@ -10,5 +10,5 @@ BOTTOM_LINE = """
 In order to process batch generation, the common parameters in LLaMA are fixed as below:
 - `temperature=0.90`
 - `top_p=0.75`
-- `num_beams=4`
+- `num_beams=2`
 """
