@@ -21,16 +21,49 @@ def generate_prompt(prompt, ctx=None):
 
     return f"""Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
 
-### Instruction:
-{prompt}
+### Input:{ctx}
 
-### Input:
-{ctx}
+### Instruction:{prompt}
 
 ### Response:"""
 
+def test_fn(prompt, histories, ctx=None):
+    print("----inside")
+
+    ctx = "" if ctx is None or ctx == "" else f"""
+    
+    Context:{ctx
+    
+    }"""
+
+    convs = f"""Below is a history of instructions that describe tasks, paired with an input that provides further context. Write a response that appropriately completes the request by remembering the conversation history.
+{ctx}
+"""
+
+    for history in histories:
+        history_prompt = history[0]
+        history_response = history[1]
+
+        history_response = history_response.replace("<br>", "\n")
+
+        pattern = re.compile(r'<.*?>')
+        history_response = re.sub(pattern, '', history_response)        
+
+        convs = convs + f"""### Instruction:{history_prompt}
+
+### Response:{history_response}
+
+"""
+
+    convs = convs + f"""### Instruction:{prompt}
+
+### Response:"""
+
+    print(convs)
+    return convs
+
 def post_process(bot_response):
-    bot_response = bot_response.split("### Response:")[1].strip()
+    bot_response = bot_response.split("### Response:")[-1].strip()
     bot_response = bot_response.replace("\n", "<br>")     # .replace(" ", "&nbsp;")
     
     pattern = r"(  )"
@@ -45,10 +78,13 @@ def chat(
     instructions, 
     state_chatbots
 ):
+    print("-------state_chatbots------")
+    print(state_chatbots)
     results = []
 
-    instruct_prompts = [generate_prompt(instruct, ctx) for ctx, instruct in zip(contexts, instructions)]
-
+    # instruct_prompts = [generate_prompt(instruct, ctx) for ctx, instruct in zip(contexts, instructions)]
+    instruct_prompts = [test_fn(instruct, histories, ctx) for ctx, instruct, histories in zip(contexts, instructions, state_chatbots)]
+        
     bot_responses = get_output(
         model, tokenizer, instruct_prompts, None
     )
@@ -82,22 +118,31 @@ with gr.Blocks(css = """#col_container {width: 95%; margin-left: auto; margin-ri
     with gr.Column(elem_id='col_container'):
         gr.Markdown(f"## {TITLE}\n\n\n{ABSTRACT}")
 
-        context_txtbox = gr.Textbox(placeholder="Explain surrounding information to AI", label="Enter Context")
+        with gr.Accordion("Context Setting", open=False):
+            context_txtbox = gr.Textbox(placeholder="Surrounding information to AI", label="Enter Context")
+            hidden_txtbox = gr.Textbox(placeholder="", label="Order", visible=False)
+
         chatbot = gr.Chatbot(elem_id='chatbot', label="Alpaca-LoRA")
-        instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Enter Instruction")
+        instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Instruction")
         send_prompt_btn = gr.Button(value="Send Prompt")
 
         gr.Examples(
             examples=[
-                ["Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.", "List all Canadian provinces in alphabetical order."],
-                ["Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.", "Tell me about the king of France in 2019."],
-                ["Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.", "Write a Python program that prints the first 10 Fibonacci numbers."],
-                ["Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.", "Tell me about alpacas."]
+                ["1️⃣", "List all Canadian provinces in alphabetical order."],
+                ["1️⃣ ▶️ 1️⃣", "Which ones are on the east side?"],
+                ["1️⃣ ▶️ 2️⃣", "What foods are famous in each province?"],
+                ["1️⃣ ▶️ 3️⃣", "What about sightseeing? or landmarks?"],
+                ["2️⃣", "Tell me about alpacas."],
+                ["2️⃣ ▶️ 1️⃣", "What other animals are living in the same area?"],
+                ["2️⃣ ▶️ 2️⃣", "Are they the same species?"],
+                ["2️⃣ ▶️ 3️⃣", "Write a Python program to return those species"],
+                ["3️⃣", "Tell me about the king of France in 2019."],                
+                ["4️⃣", "Write a Python program that prints the first 10 Fibonacci numbers."],                
             ], 
             inputs=[
-                context_txtbox, 
-                instruction_txtbox
-            ]
+                hidden_txtbox, instruction_txtbox
+            ],
+            label="Examples. ▶️ symbol indicates follow-up prompts"
         )
 
         gr.Markdown(f"{BOTTOM_LINE}")
