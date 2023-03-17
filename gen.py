@@ -9,7 +9,7 @@ def get_output(
     generation_config = GenerationConfig(
         temperature=temperature,
         top_p=top_p,
-        num_beams=4,
+        num_beams=2,
         # use_cache=False,
         #min_length,
         #max_length
