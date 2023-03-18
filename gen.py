@@ -10,6 +10,8 @@ def get_output(
         temperature=temperature,
         top_p=top_p,
         num_beams=2,
+        early_stopping=True,
+        max_time=20.0,
         # use_cache=False,
         #min_length,
         #max_length
