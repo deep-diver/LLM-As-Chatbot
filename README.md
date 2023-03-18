@@ -38,7 +38,10 @@ $ pip install -r requirements.txt
 
 2. Run Gradio application
 ```shell
-$ python app.py
+$ BASE_URL=decapoda-research/llama-7b-hf
+$ FINETUNED_CKPT_URL=tloen/alpaca-lora-7b
+$
+$ python app.py --base_url $BASE_URL --ft_ckpt_url $FINETUNED_CKPT_URL --port 6006
 ```
 
 ## Screenshots
