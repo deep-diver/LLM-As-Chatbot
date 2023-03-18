@@ -1,5 +1,6 @@
 from strings import TITLE, ABSTRACT, BOTTOM_LINE
 from strings import DEFAULT_EXAMPLES
+from styles import PARENT_BLOCK_CSS
 
 import argparse
 import gradio as gr
@@ -92,10 +93,7 @@ def run(args):
         finetuned=args.ft_ckpt_url
     )
 
-    with gr.Blocks(css = """#col_container {width: 95%; margin-left: auto; margin-right: auto;}
-                    #chatbot {height: 500px; overflow: auto;}
-                    .chat_wrap_space {margin-left: 0.5em} """) as demo:
-
+    with gr.Blocks(css=PARENT_BLOCK_CSS) as demo:
         state_chatbot = gr.State([])
 
         with gr.Column(elem_id='col_container'):
