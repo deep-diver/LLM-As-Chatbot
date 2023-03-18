@@ -1,14 +1,7 @@
 from strings import TITLE, ABSTRACT, BOTTOM_LINE
 
-import os
-import re
-import sys
 import argparse
-import time
-from itertools import chain
-from functools import partial
 import gradio as gr
-import datetime
 
 from model import load_model
 from gen import get_output
@@ -81,6 +74,12 @@ def parse_args():
         default="no",
         type=str,
     )
+    parser.add_argument(
+        "--share",
+        help="do you want to share temporarily",
+        default="no",
+        type=str
+    )
 
     return parser.parse_args()
 
@@ -147,6 +146,7 @@ def run(args):
     demo.queue(
         api_open=False if args.api_open == "no" else True
     ).launch(
+        share=False if args.share == "no" else True,
         server_port=args.port
     )
 
