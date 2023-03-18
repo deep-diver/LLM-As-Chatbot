@@ -1,7 +1,7 @@
 # Alpaca-LoRA as a service
 
 Demonstrate Alpaca-LoRA as a Chatbot service with [Alpaca-LoRA](https://github.com/tloen/alpaca-lora) and [Gradio](https://gradio.app/). Main features include:
-- it enables batch inference by aggregating requests until the previous requests are finished
+- it enables batch inference by aggregating requests until the previous requests are finished (fixed at 4)
 
 - it achieves context aware by keeping chatting history with the following string:
 
