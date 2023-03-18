@@ -1,11 +1,12 @@
 from strings import TITLE, ABSTRACT, BOTTOM_LINE
+from strings import DEFAULT_EXAMPLES
 
 import argparse
 import gradio as gr
 
 from model import load_model
 from gen import get_output
-from utils import generate_prompt, post_processes, post_process
+from utils import generate_prompt, post_processes
 
 def chat(
     contexts,
@@ -109,18 +110,7 @@ def run(args):
             send_prompt_btn = gr.Button(value="Send Prompt")
 
             gr.Examples(
-                examples=[
-                    ["1️⃣", "List all Canadian provinces in alphabetical order."],
-                    ["1️⃣ ▶️ 1️⃣", "Which ones are on the east side?"],
-                    ["1️⃣ ▶️ 2️⃣", "What foods are famous in each province?"],
-                    ["1️⃣ ▶️ 3️⃣", "What about sightseeing? or landmarks?"],
-                    ["2️⃣", "Tell me about alpacas."],
-                    ["2️⃣ ▶️ 1️⃣", "What other animals are living in the same area?"],
-                    ["2️⃣ ▶️ 2️⃣", "Are they the same species?"],
-                    ["2️⃣ ▶️ 3️⃣", "Write a Python program to return those species"],
-                    ["3️⃣", "Tell me about the king of France in 2019."],                
-                    ["4️⃣", "Write a Python program that prints the first 10 Fibonacci numbers."],                
-                ], 
+                examples=DEFAULT_EXAMPLES, 
                 inputs=[
                     hidden_txtbox, instruction_txtbox
                 ],
