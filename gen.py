@@ -11,15 +11,8 @@ def get_output(
         top_p=top_p,
         num_beams=2,
         early_stopping=True,
-        max_time=20.0,
-        # use_cache=False,
-        #min_length,
-        #max_length
-        #early_stopping=True, 
-
-        #top_k,
-        #num_beams,
-        #do_sample
+        max_time=30.0,
+        use_cache=True,
     )
 
     if len(prompts) == 1:
