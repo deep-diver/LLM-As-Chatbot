@@ -1,9 +1,8 @@
 # Alpaca-LoRA as a service
 
 Demonstrate Alpaca-LoRA as a Chatbot service with [Alpaca-LoRA](https://github.com/tloen/alpaca-lora) and [Gradio](https://gradio.app/). Main features include:
-- it enables batch inference by aggregating requests until the previous requests are finished (fixed at 4)
-
-- it achieves context aware by keeping chatting history with the following string:
+- enables batch inference by aggregating requests until the previous requests are finished
+- achieves context aware by keeping chatting history with the following string format:
 
 ```python
 f"""
@@ -16,10 +15,11 @@ Below is an instruction that describes a task, paired with an input that provide
 ....
 """
 ```
-
-- it provides an additional script to run various configurations to see how it affects the generation quality and speed
-
-- it currently supports the following Alpaca-LoRA:
+- additionally provides two additional helper buttons
+  - `continue` button lets AI to finish the previously in-completed respone. It simply sens `continue` message to the model, and `continue` message gets omitted in the post processing phase.
+  - `summarize` button lets AI to summarize the conversations so far in three sentences. There might be better prompt to generate summary, and this should be explored.
+- provides an additional script to run various configurations to see how it affects the generation quality and speed
+- currently supports the following Alpaca-LoRA:
   - [tloen/alpaca-lora-7b](https://huggingface.co/tloen/alpaca-lora-7b): the original 7B Alpaca-LoRA checkpoint by tloen
   - [chansung/alpaca-lora-13b](https://huggingface.co/chansung/alpaca-lora-13b): the 13B Alpaca-LoRA checkpoint by myself(chansung) with the same script to tune the original 7B model
   - [chansung/koalpaca-lora-13b](https://huggingface.co/chansung/koalpaca-lora-13b): the 13B Alpaca-LoRA checkpoint by myself(chansung) with the Korean dataset created by [KoAlpaca project](https://github.com/Beomi/KoAlpaca) by Beomi. It works for English(user) to Korean(AI) conversations.
