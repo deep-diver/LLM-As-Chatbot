@@ -107,13 +107,16 @@ def run(args):
             instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Instruction")
             send_prompt_btn = gr.Button(value="Send Prompt")
 
-            gr.Examples(
-                examples=DEFAULT_EXAMPLES, 
-                inputs=[
-                    hidden_txtbox, instruction_txtbox
-                ],
-                label="Examples. ▶️ symbol indicates follow-up prompts"
-            )
+            gr.Markdown("#### Examples")
+            for idx, examples in enumerate(DEFAULT_EXAMPLES):
+                with gr.Accordion(examples["title"], open=False):
+                    gr.Examples(
+                        examples=examples["examples"], 
+                        inputs=[
+                            hidden_txtbox, instruction_txtbox
+                        ],
+                        label=None
+                    )
 
             gr.Markdown(f"{BOTTOM_LINE}")
 
