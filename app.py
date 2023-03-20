@@ -7,7 +7,7 @@ import gradio as gr
 
 from model import load_model
 from gen import get_output
-from utils import generate_prompt, post_processes
+from utils import generate_prompt, post_processes, get_generation_config
 
 def chat(
     contexts,
@@ -24,7 +24,7 @@ def chat(
     ]
         
     bot_responses = get_output(
-        model, tokenizer, instruct_prompts, None
+        model, tokenizer, instruct_prompts, generation_config
     )
     print(bot_responses)
     bot_responses = post_processes(bot_responses)
@@ -86,13 +86,15 @@ def parse_args():
     return parser.parse_args()
 
 def run(args):
-    global model, tokenizer
+    global model, tokenizer, generation_config
 
     model, tokenizer = load_model(
         base=args.base_url,
         finetuned=args.ft_ckpt_url
     )
-
+    
+    generation_config = get_generation_config()
+    
     with gr.Blocks(css=PARENT_BLOCK_CSS) as demo:
         state_chatbot = gr.State([])
 
