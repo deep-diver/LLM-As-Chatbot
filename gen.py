@@ -1,20 +1,8 @@
 import torch
-from transformers import GenerationConfig
 
 def get_output(
-    model, tokenizer, prompts, 
-    temperature=0.90, top_p=0.75
+    model, tokenizer, prompts, generation_config
 ):
-    # GenerationConfig ref: https://huggingface.co/docs/transformers/main_classes/text_generation#transformers.GenerationConfig
-    generation_config = GenerationConfig(
-        temperature=temperature,
-        top_p=top_p,
-        num_beams=2,
-        early_stopping=True,
-        max_time=30.0,
-        use_cache=True,
-    )
-
     if len(prompts) == 1:
         print("there is only a prompt")
         encoding = tokenizer(prompts, return_tensors="pt")
