@@ -1,5 +1,6 @@
 from strings import TITLE, ABSTRACT, BOTTOM_LINE
 from strings import DEFAULT_EXAMPLES
+from strings import SPECIAL_STRS
 from styles import PARENT_BLOCK_CSS
 
 import argparse
@@ -12,11 +13,13 @@ from utils import generate_prompt, post_processes, get_generation_config
 def chat(
     contexts,
     instructions, 
-    state_chatbots
+    state_chatbots,
+    others,
 ):
     print("-------state_chatbots------")
     print(state_chatbots)
-    results = []
+    state_results = []
+    ctx_results = []
 
     instruct_prompts = [
         generate_prompt(instruct, histories, ctx) 
@@ -30,19 +33,19 @@ def chat(
     bot_responses = post_processes(bot_responses)
 
     print("zipping...")
-    sub_results = []
-    for instruction, bot_response, state_chatbot in zip(instructions, bot_responses, state_chatbots):
+    for ctx, instruction, bot_response, state_chatbot in zip(contexts, instructions, bot_responses, state_chatbots):
         print(instruction)
         print(bot_response)
         print(state_chatbot)
-        new_state_chatbot = state_chatbot + [(instruction, bot_response)]
+        new_state_chatbot = state_chatbot + [('' if instruction == SPECIAL_STRS["continue"] else instruction, bot_response)]
+        ctx_results.append(gr.Textbox.update(value=bot_response) if instruction == SPECIAL_STRS["summarize"] else ctx)
         print(new_state_chatbot)
-        results.append(new_state_chatbot)
+        state_results.append(new_state_chatbot)
 
-    print(results)
-    print(len(results))
+    print(state_results)
+    print(len(state_results))
 
-    return (results, results)
+    return (state_results, state_results, ctx_results)
 
 def reset_textbox():
     return gr.Textbox.update(value='')
@@ -71,6 +74,12 @@ def parse_args():
         type=int,
     )
     parser.add_argument(
+        "--batch_size",
+        help="how many requests to handle at the same time",
+        default=4,
+        type=int
+    )        
+    parser.add_argument(
         "--api_open",
         help="do you want to open as API",
         default="no",
@@ -82,6 +91,12 @@ def parse_args():
         default="no",
         type=str
     )
+    parser.add_argument(
+        "--gen_config_path",
+        help="which config to use for GenerationConfig",
+        default="generation_config.yaml",
+        type=str
+    )    
 
     return parser.parse_args()
 
@@ -93,7 +108,9 @@ def run(args):
         finetuned=args.ft_ckpt_url
     )
     
-    generation_config = get_generation_config()
+    generation_config = get_generation_config(
+        args.gen_config_path
+    )
     
     with gr.Blocks(css=PARENT_BLOCK_CSS) as demo:
         state_chatbot = gr.State([])
@@ -108,6 +125,14 @@ def run(args):
             chatbot = gr.Chatbot(elem_id='chatbot', label="Alpaca-LoRA")
             instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Instruction")
             send_prompt_btn = gr.Button(value="Send Prompt")
+            
+            with gr.Accordion("Helper Buttons", open=False):
+                gr.Markdown(f"`Continue` lets AI to complete the previous incomplete answers. `Summarize` lets AI to summarize the conversations so far.")
+                continue_txtbox = gr.Textbox(value=SPECIAL_STRS["continue"], visible=False)
+                summrize_txtbox = gr.Textbox(value=SPECIAL_STRS["summarize"], visible=False)
+                
+                continue_btn = gr.Button(value="Continue")
+                summarize_btn = gr.Button(value="Summarize")
 
             gr.Markdown("#### Examples")
             for idx, examples in enumerate(DEFAULT_EXAMPLES):
@@ -125,16 +150,42 @@ def run(args):
         send_prompt_btn.click(
             chat, 
             [context_txtbox, instruction_txtbox, state_chatbot],
-            [state_chatbot, chatbot],
+            [state_chatbot, chatbot, context_txtbox],
             batch=True,
-            max_batch_size=4,
+            max_batch_size=args.batch_size,
             api_name="text_gen"
         )
+        
         send_prompt_btn.click(
             reset_textbox, 
             [], 
             [instruction_txtbox],
         )
+        
+        continue_btn.click(
+            chat, 
+            [context_txtbox, continue_txtbox, state_chatbot],
+            [state_chatbot, chatbot, context_txtbox],
+            batch=True,
+            max_batch_size=args.batch_size,
+        )
+        continue_btn.click(
+            reset_textbox, 
+            [], 
+            [instruction_txtbox],
+        )        
+        summarize_btn.click(
+            chat, 
+            [context_txtbox, summrize_txtbox, state_chatbot],
+            [state_chatbot, chatbot, context_txtbox],
+            batch=True,
+            max_batch_size=args.batch_size,
+        )
+        summarize_btn.click(
+            reset_textbox, 
+            [], 
+            [instruction_txtbox],
+        )              
 
     demo.queue(
         api_open=False if args.api_open == "no" else True
