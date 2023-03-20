@@ -52,5 +52,9 @@ $ python app.py --base_url $BASE_URL --ft_ckpt_url $FINETUNED_CKPT_URL --port 60
 ## Screenshots
 
 <p align="center">
-  <img height="900px" src="https://i.ibb.co/VQqfFv4/2023-03-17-2-19-32.png" />
+  <img src="https://i.ibb.co/w069GYg/Screenshot-2023-03-20-at-1-25-29-PM.png" />
 </p>
+
+## Acknowledgements
+
+I am thankful to [Jarvislabs.ai](https://jarvislabs.ai/) who generously provided free GPU resources to experiment with Alpaca-LoRA deployment and share it to communities to try out.
