@@ -1,4 +1,13 @@
 import re
+import yaml
+
+from transformers import GenerationConfig
+
+def get_generation_config(path='generation_config.yaml'):
+    with open('generation_config.yaml', 'rb') as f:
+        generation_config = yaml.safe_load(f.read())
+
+    return GenerationConfig(**generation_config["generation_config"])
 
 def generate_prompt(prompt, histories, ctx=None):
     print("----inside")
