@@ -7,21 +7,39 @@ I am thankful to the [Jarvislabs.ai](https://jarvislabs.ai/) who generously prov
 """
 
 BOTTOM_LINE = """
-In order to process batch generation, the common parameters in LLaMA are fixed as below:
-- `temperature=0.90`
-- `top_p=0.75`
-- `num_beams=2`
+In order to process batch generation, the common parameters in LLaMA are fixed. If you want to change the values of them, please do that in `gen.py`
 """
 
 DEFAULT_EXAMPLES = [
-    ["1️⃣", "List all Canadian provinces in alphabetical order."],
-    ["1️⃣ ▶️ 1️⃣", "Which ones are on the east side?"],
-    ["1️⃣ ▶️ 2️⃣", "What foods are famous in each province?"],
-    ["1️⃣ ▶️ 3️⃣", "What about sightseeing? or landmarks?"],
-    ["2️⃣", "Tell me about alpacas."],
-    ["2️⃣ ▶️ 1️⃣", "What other animals are living in the same area?"],
-    ["2️⃣ ▶️ 2️⃣", "Are they the same species?"],
-    ["2️⃣ ▶️ 3️⃣", "Write a Python program to return those species"],
-    ["3️⃣", "Tell me about the king of France in 2019."],                
-    ["4️⃣", "Write a Python program that prints the first 10 Fibonacci numbers."],                
+    {
+        "title": "1️⃣ List all Canadian provinces in alphabetical order.",
+        "examples": [
+            ["1", "List all Canadian provinces in alphabetical order."],
+            ["1 ▶️ 1", "Which ones are on the east side?"],
+            ["1 ▶️ 2", "What foods are famous in each province?"],
+            ["1 ▶️ 3", "What about sightseeing? or landmarks?"],
+        ],
+    },
+    {
+        "title": "2️⃣ Tell me about Alpacas.",
+        "examples": [
+            ["2", "Tell me about alpacas."],
+            ["2 ▶️ 1", "What other animals are living in the same area?"],
+            ["2 ▶️ 2", "Are they the same species?"],
+            ["2 ▶️ 3", "Write a Python program to return those species"],
+        ],
+    },
+    {
+        "title": "3️⃣ Tell me about the king of France in 2019.",
+        "examples": [
+            ["3", "Tell me about the king of France in 2019."],
+        ]
+    },
+    {
+        "title": "4️⃣ Write a Python program that prints the first 10 Fibonacci numbers.",
+        "examples": [
+            ["4", "Write a Python program that prints the first 10 Fibonacci numbers."],
+            ["4 ▶️ 1", "could you explain how the code works?"]            
+        ]
+    }
 ]
