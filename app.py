@@ -3,21 +3,50 @@ from strings import DEFAULT_EXAMPLES
 from strings import SPECIAL_STRS
 from styles import PARENT_BLOCK_CSS
 
-import argparse
 import gradio as gr
 
+from args import parse_args
 from model import load_model
-from gen import get_output
-from utils import generate_prompt, post_processes, get_generation_config
+from gen import get_output_batch, StreamModel
+from utils import generate_prompt, post_processes_batch, post_process_stream, get_generation_config
 
-def chat(
+import asyncio
+
+def chat_stream(
+    context,
+    instruction,
+    state_chatbot,
+):
+    instruction_prompt = generate_prompt(instruction, state_chatbot, context)    
+    bot_response = model(
+        instruction_prompt,
+        max_tokens=256,
+        temperature=0.90,
+        top_p=0.75
+    )
+    
+    instruction = '' if instruction == SPECIAL_STRS["continue"] else instruction
+    state_chatbot = state_chatbot + [(instruction, None)]
+    
+    for tokens in bot_response:
+        tokens, to_stop = post_process_stream(tokens.strip())
+        state_chatbot[-1] = (instruction, tokens)
+        yield (state_chatbot, state_chatbot, context)
+        
+        if to_stop:
+            break
+
+    yield (
+        state_chatbot,
+        state_chatbot,
+        gr.Textbox.update(value=tokens) if instruction == SPECIAL_STRS["summarize"] else context
+    )
+
+def chat_batch(
     contexts,
     instructions, 
     state_chatbots,
-    others,
 ):
-    print("-------state_chatbots------")
-    print(state_chatbots)
     state_results = []
     ctx_results = []
 
@@ -26,91 +55,38 @@ def chat(
         for ctx, instruct, histories in zip(contexts, instructions, state_chatbots)
     ]
         
-    bot_responses = get_output(
+    bot_responses = get_output_batch(
         model, tokenizer, instruct_prompts, generation_config
     )
-    print(bot_responses)
-    bot_responses = post_processes(bot_responses)
+    bot_responses = post_processes_batch(bot_responses)
 
-    print("zipping...")
     for ctx, instruction, bot_response, state_chatbot in zip(contexts, instructions, bot_responses, state_chatbots):
-        print(instruction)
-        print(bot_response)
-        print(state_chatbot)
         new_state_chatbot = state_chatbot + [('' if instruction == SPECIAL_STRS["continue"] else instruction, bot_response)]
         ctx_results.append(gr.Textbox.update(value=bot_response) if instruction == SPECIAL_STRS["summarize"] else ctx)
-        print(new_state_chatbot)
         state_results.append(new_state_chatbot)
-
-    print(state_results)
-    print(len(state_results))
 
     return (state_results, state_results, ctx_results)
 
 def reset_textbox():
     return gr.Textbox.update(value='')
 
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description="Gradio Application for Alpaca-LoRA as a chatbot service"
-    )
-    # Dataset related.
-    parser.add_argument(
-        "--base_url",
-        help="huggingface hub url",
-        default="decapoda-research/llama-7b-hf",
-        type=str,
-    )
-    parser.add_argument(
-        "--ft_ckpt_url",
-        help="huggingface hub url",
-        default="tloen/alpaca-lora-7b",
-        type=str,
-    )
-    parser.add_argument(
-        "--port",
-        help="port to serve app",
-        default=6006,
-        type=int,
-    )
-    parser.add_argument(
-        "--batch_size",
-        help="how many requests to handle at the same time",
-        default=4,
-        type=int
-    )        
-    parser.add_argument(
-        "--api_open",
-        help="do you want to open as API",
-        default="no",
-        type=str,
-    )
-    parser.add_argument(
-        "--share",
-        help="do you want to share temporarily",
-        default="no",
-        type=str
-    )
-    parser.add_argument(
-        "--gen_config_path",
-        help="which config to use for GenerationConfig",
-        default="generation_config.yaml",
-        type=str
-    )    
-
-    return parser.parse_args()
-
 def run(args):
-    global model, tokenizer, generation_config
+    global model, tokenizer, generation_config, batch_enabled
+    
+    batch_enabled = True if args.batch_size > 1 else False    
 
     model, tokenizer = load_model(
         base=args.base_url,
         finetuned=args.ft_ckpt_url
-    )
+    )    
     
     generation_config = get_generation_config(
         args.gen_config_path
     )
+    
+    if not batch_enabled:
+        model = StreamModel(model, tokenizer)
+        # model.generation_config = generation_config
     
     with gr.Blocks(css=PARENT_BLOCK_CSS) as demo:
         state_chatbot = gr.State([])
@@ -146,16 +122,14 @@ def run(args):
                     )
 
             gr.Markdown(f"{BOTTOM_LINE}")
-
+            
         send_prompt_btn.click(
-            chat, 
+            chat_batch if batch_enabled else chat_stream, 
             [context_txtbox, instruction_txtbox, state_chatbot],
             [state_chatbot, chatbot, context_txtbox],
-            batch=True,
+            batch=batch_enabled,
             max_batch_size=args.batch_size,
-            api_name="text_gen"
         )
-        
         send_prompt_btn.click(
             reset_textbox, 
             [], 
@@ -163,22 +137,23 @@ def run(args):
         )
         
         continue_btn.click(
-            chat, 
+            chat_batch if batch_enabled else chat_stream, 
             [context_txtbox, continue_txtbox, state_chatbot],
             [state_chatbot, chatbot, context_txtbox],
-            batch=True,
+            batch=batch_enabled,
             max_batch_size=args.batch_size,
         )
         continue_btn.click(
             reset_textbox, 
             [], 
             [instruction_txtbox],
-        )        
+        )
+        
         summarize_btn.click(
-            chat, 
+            chat_batch if batch_enabled else chat_stream, 
             [context_txtbox, summrize_txtbox, state_chatbot],
             [state_chatbot, chatbot, context_txtbox],
-            batch=True,
+            batch=batch_enabled,
             max_batch_size=args.batch_size,
         )
         summarize_btn.click(
@@ -188,6 +163,7 @@ def run(args):
         )              
 
     demo.queue(
+        concurrency_count=4,
         api_open=False if args.api_open == "no" else True
     ).launch(
         share=False if args.share == "no" else True,

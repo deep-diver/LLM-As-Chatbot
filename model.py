@@ -3,7 +3,7 @@ from transformers import LlamaTokenizer, LlamaForCausalLM
 
 def load_model(
     base="decapoda-research/llama-7b-hf",
-    finetuned="tloen/alpaca-lora-7b"
+    finetuned="tloen/alpaca-lora-7b",
 ):
     tokenizer = LlamaTokenizer.from_pretrained(base)
     tokenizer.pad_token_id = 0
@@ -17,3 +17,4 @@ def load_model(
     
     model = PeftModel.from_pretrained(model, finetuned, device_map={'': 0})
     return model, tokenizer
+

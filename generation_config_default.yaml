@@ -2,8 +2,6 @@ generation_config:
     temperature: 0.90
     top_p: 0.75
     num_beams: 1
-    early_stopping: True
-    max_time: 30.0
     use_cache: True
-    max_length: 100
+    max_length: 1000
     min_length: 0
