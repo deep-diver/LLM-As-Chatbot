@@ -1,5 +1,6 @@
 import copy
 from tenacity import retry, stop_after_attempt, wait_fixed
+from utils import get_device
 
 import torch
 
@@ -13,12 +14,14 @@ from transformers import (
     TopPLogitsWarper,
 )
 
+device = get_device()
+
 def get_output_batch(
     model, tokenizer, prompts, generation_config
 ):
     if len(prompts) == 1:
         encoding = tokenizer(prompts, return_tensors="pt")
-        input_ids = encoding["input_ids"].cuda()
+        input_ids = encoding["input_ids"].to(device)
         generated_id = model.generate(
             input_ids=input_ids,
             generation_config=generation_config,
@@ -27,10 +30,13 @@ def get_output_batch(
 
         decoded = tokenizer.batch_decode(generated_id)
         del input_ids, generated_id
-        torch.cuda.empty_cache()
+        if device == "cuda":
+            torch.cuda.empty_cache()
+        elif device == "mps":
+            torch.mps.empty_cache()
         return decoded
     else:
-        encodings = tokenizer(prompts, padding=True, return_tensors="pt").to('cuda')
+        encodings = tokenizer(prompts, padding=True, return_tensors="pt").to(device)
         generated_ids = model.generate(
             **encodings,
             generation_config=generation_config,
@@ -39,7 +45,10 @@ def get_output_batch(
 
         decoded = tokenizer.batch_decode(generated_ids)
         del encodings, generated_ids
-        torch.cuda.empty_cache()
+        if device == "cuda":
+            torch.cuda.empty_cache()
+        elif device == "mps":
+            torch.mps.empty_cache()
         return decoded
 
 
@@ -52,7 +61,7 @@ class StreamModel:
         super().__init__()
         self.model = model
         self.tokenizer = tokenizer
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = device
 
     def __call__(
         self,
@@ -83,7 +92,10 @@ class StreamModel:
         finish_reasons = [None] * n
 
         # Generate completion tokens.
-        final_tokens = torch.empty(0).cuda()
+        if device == "cuda":
+            final_tokens = torch.empty(0).cuda()
+        else:
+            final_tokens = torch.empty(0).cpu()
         for (
             tokens,
             token_logprobs,

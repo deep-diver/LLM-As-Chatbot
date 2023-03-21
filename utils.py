@@ -1,5 +1,6 @@
 import re
 import yaml
+import torch
 
 from transformers import GenerationConfig
 from strings import SPECIAL_STRS
@@ -75,3 +76,17 @@ def post_process_batch(bot_response):
 
 def post_processes_batch(bot_responses):
     return [post_process_batch(r) for r in bot_responses]
+
+
+def get_device():
+    if torch.cuda.is_available():
+        device = "cuda"
+    else:
+        device = "cpu"
+
+    try:
+        if torch.backends.mps.is_available():
+            device = "mps"
+    except:
+        pass
+    return device
