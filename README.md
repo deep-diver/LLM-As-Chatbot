@@ -78,9 +78,9 @@ Gradio Application for Alpaca-LoRA as a chatbot service
 
 optional arguments:
   -h, --help            show this help message and exit
-  --base_url BASE_URL   huggingface hub url
+  --base_url BASE_URL   Hugging Face Hub url
   --ft_ckpt_url FT_CKPT_URL
-                        huggingface hub url
+                        Hugging Face Hub url
   --port PORT           port to serve app
   --batch_size BATCH_SIZE
                         how many requests to handle at the same time
