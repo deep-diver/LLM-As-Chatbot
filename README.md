@@ -2,6 +2,10 @@
 
 This repository demonstrates Alpaca-LoRA as a Chatbot service with [Alpaca-LoRA](https://github.com/tloen/alpaca-lora) and [Gradio](https://gradio.app/). It comes with the following features:
 
+The **easiest way** to run this project is to use Colab. Just open up the [alpaca_lora_in_colab](https://github.com/deep-diver/Alpaca-LoRA-Serve/blob/main/notebooks/alpaca_lora_in_colab.ipynb) notebook in Colab (there is a button `open in colab`), and run every cell sequentially. With the standard GPU instance(___T4___), you can run 7B and 13B models. With the premium GPU instance(___A100 40GB___), you can even run 30B model! Screenshot👇🏼
+
+![](https://i.ibb.co/hZ3771L/Screen-Shot-2023-03-22-at-9-36-15-PM.png)
+
 ### Mode
 
 **1. Batch Generation Mode**: batch generation mode aggregates requests up to `batch_size`, and pass the prompts in the requests to the model. It waits the current requests are fully handled. For instance, with `batch_size=4`, if a user sends a request, that is under processing. While it is under processing, if other users are connected, up to 4 requests from the users are aggregated and processed as soon as the current one is done.
