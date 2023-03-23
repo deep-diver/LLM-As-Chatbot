@@ -2,7 +2,11 @@ import re
 import yaml
 
 from transformers import GenerationConfig
+
 from strings import SPECIAL_STRS
+from constants import num_of_characters_to_keep
+from constants import html_tag_pattern, multi_line_pattern, multi_space_pattern
+from constants import repl_empty_str, repl_br_tag, repl_span_tag_multispace, repl_linebreak
 
 def get_generation_config(path):
     with open(path, 'rb') as f:
@@ -32,9 +36,9 @@ def generate_prompt(prompt, histories, ctx=None):
         history_response = history[1]
         
         history_response = history_response.replace("<br>", "\n")
-
-        tag_pattern = re.compile(r'<.*?>')
-        history_response = re.sub(tag_pattern, '', history_response)
+        history_response = re.sub(
+            html_tag_pattern, repl_empty_str, history_response
+        )
 
         convs = convs + f"""### Instruction:{history_prompt}
 
@@ -46,32 +50,31 @@ def generate_prompt(prompt, histories, ctx=None):
 
 ### Response:"""
 
-    print(convs)
-    return convs
+    return convs[-num_of_characters_to_keep:]
+
+# applicable to instruction to be displayed as well
+def common_post_process(original_str):
+    original_str = re.sub(
+        multi_line_pattern, repl_br_tag, original_str
+    )
+    original_str = re.sub(
+        multi_space_pattern, repl_span_tag_multispace, original_str
+    )
+    
+    return original_str
 
 def post_process_stream(bot_response):
     # sometimes model spits out text containing 
-    # "### Response:" and "### Instruction:"
-    # in this case, we want to stop generating
+    # "### Response:" and "### Instruction: -> in this case, we want to stop generating
     if "### Response:" in bot_response or "### Instruction:" in bot_response:
         bot_response = bot_response.replace("### Response:", '').replace("### Instruction:", '').strip()
         return bot_response, True
     
-    bot_response = bot_response.replace("\n", "<br>")
-    
-    multi_space_pattern = r"(  )"    
-    replacement_for_multi_space = r'<span class="chat_wrap_space">  <span>'
-    
-    bot_response = re.sub(multi_space_pattern, replacement_for_multi_space, bot_response)
-    return bot_response, False
+    return common_post_process(bot_response), False
 
 def post_process_batch(bot_response):
     bot_response = bot_response.split("### Response:")[-1].strip()
-    bot_response = bot_response.replace("\n", "<br>")
-    
-    pattern = r"(  )"
-    replacement = r'<span class="chat_wrap_space">  <span>'
-    return re.sub(pattern, replacement, bot_response)
+    return common_post_process(bot_response)
 
 def post_processes_batch(bot_responses):
     return [post_process_batch(r) for r in bot_responses]
