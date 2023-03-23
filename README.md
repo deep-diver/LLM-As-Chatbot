@@ -1,14 +1,14 @@
-# Alpaca-LoRA as a Chatbot Service
+# 🦙 🚀 Alpaca-LoRA as a Chatbot Service
 
 🚧 This project is still under development process. While serving the project, I noticed there are some bugs emitted by the model itself such as too many line breaks which causes OOM eventually. You can propose PR, but I will merge any improvement at any time as soon as I spot any problems.
 
 🔗 **Demo link**: [Batch Mode](https://notebooksf.jarvislabs.ai/43j3x9FSS8Tg0sqvMlDgKPo9vsoSTTKRsX4RIdC3tNd6qeQ6ktlA0tyWRAR3fe_l) and [Streaming Mode](https://notebookse.jarvislabs.ai/BuOu_VbEuUHb09VEVHhfnFq4-PMhBRVCcfHBRCOrq7c4O9GI4dIGoidvNf76UsRL/) (both are running on a single A6000 instance)
 
-This repository demonstrates Alpaca-LoRA as a Chatbot service with [Alpaca-LoRA](https://github.com/tloen/alpaca-lora) and [Gradio](https://gradio.app/). It comes with the following features:
-
-The **easiest way** to run this project is to use Colab. Just open up the [alpaca_lora_in_colab](https://github.com/deep-diver/Alpaca-LoRA-Serve/blob/main/notebooks/alpaca_lora_in_colab.ipynb) notebook in Colab (there is a button `open in colab`), and run every cell sequentially. With the standard GPU instance(___T4___), you can run 7B and 13B models. With the premium GPU instance(___A100 40GB___), you can even run 30B model! Screenshot👇🏼
+The **easiest way** to run this project is to use Colab. Just open up the [alpaca_lora_in_colab](https://github.com/deep-diver/Alpaca-LoRA-Serve/blob/main/notebooks/alpaca_lora_in_colab.ipynb) notebook in Colab (there is a button `open in colab`), and run every cell sequentially. With the standard GPU instance(___T4___), you can run 7B and 13B models. With the premium GPU instance(___A100 40GB___), you can even run 30B model! Screenshot👇🏼 Just note that the connection could be somewhat unstable, so I recommend you to use Colab for development purpose.
 
 ![](https://i.ibb.co/hZ3771L/Screen-Shot-2023-03-22-at-9-36-15-PM.png)
+
+This repository demonstrates Alpaca-LoRA as a Chatbot service with [Alpaca-LoRA](https://github.com/tloen/alpaca-lora) and [Gradio](https://gradio.app/). It comes with the following features:
 
 ### Mode
 
@@ -20,7 +20,7 @@ The **easiest way** to run this project is to use Colab. Just open up the [alpac
 
 - Alpaca-LoRA as a Chatbot Service manages context in two ways. First of all, it remembers(stores) every history of the conversations by default as in the following code snippet. `context_string` is set as ___"Below is a history of instructions that describe tasks, paired with an input that provides further context. Write a response that appropriately completes the request by remembering the conversation history."___ by default, but it could be set manually via the `Context` field on top of the screen. 
   - additionally, there is a `Summarize` button in the middle (you need to expand the component labeled as ___"Helper Buttons"___). If you click this button, it automatically input ___"summarize our conversations so far in three sentences."___ as a prompt, and the resulting generated text will be inserted into the `Context` field. THen all the conversation history up to this point will be ignored. That means the conversation fresh restarts with the below code snippet except `context_string` will be filled up with the model generated text.
-  - _NOTE: the only last 2,000 characters are kept_
+  - _NOTE: the only last 2,000 characters are kept, and this number can be configured in `constants.py`_
 
 ```python
 f"""{context_string}
