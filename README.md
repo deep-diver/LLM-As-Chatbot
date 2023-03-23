@@ -19,7 +19,8 @@ The **easiest way** to run this project is to use Colab. Just open up the [alpac
 ### Context management
 
 - Alpaca-LoRA as a Chatbot Service manages context in two ways. First of all, it remembers(stores) every history of the conversations by default as in the following code snippet. `context_string` is set as ___"Below is a history of instructions that describe tasks, paired with an input that provides further context. Write a response that appropriately completes the request by remembering the conversation history."___ by default, but it could be set manually via the `Context` field on top of the screen. 
-  - additionall, there is a `Summarize` button in the middle (you need to expand the component labeled as ___"Helper Buttons"___). If you click this button, it automatically input ___"summarize our conversations so far in three sentences."___ as a prompt, and the resulting generated text will be inserted into the `Context` field. THen all the conversation history up to this point will be ignored. That means the conversation fresh restarts with the below code snippet except `context_string` will be filled up with the model generated text.
+  - additionally, there is a `Summarize` button in the middle (you need to expand the component labeled as ___"Helper Buttons"___). If you click this button, it automatically input ___"summarize our conversations so far in three sentences."___ as a prompt, and the resulting generated text will be inserted into the `Context` field. THen all the conversation history up to this point will be ignored. That means the conversation fresh restarts with the below code snippet except `context_string` will be filled up with the model generated text.
+  - _NOTE: the only last 2,000 characters are kept_
 
 ```python
 f"""{context_string}
@@ -82,15 +83,15 @@ Gradio Application for Alpaca-LoRA as a chatbot service
 
 optional arguments:
   -h, --help            show this help message and exit
-  --base_url BASE_URL   Hugging Face Hub url
+  --base_url BASE_URL   Hugging Face Hub URL
   --ft_ckpt_url FT_CKPT_URL
-                        Hugging Face Hub url
-  --port PORT           port to serve app
+                        Hugging Face Hub URL
+  --port PORT           port number where the app is served
   --batch_size BATCH_SIZE
                         how many requests to handle at the same time
                         default is set to 1 which enables streaming mode
   --api_open API_OPEN   do you want to open as API
-  --share SHARE         do you want to share temporarily
+  --share SHARE         do you want to share temporarily (useful in Colab env)
   --gen_config_path GEN_CONFIG_PATH
                         which config to use for GenerationConfig
 ```

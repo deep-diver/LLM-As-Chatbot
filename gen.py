@@ -66,24 +66,11 @@ class StreamModel:
         echo=False,
     ):
         """Create a completion stream for the provided prompt."""
-        if isinstance(prompt, str):
-            input_ids = self.tokenize(prompt)
-        elif isinstance(prompt, torch.Tensor) and prompt.dim() == 1:
-            input_ids = prompt
-        else:
-            raise TypeError("prompt must be a string or a 1-d tensor")
-
-        # Ensure arguments are non-negative.
-        min_tokens = max(min_tokens, 0)
-        max_tokens = max(max_tokens, 1)
-        n = max(n, 1)
+        input_ids = self.tokenize(prompt)
         logprobs = max(logprobs, 0)
 
-        # Keep track of the finish reason of each sequence.
-        finish_reasons = [None] * n
-
         # Generate completion tokens.
-        final_tokens = torch.empty(0).cuda()
+        final_tokens = torch.empty(0).to(self.device)
         for (
             tokens,
             token_logprobs,
@@ -98,17 +85,15 @@ class StreamModel:
             temperature=temperature,
             top_p=top_p,
         ):
-            for i in range(n):
-                # Check and update the finish status of the sequence.
-                if finish_reasons[i]:
-                    continue
-                if status[i] == 0:
-                    finish_reasons[i] = "stop"
-                elif status[i] == -1:
-                    finish_reasons[i] = "length"
+            final_tokens = torch.cat((final_tokens, tokens))
+            del tokens
+            if self.device == "cuda": 
+                torch.cuda.empty_cache()            
+            yield self.tokenizer.decode(final_tokens, skip_special_tokens=True)
                 
-                final_tokens = torch.cat((final_tokens, tokens))
-                yield self.tokenizer.decode(final_tokens, skip_special_tokens=True)
+        del final_tokens, input_ids
+        if self.device == "cuda": 
+            torch.cuda.empty_cache()
 
     @retry(stop=stop_after_attempt(5), wait=wait_fixed(1))
     def _infer(self, model_fn, **kwargs):
@@ -117,25 +102,6 @@ class StreamModel:
         # https://github.com/TimDettmers/bitsandbytes/issues/162
         with torch.inference_mode():
             return model_fn(**kwargs)
-
-    def _sample(self, token, token_logprob, top_tokens, top_logprobs):
-        """Sample log probabilities of the most likely tokens."""
-        token = self.tokenizer.decode(token)
-        top_tokens = self.tokenizer.batch_decode(top_tokens)
-
-        # Do not use tensor operations as arguments may be of list type.
-        token_logprob = round(float(token_logprob), 8)
-        top_logprobs = [round(float(p), 8) for p in top_logprobs]
-
-        # Always include the log probability of the selected token.
-        top_logprobs = dict(zip(top_tokens, top_logprobs))
-        top_logprobs[token] = token_logprob
-
-        return {
-            "token": token,
-            "token_logprob": token_logprob,
-            "top_logprobs": top_logprobs,
-        }
 
     def _logits_processor(self, config, input_length):
         """Set up logits processor based on the generation config."""
@@ -187,7 +153,7 @@ class StreamModel:
         kwargs = config.update(**kwargs)
         kwargs["output_attentions"] = False
         kwargs["output_hidden_states"] = False
-        kwargs["use_cache"] = config.use_cache
+        kwargs["use_cache"] = True # config.use_cache
 
         # Collect special token IDs.
         pad_token_id = config.pad_token_id

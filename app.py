@@ -12,7 +12,7 @@ from utils import generate_prompt, post_processes_batch, post_process_stream, ge
 
 import asyncio
 
-def chat_stream(
+async def chat_stream(
     context,
     instruction,
     state_chatbot,
@@ -20,7 +20,7 @@ def chat_stream(
     instruction_prompt = generate_prompt(instruction, state_chatbot, context)    
     bot_response = model(
         instruction_prompt,
-        max_tokens=256,
+        max_tokens=128,
         temperature=0.90,
         top_p=0.75
     )
@@ -29,6 +29,7 @@ def chat_stream(
     state_chatbot = state_chatbot + [(instruction, None)]
     
     for tokens in bot_response:
+        asyncio.sleep(0.1)
         tokens, to_stop = post_process_stream(tokens.strip())
         state_chatbot[-1] = (instruction, tokens)
         yield (state_chatbot, state_chatbot, context)
@@ -163,9 +164,11 @@ def run(args):
         )              
 
     demo.queue(
-        concurrency_count=4,
+        concurrency_count=2,
+        max_size=100,
         api_open=False if args.api_open == "no" else True
     ).launch(
+        max_threads=2,
         share=False if args.share == "no" else True,
         server_port=args.port
     )

@@ -7,19 +7,19 @@ def parse_args():
     # Dataset related.
     parser.add_argument(
         "--base_url",
-        help="huggingface hub url",
+        help="Hugging Face Hub URL",
         default="decapoda-research/llama-7b-hf",
         type=str,
     )
     parser.add_argument(
         "--ft_ckpt_url",
-        help="huggingface hub url",
+        help="Hugging Face Hub URL",
         default="tloen/alpaca-lora-7b",
         type=str,
     )
     parser.add_argument(
         "--port",
-        help="port to serve app",
+        help="PORT number where the app is served",
         default=6006,
         type=int,
     )
@@ -37,7 +37,7 @@ def parse_args():
     )
     parser.add_argument(
         "--share",
-        help="do you want to share temporarily",
+        help="do you want to share temporarily (useful in Colab env)",
         default="no",
         type=str
     )
