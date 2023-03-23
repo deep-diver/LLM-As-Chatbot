@@ -32,10 +32,9 @@ async def chat_stream(
         asyncio.sleep(0.1)
         tokens, to_stop = post_process_stream(tokens.strip())
         state_chatbot[-1] = (instruction, tokens)
-        yield (state_chatbot, state_chatbot, context)
-        
         if to_stop:
             break
+        yield (state_chatbot, state_chatbot, context)
 
     yield (
         state_chatbot,
