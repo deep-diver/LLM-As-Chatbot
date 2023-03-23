@@ -1,5 +1,7 @@
 # Alpaca-LoRA as a Chatbot Service
 
+🚧 This project is still under development process. While serving the project, I noticed there are some bugs emitted by the model itself such as too many line breaks which causes OOM eventually. You can propose PR, but I will merge any improvement at any time as soon as I spot any problems.
+
 This repository demonstrates Alpaca-LoRA as a Chatbot service with [Alpaca-LoRA](https://github.com/tloen/alpaca-lora) and [Gradio](https://gradio.app/). It comes with the following features:
 
 The **easiest way** to run this project is to use Colab. Just open up the [alpaca_lora_in_colab](https://github.com/deep-diver/Alpaca-LoRA-Serve/blob/main/notebooks/alpaca_lora_in_colab.ipynb) notebook in Colab (there is a button `open in colab`), and run every cell sequentially. With the standard GPU instance(___T4___), you can run 7B and 13B models. With the premium GPU instance(___A100 40GB___), you can even run 30B model! Screenshot👇🏼
