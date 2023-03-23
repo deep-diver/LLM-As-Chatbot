@@ -6,7 +6,7 @@ from transformers import GenerationConfig
 from strings import SPECIAL_STRS
 from constants import num_of_characters_to_keep
 from constants import html_tag_pattern, multi_line_pattern, multi_space_pattern
-from constants import repl_empty_str, repl_br_tag, repl_span_tag_multispace
+from constants import repl_empty_str, repl_br_tag, repl_span_tag_multispace, repl_linebreak
 
 def get_generation_config(path):
     with open(path, 'rb') as f:
@@ -52,12 +52,13 @@ def generate_prompt(prompt, histories, ctx=None):
 
     return convs[-num_of_characters_to_keep:]
 
+# applicable to instruction to be displayed as well
 def common_post_process(original_str):
     original_str = re.sub(
         multi_line_pattern, repl_br_tag, original_str
     )
-    bot_response = re.sub(
-        original_str, repl_span_tag_multispace, original_str
+    original_str = re.sub(
+        multi_space_pattern, repl_span_tag_multispace, original_str
     )
     
     return original_str

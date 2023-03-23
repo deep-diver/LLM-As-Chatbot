@@ -8,15 +8,17 @@ import gradio as gr
 from args import parse_args
 from model import load_model
 from gen import get_output_batch, StreamModel
-from utils import generate_prompt, post_processes_batch, post_process_stream, get_generation_config
+from utils import generate_prompt, post_processes_batch, post_process_stream, get_generation_config, common_post_process
 
-import asyncio
-
-async def chat_stream(
+def chat_stream(
     context,
     instruction,
     state_chatbot,
 ):
+    print(instruction)
+
+    # user input should be appropriately formatted (don't be confused by the function name)
+    instruction_display = common_post_process(instruction)
     instruction_prompt = generate_prompt(instruction, state_chatbot, context)    
     bot_response = model(
         instruction_prompt,
@@ -25,13 +27,12 @@ async def chat_stream(
         top_p=0.75
     )
     
-    instruction = '' if instruction == SPECIAL_STRS["continue"] else instruction
-    state_chatbot = state_chatbot + [(instruction, None)]
+    instruction_display = '' if instruction_display == SPECIAL_STRS["continue"] else instruction_display
+    state_chatbot = state_chatbot + [(instruction_display, None)]
     
     for tokens in bot_response:
-        asyncio.sleep(0.1)
         tokens, to_stop = post_process_stream(tokens.strip())
-        state_chatbot[-1] = (instruction, tokens)
+        state_chatbot[-1] = (instruction_display, tokens)
         if to_stop:
             break
         yield (state_chatbot, state_chatbot, context)
@@ -39,7 +40,7 @@ async def chat_stream(
     yield (
         state_chatbot,
         state_chatbot,
-        gr.Textbox.update(value=tokens) if instruction == SPECIAL_STRS["summarize"] else context
+        gr.Textbox.update(value=tokens) if instruction_display == SPECIAL_STRS["summarize"] else context
     )
 
 def chat_batch(
