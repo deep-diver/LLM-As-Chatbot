@@ -83,12 +83,13 @@ class StreamModel:
                 max_new_tokens=max_tokens,
                 temperature=temperature,
                 top_p=top_p,
-            ):           
+            ):
+                if chunk_count < chunk_size:
+                    chunk_count = chunk_count + 1                
+                
                 final_tokens = torch.cat((final_tokens, tokens))
 
-                if chunk_count < chunk_size:
-                    chunk_count = chunk_count + 1
-                else:
+                if chunk_count == chunk_size-1:
                     chunk_count = 0
                     yield self.tokenizer.decode(final_tokens, skip_special_tokens=True)
 
