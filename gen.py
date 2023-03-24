@@ -1,4 +1,5 @@
 import copy
+from tenacity import RetryError
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 import torch
@@ -63,33 +64,41 @@ class StreamModel:
         top_p=1.0,
         n=1,
         logprobs=0,
-        echo=False,
     ):
         """Create a completion stream for the provided prompt."""
         input_ids = self.tokenize(prompt)
         logprobs = max(logprobs, 0)
 
+        chunk_size = 3
+        chunk_count = 0
+        
         # Generate completion tokens.
         final_tokens = torch.empty(0).to(self.device)
-        for (
-            tokens,
-            token_logprobs,
-            top_tokens,
-            top_logprobs,
-            status,
-        ) in self.generate(
-            input_ids[None, :].repeat(n, 1),
-            logprobs=logprobs,
-            min_new_tokens=min_tokens,
-            max_new_tokens=max_tokens,
-            temperature=temperature,
-            top_p=top_p,
-        ):
-            final_tokens = torch.cat((final_tokens, tokens))
-            del tokens
-            if self.device == "cuda": 
-                torch.cuda.empty_cache()            
-            yield self.tokenizer.decode(final_tokens, skip_special_tokens=True)
+        
+        try:
+            for tokens in self.generate(
+                input_ids[None, :].repeat(n, 1),
+                logprobs=logprobs,
+                min_new_tokens=min_tokens,
+                max_new_tokens=max_tokens,
+                temperature=temperature,
+                top_p=top_p,
+            ):           
+                final_tokens = torch.cat((final_tokens, tokens))
+
+                if chunk_count < chunk_size:
+                    chunk_count = chunk_count + 1
+                else:
+                    chunk_count = 0
+                    yield self.tokenizer.decode(final_tokens, skip_special_tokens=True)
+
+            if chunk_count > 0:
+                yield self.tokenizer.decode(final_tokens, skip_special_tokens=True)
+
+        except RetryError as e:
+            print(e)
+            del input_ids
+            gc.collect()
                 
         del final_tokens, input_ids
         if self.device == "cuda": 
@@ -223,14 +232,7 @@ class StreamModel:
             else:
                 tokens = torch.multinomial(probs, num_samples=1)
 
-            # Collect log probabilities of the selected tokens.
-            token_logprobs = torch.gather(probs, 1, tokens)
-            token_logprobs = torch.log(token_logprobs + 1e-7).squeeze(1)
             tokens = tokens.squeeze(1)
-
-            # Collect log probabilities of the most likely tokens.
-            top_logprobs, top_tokens = probs.topk(logprobs)
-            top_logprobs = torch.log(top_logprobs + 1e-7)
 
             # Finished sequences should have their next token be a padding.
             if pad_token_id is not None:
@@ -238,14 +240,6 @@ class StreamModel:
 
             # Append selected tokens to the inputs.
             input_ids = torch.cat([input_ids, tokens[:, None]], dim=-1)
-
-            # Extract past key values from model outputs.
-            if "past_key_values" in outputs:
-                kwargs["past_key_values"] = outputs.past_key_values
-            elif "mems" in outputs:
-                kwargs["past_key_values"] = outputs.mems
-            elif "past_buckets_states" in outputs:
-                kwargs["past_key_values"] = outputs.past_buckets_states
 
             # Mark sequences with eos tokens as finished.
             if eos_token_id is not None:
@@ -258,7 +252,7 @@ class StreamModel:
                 status = 0 - status
 
             # Yield predictions and status.
-            yield tokens, token_logprobs, top_tokens, top_logprobs, status
+            yield tokens
 
             # Stop when finished or exceeded the max length.
             if status.max() <= 0:
