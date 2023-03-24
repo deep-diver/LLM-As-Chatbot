@@ -1,3 +1,4 @@
+import gc
 import copy
 from tenacity import RetryError
 from tenacity import retry, stop_after_attempt, wait_fixed
