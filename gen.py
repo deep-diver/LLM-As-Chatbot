@@ -103,7 +103,7 @@ class StreamModel:
             del input_ids
             gc.collect()
                 
-        del final_tokens, input_ids
+        del final_tokens
         if self.device == "cuda": 
             torch.cuda.empty_cache()
 
