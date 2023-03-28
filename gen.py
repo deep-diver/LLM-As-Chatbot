@@ -70,7 +70,8 @@ class StreamModel:
         input_ids = self.tokenize(prompt)
         logprobs = max(logprobs, 0)
 
-        chunk_size = 3
+        # bigger than 1
+        chunk_size = 2
         chunk_count = 0
         
         # Generate completion tokens.
@@ -86,7 +87,7 @@ class StreamModel:
                 top_p=top_p,
             ):
                 if chunk_count < chunk_size:
-                    chunk_count = chunk_count + 1                
+                    chunk_count = chunk_count + 1        
                 
                 final_tokens = torch.cat((final_tokens, tokens))
 

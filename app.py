@@ -3,6 +3,7 @@ from strings import DEFAULT_EXAMPLES
 from strings import SPECIAL_STRS
 from styles import PARENT_BLOCK_CSS
 
+import time
 import gradio as gr
 
 from args import parse_args
@@ -15,27 +16,58 @@ def chat_stream(
     instruction,
     state_chatbot,
 ):
-    print(instruction)
+    # print(instruction)
 
     # user input should be appropriately formatted (don't be confused by the function name)
     instruction_display = common_post_process(instruction)
     instruction_prompt = generate_prompt(instruction, state_chatbot, context)    
     bot_response = model(
         instruction_prompt,
-        max_tokens=128,
-        temperature=0.90,
-        top_p=0.75
+        max_tokens=256,
+        temperature=1,
+        top_p=0.9
     )
     
-    instruction_display = '' if instruction_display == SPECIAL_STRS["continue"] else instruction_display
+    instruction_display = None if instruction_display == SPECIAL_STRS["continue"] else instruction_display
     state_chatbot = state_chatbot + [(instruction_display, None)]
     
+    prev_index = 0
+    agg_tokens = ""
+    cutoff_idx = 0
     for tokens in bot_response:
-        tokens, to_stop = post_process_stream(tokens.strip())
-        state_chatbot[-1] = (instruction_display, tokens)
-        if to_stop:
-            break
-        yield (state_chatbot, state_chatbot, context)
+        tokens = tokens.strip()
+        cur_token = tokens[prev_index:]
+        
+        if "#" in cur_token and agg_tokens == "":
+            cutoff_idx = tokens.find("#")
+            agg_tokens = tokens[cutoff_idx:]
+
+        if agg_tokens != "":
+            if len(agg_tokens) < len("### Instruction:") :
+                agg_tokens = agg_tokens + cur_token
+            elif len(agg_tokens) >= len("### Instruction:"):
+                if tokens.find("### Instruction:") > -1:
+                    processed_response, _ = post_process_stream(tokens[:tokens.find("### Instruction:")].strip())
+
+                    state_chatbot[-1] = (
+                        instruction_display, 
+                        processed_response
+                    )
+                    yield (state_chatbot, state_chatbot, context)
+                    break
+                else:
+                    agg_tokens = ""
+                    cutoff_idx = 0
+
+        if agg_tokens == "":
+            processed_response, to_exit = post_process_stream(tokens)
+            state_chatbot[-1] = (instruction_display, processed_response)
+            yield (state_chatbot, state_chatbot, context)
+
+            if to_exit:
+                break
+
+        prev_index = len(tokens)
 
     yield (
         state_chatbot,
@@ -170,7 +202,8 @@ def run(args):
     ).launch(
         max_threads=2,
         share=False if args.share == "no" else True,
-        server_port=args.port
+        server_port=args.port,
+        server_name="0.0.0.0",
     )
 
 if __name__ == "__main__":

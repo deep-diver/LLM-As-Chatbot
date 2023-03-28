@@ -66,8 +66,8 @@ def common_post_process(original_str):
 def post_process_stream(bot_response):
     # sometimes model spits out text containing 
     # "### Response:" and "### Instruction: -> in this case, we want to stop generating
-    if "### Response:" in bot_response or "### Instruction:" in bot_response:
-        bot_response = bot_response.replace("### Response:", '').replace("### Instruction:", '').strip()
+    if "### Response:" in bot_response or "### Input:" in bot_response:
+        bot_response = bot_response.replace("### Response:", '').replace("### Input:", '').strip()
         return bot_response, True
     
     return common_post_process(bot_response), False
