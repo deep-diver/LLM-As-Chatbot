@@ -110,7 +110,8 @@ def run(args):
 
     model, tokenizer = load_model(
         base=args.base_url,
-        finetuned=args.ft_ckpt_url
+        finetuned=args.ft_ckpt_url,
+        multi_gpu=args.multi_gpu
     )    
     
     generation_config = get_generation_config(
@@ -198,10 +199,10 @@ def run(args):
     demo.queue(
         concurrency_count=2,
         max_size=100,
-        api_open=False if args.api_open == "no" else True
+        api_open=args.api_open
     ).launch(
         max_threads=2,
-        share=False if args.share == "no" else True,
+        share=args.share,
         server_port=args.port,
         server_name="0.0.0.0",
     )
