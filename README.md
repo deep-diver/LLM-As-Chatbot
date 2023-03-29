@@ -1,5 +1,7 @@
 # 🦙 🚀 Alpaca-LoRA as a Chatbot Service
 
+**UPDATE**: Multi-GPU support with `--multi_gpu` option. It will use `float16` instead of `8Bit`.
+
 🔗 **Demo link**: [Batch Mode with 30B](https://notebooksf.jarvislabs.ai/43j3x9FSS8Tg0sqvMlDgKPo9vsoSTTKRsX4RIdC3tNd6qeQ6ktlA0tyWRAR3fe_l) and [Streaming Mode with 30B](https://notebooksf.jarvislabs.ai/BuOu_VbEuUHb09VEVHhfnFq4-PMhBRVCcfHBRCOrq7c4O9GI4dIGoidvNf76UsRL/) (running on a single A6000 and 3xA6000 instances respectively at [jarvislabs.ai](https://jarvislabs.ai/)), and [Hugging Face Space](https://huggingface.co/spaces/chansung/Alpaca-LoRA-Serve) which runs 13B on A10.
 
 The **easiest way** to run this project is to use Colab. Just open up the [alpaca_lora_in_colab](https://github.com/deep-diver/Alpaca-LoRA-Serve/blob/main/notebooks/alpaca_lora_in_colab.ipynb) notebook in Colab (there is a button `open in colab`), and run every cell sequentially. With the standard GPU instance(___T4___), you can run 7B and 13B models. With the premium GPU instance(___A100 40GB___), you can even run 30B model! Screenshot👇🏼 Just note that the connection could be somewhat unstable, so I recommend you to use Colab for development purpose.
