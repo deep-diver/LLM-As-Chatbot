@@ -1,8 +1,8 @@
 # 🦙 🚀 Alpaca-LoRA as a Chatbot Service
 
-🚧 This project is still under development process. While serving the project, I noticed there are some bugs emitted by the model itself such as too many line breaks which causes OOM eventually. You can propose PR, but I will merge any improvement at any time as soon as I spot any problems.
+**UPDATE**: Multi-GPU support with `--multi_gpu` option. It will use `float16` instead of `8Bit`.
 
-🔗 **Demo link**: [Batch Mode with 30B](https://notebooksf.jarvislabs.ai/43j3x9FSS8Tg0sqvMlDgKPo9vsoSTTKRsX4RIdC3tNd6qeQ6ktlA0tyWRAR3fe_l) and [Streaming Mode with 30B](https://notebooksf.jarvislabs.ai/BuOu_VbEuUHb09VEVHhfnFq4-PMhBRVCcfHBRCOrq7c4O9GI4dIGoidvNf76UsRL/) (running on a single A6000 and 3xA6000 instances respectively), and [Hugging Face Space](https://huggingface.co/spaces/chansung/Alpaca-LoRA-Serve) which runs 13B on A10.
+🔗 **Demo link**: [Batch Mode with 30B](https://notebooksf.jarvislabs.ai/43j3x9FSS8Tg0sqvMlDgKPo9vsoSTTKRsX4RIdC3tNd6qeQ6ktlA0tyWRAR3fe_l) and [Streaming Mode with 30B](https://notebooksf.jarvislabs.ai/BuOu_VbEuUHb09VEVHhfnFq4-PMhBRVCcfHBRCOrq7c4O9GI4dIGoidvNf76UsRL/) (running on a single A6000 and 3xA6000 instances respectively at [jarvislabs.ai](https://jarvislabs.ai/)), and [Hugging Face Space](https://huggingface.co/spaces/chansung/Alpaca-LoRA-Serve) which runs 13B on A10.
 
 The **easiest way** to run this project is to use Colab. Just open up the [alpaca_lora_in_colab](https://github.com/deep-diver/Alpaca-LoRA-Serve/blob/main/notebooks/alpaca_lora_in_colab.ipynb) notebook in Colab (there is a button `open in colab`), and run every cell sequentially. With the standard GPU instance(___T4___), you can run 7B and 13B models. With the premium GPU instance(___A100 40GB___), you can even run 30B model! Screenshot👇🏼 Just note that the connection could be somewhat unstable, so I recommend you to use Colab for development purpose.
 
@@ -76,24 +76,24 @@ $ python app.py --base_url $BASE_URL --ft_ckpt_url $FINETUNED_CKPT_URL --port 60
 the following flags are supported
 
 ```console
-usage: app.py [-h] [--base_url BASE_URL] [--ft_ckpt_url FT_CKPT_URL] [--port PORT] [--batch_size BATCH_SIZE]
-              [--api_open API_OPEN] [--share SHARE] [--gen_config_path GEN_CONFIG_PATH]
+usage: app.py [-h] [--base_url BASE_URL] [--ft_ckpt_url FT_CKPT_URL] [--port PORT] [--batch_size BATCH_SIZE] [--api_open] [--share]
+              [--gen_config_path GEN_CONFIG_PATH] [--multi_gpu]
 
 Gradio Application for Alpaca-LoRA as a chatbot service
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --base_url BASE_URL   Hugging Face Hub URL
   --ft_ckpt_url FT_CKPT_URL
                         Hugging Face Hub URL
-  --port PORT           port number where the app is served
+  --port PORT           PORT number where the app is served
   --batch_size BATCH_SIZE
-                        how many requests to handle at the same time
-                        default is set to 1 which enables streaming mode
-  --api_open API_OPEN   do you want to open as API
-  --share SHARE         do you want to share temporarily (useful in Colab env)
+                        Number of requests to handle at the same time
+  --api_open            Open as API
+  --share               Create and share temporary endpoint (useful in Colab env)
   --gen_config_path GEN_CONFIG_PATH
-                        which config to use for GenerationConfig
+                        path to GenerationConfig file used in batch mode
+  --multi_gpu           Enable multi gpu mode. This will force not to use Int8 but float16, so you need to check if your system has enough GPU memory
 ```
 
 ## Design figure
