@@ -22,7 +22,7 @@ def generate_prompt(prompt, histories, ctx=None):
         convs = f"""{ctx}
 
 """
-    
+    sub_convs = ""
     start_idx = 0
     
     for idx, history in enumerate(histories):
@@ -40,7 +40,7 @@ def generate_prompt(prompt, histories, ctx=None):
             html_tag_pattern, repl_empty_str, history_response
         )
 
-        convs = convs + f"""### Instruction:{history_prompt}
+        sub_convs = sub_convs + f"""### Instruction:{history_prompt}
 
 ### Response:{history_response}
 
@@ -50,7 +50,7 @@ def generate_prompt(prompt, histories, ctx=None):
 
 ### Response:"""
 
-    return convs[-num_of_characters_to_keep:]
+    return convs + sub_convs[-num_of_characters_to_keep:]
 
 # applicable to instruction to be displayed as well
 def common_post_process(original_str):
