@@ -46,7 +46,7 @@ def parse_args():
         type=str
     )
     parser.add_argument(
-        "--multi_gpu"
+        "--multi_gpu",
         help="Enable multi gpu mode. This will force not to use Int8 but float16, so you need to check if your system has enough GPU memory",
         action='store_true'
     )
