@@ -28,5 +28,6 @@ def load_model(base, finetuned, multi_gpu):
         model = PeftModel.from_pretrained(
             model, finetuned, torch_dtype=torch.float16
         )
+        model.half()
         return model, tokenizer        
 
