@@ -74,24 +74,24 @@ $ python app.py --base_url $BASE_URL --ft_ckpt_url $FINETUNED_CKPT_URL --port 60
 the following flags are supported
 
 ```console
-usage: app.py [-h] [--base_url BASE_URL] [--ft_ckpt_url FT_CKPT_URL] [--port PORT] [--batch_size BATCH_SIZE]
-              [--api_open API_OPEN] [--share SHARE] [--gen_config_path GEN_CONFIG_PATH]
+usage: app.py [-h] [--base_url BASE_URL] [--ft_ckpt_url FT_CKPT_URL] [--port PORT] [--batch_size BATCH_SIZE] [--api_open] [--share]
+              [--gen_config_path GEN_CONFIG_PATH] [--multi_gpu]
 
 Gradio Application for Alpaca-LoRA as a chatbot service
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --base_url BASE_URL   Hugging Face Hub URL
   --ft_ckpt_url FT_CKPT_URL
                         Hugging Face Hub URL
-  --port PORT           port number where the app is served
+  --port PORT           PORT number where the app is served
   --batch_size BATCH_SIZE
-                        how many requests to handle at the same time
-                        default is set to 1 which enables streaming mode
-  --api_open API_OPEN   do you want to open as API
-  --share SHARE         do you want to share temporarily (useful in Colab env)
+                        Number of requests to handle at the same time
+  --api_open            Open as API
+  --share               Create and share temporary endpoint (useful in Colab env)
   --gen_config_path GEN_CONFIG_PATH
-                        which config to use for GenerationConfig
+                        path to GenerationConfig file used in batch mode
+  --multi_gpu           Enable multi gpu mode. This will force not to use Int8 but float16, so you need to check if your system has enough GPU memory
 ```
 
 ## Design figure
