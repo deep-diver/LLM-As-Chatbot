@@ -25,27 +25,30 @@ def parse_args():
     )
     parser.add_argument(
         "--batch_size",
-        help="how many requests to handle at the same time",
+        help="Number of requests to handle at the same time",
         default=1,
         type=int
     )        
     parser.add_argument(
         "--api_open",
-        help="do you want to open as API",
-        default="no",
-        type=str,
+        help="Open as API",
+        action='store_true'
     )
     parser.add_argument(
         "--share",
-        help="do you want to share temporarily (useful in Colab env)",
-        default="no",
-        type=str
+        help="Create and share temporary endpoint (useful in Colab env)",
+        action='store_true'
     )
     parser.add_argument(
         "--gen_config_path",
-        help="which config to use for GenerationConfig",
+        help="path to GenerationConfig file used in batch mode",
         default="generation_config_default.yaml",
         type=str
+    )
+    parser.add_argument(
+        "--multi_gpu",
+        help="Enable multi gpu mode. This will force not to use Int8 but float16, so you need to check if your system has enough GPU memory",
+        action='store_true'
     )
 
     return parser.parse_args()
