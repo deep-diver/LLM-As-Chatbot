@@ -16,8 +16,9 @@ def chat_stream(
     instruction,
     state_chatbot,
 ):
-    # print(instruction)
-
+    if len(context) > 150 or len(instruction) > 150:
+        raise gr.Error("context or prompt is too long!")
+    
     # user input should be appropriately formatted (don't be confused by the function name)
     instruction_display = common_post_process(instruction)
     instruction_prompt = generate_prompt(instruction, state_chatbot, context)    
@@ -120,7 +121,6 @@ def run(args):
     
     if not batch_enabled:
         model = StreamModel(model, tokenizer)
-        # model.generation_config = generation_config
     
     with gr.Blocks(css=PARENT_BLOCK_CSS) as demo:
         state_chatbot = gr.State([])
@@ -129,7 +129,7 @@ def run(args):
             gr.Markdown(f"## {TITLE}\n\n\n{ABSTRACT}")
 
             with gr.Accordion("Context Setting", open=False):
-                context_txtbox = gr.Textbox(placeholder="Surrounding information to AI", label="Enter Context")
+                context_txtbox = gr.Textbox(placeholder="Surrounding information to AI", label="Context")
                 hidden_txtbox = gr.Textbox(placeholder="", label="Order", visible=False)
 
             chatbot = gr.Chatbot(elem_id='chatbot', label="Alpaca-LoRA")
@@ -145,15 +145,28 @@ def run(args):
                 summarize_btn = gr.Button(value="Summarize")
 
             gr.Markdown("#### Examples")
-            for idx, examples in enumerate(DEFAULT_EXAMPLES):
-                with gr.Accordion(examples["title"], open=False):
-                    gr.Examples(
-                        examples=examples["examples"], 
-                        inputs=[
-                            hidden_txtbox, instruction_txtbox
-                        ],
-                        label=None
-                    )
+            for _, (category, examples) in enumerate(DEFAULT_EXAMPLES.items()):
+                with gr.Accordion(category, open=False):
+                    if category == "Identity":
+                        for item in examples:
+                            with gr.Accordion(item["title"], open=False):
+                                gr.Examples(
+                                    examples=item["examples"],
+                                    inputs=[
+                                        hidden_txtbox, context_txtbox, instruction_txtbox
+                                    ],
+                                    label=None
+                                )
+                    else:
+                        for item in examples:
+                            with gr.Accordion(item["title"], open=False):
+                                gr.Examples(
+                                    examples=item["examples"],
+                                    inputs=[
+                                        hidden_txtbox, instruction_txtbox
+                                    ],
+                                    label=None
+                                )
 
             gr.Markdown(f"{BOTTOM_LINE}")
             
