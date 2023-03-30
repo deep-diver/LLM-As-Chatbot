@@ -46,7 +46,7 @@ def generate_prompt(prompt, histories, ctx=None):
 
 """
 
-    convs = convs + f"""### Instruction:{prompt}
+    sub_convs = sub_convs + f"""### Instruction:{prompt}
 
 ### Response:"""
 
