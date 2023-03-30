@@ -5,6 +5,11 @@
 - More examples on identity. For example, you can ask AI to be pluto or paper airplane.
 - Cancle button. This brings the busy text input button to normal state.
 
+**UPCOMING(or contribution requests)**:
+- Automatic summarization: when a certain amount of text is accumulated(say 1,000), it will be summarized and put as the context in the next prompting turn.
+- Integration with `transformers`' `Streamer`: `transformers` starts supporting [streaming generation](https://huggingface.co/docs/transformers/main/en/generation_strategies#streaming). It will help us to remove the monkey patched `StreamModel`.
+- Implementing WebGPT like feature: by referencing [webgpt-cli](https://github.com/mukulpatnaik/webgpt-cli).
+
 🔗 **Demo link**: [Batch Mode with 30B](https://notebooksf.jarvislabs.ai/43j3x9FSS8Tg0sqvMlDgKPo9vsoSTTKRsX4RIdC3tNd6qeQ6ktlA0tyWRAR3fe_l) and [Streaming Mode with 30B](https://notebooksf.jarvislabs.ai/BuOu_VbEuUHb09VEVHhfnFq4-PMhBRVCcfHBRCOrq7c4O9GI4dIGoidvNf76UsRL/) (running on a single A6000 and 3xA6000 instances respectively at [jarvislabs.ai](https://jarvislabs.ai/)), and [Hugging Face Space](https://huggingface.co/spaces/chansung/Alpaca-LoRA-Serve) which runs 13B on A10.
 
 The **easiest way** to run this project is to use Colab. Just open up the [alpaca_lora_in_colab](https://github.com/deep-diver/Alpaca-LoRA-Serve/blob/main/notebooks/alpaca_lora_in_colab.ipynb) notebook in Colab (there is a button `open in colab`), and run every cell sequentially. With the standard GPU instance(___T4___), you can run 7B and 13B models. With the premium GPU instance(___A100 40GB___), you can even run 30B model! Screenshot👇🏼 Just note that the connection could be somewhat unstable, so I recommend you to use Colab for development purpose.
