@@ -1,6 +1,9 @@
 # 🦙 🚀 Alpaca-LoRA as a Chatbot Service
 
-**UPDATE**: Multi-GPU support with `--multi_gpu` option. It will use `float16` instead of `8Bit`.
+**UPDATE**: 
+- Multi-GPU support with `--multi_gpu` option. It will use `float16` instead of `8Bit`.
+- More examples on identity. For example, you can ask AI to be pluto or paper airplane.
+- Cancle button. This brings the busy text input button to normal state.
 
 🔗 **Demo link**: [Batch Mode with 30B](https://notebooksf.jarvislabs.ai/43j3x9FSS8Tg0sqvMlDgKPo9vsoSTTKRsX4RIdC3tNd6qeQ6ktlA0tyWRAR3fe_l) and [Streaming Mode with 30B](https://notebooksf.jarvislabs.ai/BuOu_VbEuUHb09VEVHhfnFq4-PMhBRVCcfHBRCOrq7c4O9GI4dIGoidvNf76UsRL/) (running on a single A6000 and 3xA6000 instances respectively at [jarvislabs.ai](https://jarvislabs.ai/)), and [Hugging Face Space](https://huggingface.co/spaces/chansung/Alpaca-LoRA-Serve) which runs 13B on A10.
 
