@@ -1,18 +1,17 @@
 TITLE = "Alpaca-LoRA Playground"
 
 ABSTRACT = """
-Thanks to [tolen](https://github.com/tloen/alpaca-lora), this simple application runs Alpaca-LoRA which is instruction fine-tuned version of [LLaMA](https://ai.facebook.com/blog/large-language-model-llama-meta-ai/) from Meta AI. Alpaca-LoRA is *Low-Rank LLaMA Instruct-Tuning* which is inspired by [Stanford Alpaca project](https://github.com/tatsu-lab/stanford_alpaca). This demo application currently runs 30B version on 3*A6000.
+Thanks to [tolen](https://github.com/tloen/alpaca-lora), this application runs Alpaca-LoRA which is instruction fine-tuned version of [LLaMA](https://ai.facebook.com/blog/large-language-model-llama-meta-ai/). This demo currently runs 30B version on a 3*A6000 instance at [Jarvislabs.ai](https://jarvislabs.ai/).
 
 NOTE: too long input (context, instruction) will not be allowed. Please keep them < 150
-
-We are thankful to the [Jarvislabs.ai](https://jarvislabs.ai/) who generously provided free GPU instances. 
 """
 
 BOTTOM_LINE = """
-
 This demo application runs the open source project, [Alpaca-LoRA-Serve](https://github.com/deep-diver/Alpaca-LoRA-Serve). By default, it runs with streaming mode, but you can also run with dynamic batch generation model. Please visit the repo, find more information, and contribute if you can.
 
 Alpaca-LoRA is built on the same concept as Standford Alpaca project, but it lets us train and inference on a smaller GPUs such as RTX4090 for 7B version. Also, we could build very small size of checkpoints on top of base models thanks to [🤗 transformers](https://huggingface.co/docs/transformers/index), [🤗 peft](https://github.com/huggingface/peft), and [bitsandbytes](https://github.com/TimDettmers/bitsandbytes/tree/main) libraries.
+
+We are thankful to the [Jarvislabs.ai](https://jarvislabs.ai/) who generously provided free GPU instances.
 """
 
 DEFAULT_EXAMPLES = {
