@@ -134,7 +134,9 @@ def run(args):
 
             chatbot = gr.Chatbot(elem_id='chatbot', label="Alpaca-LoRA")
             instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Instruction")
-            send_prompt_btn = gr.Button(value="Send Prompt")
+            with gr.Row():
+                send_prompt_btn = gr.Button(value="Send Prompt")
+                cancel_btn = gr.Button(value="Cancel")
             
             with gr.Accordion("Helper Buttons", open=False):
                 gr.Markdown(f"`Continue` lets AI to complete the previous incomplete answers. `Summarize` lets AI to summarize the conversations so far.")
@@ -170,44 +172,51 @@ def run(args):
 
             gr.Markdown(f"{BOTTOM_LINE}")
             
-        send_prompt_btn.click(
+        send_event = send_prompt_btn.click(
             chat_batch if batch_enabled else chat_stream, 
             [context_txtbox, instruction_txtbox, state_chatbot],
             [state_chatbot, chatbot, context_txtbox],
             batch=batch_enabled,
             max_batch_size=args.batch_size,
         )
-        send_prompt_btn.click(
+        reset_event = send_prompt_btn.click(
             reset_textbox, 
             [], 
             [instruction_txtbox],
         )
         
-        continue_btn.click(
+        continue_event = continue_btn.click(
             chat_batch if batch_enabled else chat_stream, 
             [context_txtbox, continue_txtbox, state_chatbot],
             [state_chatbot, chatbot, context_txtbox],
             batch=batch_enabled,
             max_batch_size=args.batch_size,
         )
-        continue_btn.click(
+        reset_continue_event = continue_btn.click(
             reset_textbox, 
             [], 
             [instruction_txtbox],
         )
         
-        summarize_btn.click(
+        summarize_event = summarize_btn.click(
             chat_batch if batch_enabled else chat_stream, 
             [context_txtbox, summrize_txtbox, state_chatbot],
             [state_chatbot, chatbot, context_txtbox],
             batch=batch_enabled,
             max_batch_size=args.batch_size,
         )
-        summarize_btn.click(
+        summarize_reset_event = summarize_btn.click(
             reset_textbox, 
             [], 
             [instruction_txtbox],
-        )              
+        )
+        
+        cancel_btn.click(
+            None, None, None, 
+            cancels=[
+                send_event, continue_event, summarize_event
+            ]
+        )
 
     demo.queue(
         concurrency_count=2,
