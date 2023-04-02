@@ -51,8 +51,6 @@ def generate_prompt(prompt, histories, ctx=None):
 ### Response:"""
 
     convs = convs + sub_convs
-    print(convs)
-    
     return convs, len(sub_convs)
 
 # applicable to instruction to be displayed as well
