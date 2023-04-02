@@ -1,7 +1,7 @@
 # 🦙 🚀 Alpaca-LoRA as a Chatbot Service
 
 <p align="center">
-  <img height="500" src="https://s10.gifyu.com/images/ezgif-3-cf1d28b420.gif" />
+  <img height="500" src="https://i.ibb.co/0n7gdH4/ezgif-3-cf1d28b420.gif" />
   <br/>
   <i>auto summarization</i>
 </p>
