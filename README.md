@@ -13,7 +13,8 @@
 - Cancle button. This brings the busy text input button to normal state.
 
 **UPCOMING(or contribution requests)**:
-- Add reset button to reset conversation history.
+- Reset button to reset conversation history.
+- Save/load button to save conversation
 - Integration with `transformers`' `Streamer`: `transformers` starts supporting [streaming generation](https://huggingface.co/docs/transformers/main/en/generation_strategies#streaming). It will help us to remove the monkey patched `StreamModel`.
 - Implementing WebGPT like feature: by referencing [webgpt-cli](https://github.com/mukulpatnaik/webgpt-cli).
 
