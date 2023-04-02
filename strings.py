@@ -3,7 +3,7 @@ TITLE = "Alpaca-LoRA Playground"
 ABSTRACT = """
 Thanks to [tolen](https://github.com/tloen/alpaca-lora), this application runs Alpaca-LoRA which is instruction fine-tuned version of [LLaMA](https://ai.facebook.com/blog/large-language-model-llama-meta-ai/). This demo currently runs 30B version on a 3*A6000 instance at [Jarvislabs.ai](https://jarvislabs.ai/).
 
-NOTE: too long input (context, instruction) will not be allowed. Please keep them < 150
+NOTE: too long input (context, instruction) will not be allowed. Please keep context < 500 and instruction < 150
 """
 
 BOTTOM_LINE = """
@@ -79,5 +79,5 @@ DEFAULT_EXAMPLES = {
 
 SPECIAL_STRS = {
     "continue": "continue.",
-    "summarize": "summarize our conversations so far in three sentences."
+    "summarize": "what have we discussed so far? describe in the user's view."
 }

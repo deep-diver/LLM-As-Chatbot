@@ -3,6 +3,8 @@ from strings import DEFAULT_EXAMPLES
 from strings import SPECIAL_STRS
 from styles import PARENT_BLOCK_CSS
 
+from constants import num_of_characters_to_keep
+
 import time
 import gradio as gr
 
@@ -16,13 +18,40 @@ def chat_stream(
     instruction,
     state_chatbot,
 ):
-    if len(context) > 150 or len(instruction) > 150:
+    if len(context) > 500 or len(instruction) > 150:
         raise gr.Error("context or prompt is too long!")
     
+    bot_summarized_response = ''
     # user input should be appropriately formatted (don't be confused by the function name)
     instruction_display = common_post_process(instruction)
-    instruction_prompt = generate_prompt(instruction, state_chatbot, context)    
-    bot_response = model(
+    instruction_prompt, conv_length = generate_prompt(instruction, state_chatbot, context)
+    
+    if conv_length > num_of_characters_to_keep:
+        instruction_prompt = generate_prompt(SPECIAL_STRS["summarize"], state_chatbot, context)[0]
+        
+        state_chatbot = state_chatbot + [
+            (
+                None, 
+                "![](https://s2.gifyu.com/images/icons8-loading-circle.gif) too long conversations, so let's summarize..."
+            )
+        ]
+        yield (state_chatbot, state_chatbot, context)
+        
+        bot_summarized_response = get_output_batch(
+            model, tokenizer, [instruction_prompt], gen_config_summarization
+        )[0]
+        bot_summarized_response = bot_summarized_response.split("### Response:")[-1].strip()
+        
+        state_chatbot[-1] = (
+            None, 
+            "✅ summarization is done and set as context"
+        )
+        print(f"bot_summarized_response: {bot_summarized_response}")
+        yield (state_chatbot, state_chatbot, f"{context}. {bot_summarized_response}")
+        
+    instruction_prompt = generate_prompt(instruction, state_chatbot, f"{context} {bot_summarized_response}")[0]
+    
+    bot_response = stream_model(
         instruction_prompt,
         max_tokens=256,
         temperature=1,
@@ -54,7 +83,7 @@ def chat_stream(
                         instruction_display, 
                         processed_response
                     )
-                    yield (state_chatbot, state_chatbot, context)
+                    yield (state_chatbot, state_chatbot, f"{context} {bot_summarized_response}")
                     break
                 else:
                     agg_tokens = ""
@@ -63,7 +92,7 @@ def chat_stream(
         if agg_tokens == "":
             processed_response, to_exit = post_process_stream(tokens)
             state_chatbot[-1] = (instruction_display, processed_response)
-            yield (state_chatbot, state_chatbot, context)
+            yield (state_chatbot, state_chatbot, f"{context} {bot_summarized_response}")
 
             if to_exit:
                 break
@@ -73,7 +102,7 @@ def chat_stream(
     yield (
         state_chatbot,
         state_chatbot,
-        gr.Textbox.update(value=tokens) if instruction_display == SPECIAL_STRS["summarize"] else context
+        f"{context} {bot_summarized_response}"
     )
 
 def chat_batch(
@@ -85,7 +114,7 @@ def chat_batch(
     ctx_results = []
 
     instruct_prompts = [
-        generate_prompt(instruct, histories, ctx) 
+        generate_prompt(instruct, histories, ctx)[0]
         for ctx, instruct, histories in zip(contexts, instructions, state_chatbots)
     ]
         
@@ -105,7 +134,7 @@ def reset_textbox():
     return gr.Textbox.update(value='')
 
 def run(args):
-    global model, tokenizer, generation_config, batch_enabled
+    global model, stream_model, tokenizer, generation_config, gen_config_summarization, batch_enabled
     
     batch_enabled = True if args.batch_size > 1 else False    
 
@@ -118,9 +147,12 @@ def run(args):
     generation_config = get_generation_config(
         args.gen_config_path
     )
+    gen_config_summarization = get_generation_config(
+        "gen_config_summarization.yaml"
+    )
     
     if not batch_enabled:
-        model = StreamModel(model, tokenizer)
+        stream_model = StreamModel(model, tokenizer)
     
     with gr.Blocks(css=PARENT_BLOCK_CSS) as demo:
         state_chatbot = gr.State([])

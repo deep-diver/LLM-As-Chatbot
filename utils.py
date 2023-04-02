@@ -4,7 +4,6 @@ import yaml
 from transformers import GenerationConfig
 
 from strings import SPECIAL_STRS
-from constants import num_of_characters_to_keep
 from constants import html_tag_pattern, multi_line_pattern, multi_space_pattern
 from constants import repl_empty_str, repl_br_tag, repl_span_tag_multispace, repl_linebreak
 
@@ -27,7 +26,8 @@ def generate_prompt(prompt, histories, ctx=None):
     
     for idx, history in enumerate(histories):
         history_prompt = history[0]
-        if history_prompt == SPECIAL_STRS["summarize"]:
+        history_response = history[1]
+        if history_response == "✅ summarization is done and set as context" or history_prompt == SPECIAL_STRS["summarize"]:
             start_idx = idx
 
     # drop the previous conversations if user has summarized
@@ -50,7 +50,8 @@ def generate_prompt(prompt, histories, ctx=None):
 
 ### Response:"""
 
-    return convs + sub_convs[-num_of_characters_to_keep:]
+    convs = convs + sub_convs
+    return convs, len(sub_convs)
 
 # applicable to instruction to be displayed as well
 def common_post_process(original_str):

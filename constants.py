@@ -1,7 +1,7 @@
 import re
 
 # constants
-num_of_characters_to_keep = 500
+num_of_characters_to_keep = 1000
 
 # regex
 html_tag_pattern = re.compile(r"<.*?>")
