@@ -1,12 +1,19 @@
 # 🦙 🚀 Alpaca-LoRA as a Chatbot Service
 
+<p align="center">
+  <img height="500" src="https://s10.gifyu.com/images/ezgif-3-cf1d28b420.md.gif" />
+  <br/>
+  <i>auto summarization</i>
+</p>
+
 **UPDATE**: 
+- Automatic summarization: when a certain amount of text is accumulated(>1,000), it will be summarized and put as the context in the next prompting turn automatically.
 - Multi-GPU support with `--multi_gpu` option. It will use `float16` instead of `8Bit`.
 - More examples on identity. For example, you can ask AI to be pluto or paper airplane.
 - Cancle button. This brings the busy text input button to normal state.
 
 **UPCOMING(or contribution requests)**:
-- Automatic summarization: when a certain amount of text is accumulated(say 1,000), it will be summarized and put as the context in the next prompting turn.
+- Add reset button to reset conversation history.
 - Integration with `transformers`' `Streamer`: `transformers` starts supporting [streaming generation](https://huggingface.co/docs/transformers/main/en/generation_strategies#streaming). It will help us to remove the monkey patched `StreamModel`.
 - Implementing WebGPT like feature: by referencing [webgpt-cli](https://github.com/mukulpatnaik/webgpt-cli).
 
