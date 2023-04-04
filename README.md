@@ -11,9 +11,9 @@
 - Multi-GPU support with `--multi_gpu` option. It will use `float16` instead of `8Bit`.
 - More examples on identity. For example, you can ask AI to be pluto or paper airplane.
 - Cancle button. This brings the busy text input button to normal state.
+- Reset button to reset conversation history + Submit button has been removed.
 
 **UPCOMING(or contribution requests)**:
-- Reset button to reset conversation history.
 - Save/load button to save conversation
 - Integration with `transformers`' `Streamer`: `transformers` starts supporting [streaming generation](https://huggingface.co/docs/transformers/main/en/generation_strategies#streaming). It will help us to remove the monkey patched `StreamModel`.
 - Implementing WebGPT like feature: by referencing [webgpt-cli](https://github.com/mukulpatnaik/webgpt-cli).
