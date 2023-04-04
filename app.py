@@ -133,6 +133,20 @@ def chat_batch(
 def reset_textbox():
     return gr.Textbox.update(value='')
 
+def reset_everything(
+    context_txtbox, 
+    instruction_txtbox, 
+    state_chatbot):
+
+    state_chatbot = []
+    
+    return (
+        state_chatbot,
+        state_chatbot,
+        gr.Textbox.update(value=''),
+        gr.Textbox.update(value=''),
+    )
+
 def run(args):
     global model, stream_model, tokenizer, generation_config, gen_config_summarization, batch_enabled
     
