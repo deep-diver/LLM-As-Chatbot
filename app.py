@@ -2,7 +2,6 @@ import time
 import gradio as gr
 
 import global_vars
-import alpaca
 
 from args import parse_args
 from miscs.strings import TITLE, ABSTRACT, BOTTOM_LINE
