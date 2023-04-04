@@ -6,17 +6,12 @@
   <i>auto summarization</i>
 </p>
 
-**UPDATE**: 
-- Automatic summarization: when a certain amount of text is accumulated(>1,000), it will be summarized and put as the context in the next prompting turn automatically.
-- Multi-GPU support with `--multi_gpu` option. It will use `float16` instead of `8Bit`.
-- More examples on identity. For example, you can ask AI to be pluto or paper airplane.
-- Cancle button. This brings the busy text input button to normal state.
-- Reset button to reset conversation history + Submit button has been removed.
-
-**UPCOMING(or contribution requests)**:
-- Save/load button to save conversation
-- Integration with `transformers`' `Streamer`: `transformers` starts supporting [streaming generation](https://huggingface.co/docs/transformers/main/en/generation_strategies#streaming). It will help us to remove the monkey patched `StreamModel`.
-- Implementing WebGPT like feature: by referencing [webgpt-cli](https://github.com/mukulpatnaik/webgpt-cli).
+**TODO (also contribution requests)**:
+- [ ] Save/load button to save conversation
+- [ ] Other model supports ([baize](baize), [flan series](https://huggingface.co/declare-lab/flan-alpaca-xl))
+- [ ] Better context management: other than auto-summarization, retrieving relevant information from the past conversation history based on the current conversation window
+- [ ] `transformers`' `Streamer`: `transformers` starts supporting [streaming generation](https://huggingface.co/docs/transformers/main/en/generation_strategies#streaming). It will help us to remove the monkey patched `StreamModel`
+- [ ] WebGPT like feature: by referencing [webgpt-cli](https://github.com/mukulpatnaik/webgpt-cli)
 
 🔗 **Demo link**: [Batch Mode with 30B](https://notebooksf.jarvislabs.ai/43j3x9FSS8Tg0sqvMlDgKPo9vsoSTTKRsX4RIdC3tNd6qeQ6ktlA0tyWRAR3fe_l) and [Streaming Mode with 30B](https://notebooksf.jarvislabs.ai/BuOu_VbEuUHb09VEVHhfnFq4-PMhBRVCcfHBRCOrq7c4O9GI4dIGoidvNf76UsRL/) (running on a single A6000 and 3xA6000 instances respectively at [jarvislabs.ai](https://jarvislabs.ai/)), and [Hugging Face Space](https://huggingface.co/spaces/chansung/Alpaca-LoRA-Serve) which runs 13B on A10.
 
