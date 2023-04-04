@@ -167,8 +167,8 @@ def run(args):
             chatbot = gr.Chatbot(elem_id='chatbot', label="Alpaca-LoRA")
             instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Instruction")
             with gr.Row():
-                send_prompt_btn = gr.Button(value="Send Prompt")
                 cancel_btn = gr.Button(value="Cancel")
+                reset_btn = gr.Button(value="Reset")
             
             with gr.Accordion("Helper Buttons", open=False):
                 gr.Markdown(f"`Continue` lets AI to complete the previous incomplete answers. `Summarize` lets AI to summarize the conversations so far.")
@@ -203,15 +203,15 @@ def run(args):
                                 )
 
             gr.Markdown(f"{BOTTOM_LINE}")
-            
-        send_event = send_prompt_btn.click(
+
+        send_event = instruction_txtbox.submit(
             chat_batch if batch_enabled else chat_stream, 
             [context_txtbox, instruction_txtbox, state_chatbot],
             [state_chatbot, chatbot, context_txtbox],
             batch=batch_enabled,
             max_batch_size=args.batch_size,
         )
-        reset_event = send_prompt_btn.click(
+        reset_event = instruction_txtbox.submit(
             reset_textbox, 
             [], 
             [instruction_txtbox],
@@ -249,6 +249,15 @@ def run(args):
                 send_event, continue_event, summarize_event
             ]
         )
+
+        reset_btn.click(
+            reset_everything,
+            [context_txtbox, instruction_txtbox, state_chatbot],
+            [state_chatbot, chatbot, context_txtbox, instruction_txtbox],
+            cancels=[
+                send_event, continue_event, summarize_event
+            ]            
+        )        
 
     demo.queue(
         concurrency_count=2,
