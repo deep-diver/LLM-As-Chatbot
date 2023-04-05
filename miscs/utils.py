@@ -13,7 +13,7 @@ def get_generation_config(path):
 
     return GenerationConfig(**generation_config["generation_config"])
 
-def generate_prompt(prompt, histories, ctx=None):
+def generate_prompt(prompt, histories, ctx=None, partial=False):
     convs = f"""Below is a history of instructions that describe tasks, paired with an input that provides further context. Write a response that appropriately completes the request by remembering the conversation history.
     
 """
@@ -51,7 +51,7 @@ def generate_prompt(prompt, histories, ctx=None):
 ### Response:"""
 
     convs = convs + sub_convs
-    return convs, len(sub_convs)
+    return sub_convs if partial else convs, len(sub_convs)
 
 # applicable to instruction to be displayed as well
 def common_post_process(original_str):

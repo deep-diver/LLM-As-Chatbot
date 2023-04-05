@@ -22,7 +22,7 @@ def chat_stream(
     instruction_prompt, conv_length = generate_prompt(instruction, state_chatbot, context)
     
     if conv_length > num_of_characters_to_keep:
-        instruction_prompt = generate_prompt(SPECIAL_STRS["summarize"], state_chatbot, context)[0]
+        instruction_prompt = generate_prompt(SPECIAL_STRS["summarize"], state_chatbot, context, partial=True)[0]
         
         state_chatbot = state_chatbot + [
             (
