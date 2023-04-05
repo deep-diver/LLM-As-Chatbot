@@ -56,5 +56,10 @@ def parse_args():
         help="Enable multi gpu mode. This will force not to use Int8 but float16, so you need to check if your system has enough GPU memory",
         action='store_true'
     )
-
+    parser.add_argument(
+        "--force_download_ckpt",
+        help="Force to download ckpt instead of using cached one",
+        action="store_true"
+    )
+    
     return parser.parse_args()

@@ -14,7 +14,8 @@ def initialize_globals(args):
     model, tokenizer = load_model(
         base=args.base_url,
         finetuned=args.ft_ckpt_url,
-        multi_gpu=args.multi_gpu
+        multi_gpu=args.multi_gpu,
+        force_download_ckpt=args.force_download_ckpt
     )
     
     if "alpaca" in args.ft_ckpt_url:
