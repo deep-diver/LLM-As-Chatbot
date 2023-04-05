@@ -42,7 +42,7 @@ def parse_args():
     parser.add_argument(
         "--gen_config_path",
         help="path to GenerationConfig file used in batch mode",
-        default="configs/generation_config_default.yaml",
+        default="configs/gen_config_default.yaml",
         type=str
     )
     parser.add_argument(
