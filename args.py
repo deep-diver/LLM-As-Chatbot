@@ -50,7 +50,13 @@ def parse_args():
         help="path to GenerationConfig file used in context summarization",
         default="configs/gen_config_summarization.yaml",
         type=str
-    )    
+    )
+    parser.add_argument(
+        "--get_constraints_config_path",
+        help="path to ConstraintsConfig file used to constraint user inputs",
+        default="configs/constraints_config.yaml",
+        type=str
+    )
     parser.add_argument(
         "--multi_gpu",
         help="Enable multi gpu mode. This will force not to use Int8 but float16, so you need to check if your system has enough GPU memory",
