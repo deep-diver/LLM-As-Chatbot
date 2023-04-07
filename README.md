@@ -54,12 +54,13 @@ f"""{context_string}
 
 - There is a `continue` button in the middle of screen. What it does is to simply send ___"continue."___ prompt to the model. This is useful if you get incomplete previous response from the model. With the ___"continue."___, the model tries to complete the response. Also, since this is a continuation of the response, the ___"continue."___ prompt will be hidden to make chatting history more natural.
 
-### Currently supported LoRA checkpoints
+### Currently supported models
   - [tloen/alpaca-lora-7b](https://huggingface.co/tloen/alpaca-lora-7b): the original 7B Alpaca-LoRA checkpoint by tloen (updated by 4/4/2022)
   - [chansung/alpaca-lora-13b](https://huggingface.co/chansung/alpaca-lora-13b): the 13B Alpaca-LoRA checkpoint by myself(chansung) with the same script to tune the original 7B model (updated by 4/4/2022)
   - [chansung/koalpaca-lora-13b](https://huggingface.co/chansung/koalpaca-lora-13b): the 13B Alpaca-LoRA checkpoint by myself(chansung) with the Korean dataset created by [KoAlpaca project](https://github.com/Beomi/KoAlpaca) by Beomi. It works for English(user) to Korean(AI) conversations
   - [chansung/alpaca-lora-30b](https://huggingface.co/chansung/alpaca-lora-30b): the 30B Alpaca-LoRA checkpoint by myself(chansung) with the same script to tune the original 7B model (updated by 4/4/2022)
   - [chansung/alpaca-lora-65b](https://huggingface.co/chansung/alpaca-lora-65b): the 65B Alpaca-LoRA checkpoint by myself(chansung) with the same script to tune the original 7B model
+  - [declare-lab/flan-alpaca-base](https://huggingface.co/declare-lab/flan-alpaca-base), [declare-lab/flan-alpaca-large](https://huggingface.co/declare-lab/flan-alpaca-large), [declare-lab/flan-alpaca-xl](https://huggingface.co/declare-lab/flan-alpaca-xl), [declare-lab/flan-alpaca-xxl](https://huggingface.co/declare-lab/flan-alpaca-base): the Flan series fine tuned on the Alpaca dataset
 
 ## Instructions
 
