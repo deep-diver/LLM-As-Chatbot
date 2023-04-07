@@ -2,56 +2,25 @@ import re
 import yaml
 
 from transformers import GenerationConfig
+from chats.constraints import ConstraintsConfig
 
 from miscs.strings import SPECIAL_STRS
 from miscs.constants import html_tag_pattern, multi_line_pattern, multi_space_pattern
 from miscs.constants import repl_empty_str, repl_br_tag, repl_span_tag_multispace, repl_linebreak
 
+def get_constraints_config(path):
+    with open(path, 'rb') as f:
+        constraints_config = yaml.safe_load(f.read())
+        
+    return ConstraintsConfig(**constraints_config), constraints_config["constraints"]
+
 def get_generation_config(path):
     with open(path, 'rb') as f:
         generation_config = yaml.safe_load(f.read())
-
-    return GenerationConfig(**generation_config["generation_config"])
-
-def generate_prompt(prompt, histories, ctx=None, partial=False):
-    convs = f"""Below is a history of instructions that describe tasks, paired with an input that provides further context. Write a response that appropriately completes the request by remembering the conversation history.
-    
-"""
-    if ctx is not None:
-        convs = f"""{ctx}
-
-"""
-    sub_convs = ""
-    start_idx = 0
-    
-    for idx, history in enumerate(histories):
-        history_prompt = history[0]
-        history_response = history[1]
-        if history_response == "✅ summarization is done and set as context" or history_prompt == SPECIAL_STRS["summarize"]:
-            start_idx = idx
-
-    # drop the previous conversations if user has summarized
-    for history in histories[start_idx if start_idx == 0 else start_idx+1:]:
-        history_prompt = history[0]
-        history_response = history[1]
         
-        history_response = history_response.replace("<br>", "\n")
-        history_response = re.sub(
-            html_tag_pattern, repl_empty_str, history_response
-        )
+    generation_config = generation_config["generation_config"]
 
-        sub_convs = sub_convs + f"""### Instruction:{history_prompt}
-
-### Response:{history_response}
-
-"""
-
-    sub_convs = sub_convs + f"""### Instruction:{prompt}
-
-### Response:"""
-
-    convs = convs + sub_convs
-    return sub_convs if partial else convs, len(sub_convs)
+    return GenerationConfig(**generation_config), generation_config
 
 # applicable to instruction to be displayed as well
 def common_post_process(original_str):

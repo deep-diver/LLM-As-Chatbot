@@ -12,7 +12,7 @@ def get_output_batch(
             max_new_tokens=256
         )
 
-        decoded = tokenizer.batch_decode(generated_id)
+        decoded = tokenizer.batch_decode(generated_id, skip_special_tokens=True)
         del input_ids, generated_id
         torch.cuda.empty_cache()
         return decoded
@@ -24,7 +24,7 @@ def get_output_batch(
             max_new_tokens=256
         )
 
-        decoded = tokenizer.batch_decode(generated_ids)
+        decoded = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
         del encodings, generated_ids
         torch.cuda.empty_cache()
         return decoded

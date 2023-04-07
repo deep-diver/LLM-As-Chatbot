@@ -33,7 +33,7 @@ def run(args):
     batch_enabled = global_vars.batch_enabled
     chat_interface = get_chat_interface(global_vars.model_type, batch_enabled)
     
-    with gr.Blocks(css=PARENT_BLOCK_CSS) as demo:
+    with gr.Blocks(css=PARENT_BLOCK_CSS, theme='ParityError/Anime') as demo:
         state_chatbot = gr.State([])
 
         with gr.Column(elem_id='col_container'):
@@ -43,7 +43,7 @@ def run(args):
                 context_txtbox = gr.Textbox(placeholder="Surrounding information to AI", label="Context")
                 hidden_txtbox = gr.Textbox(placeholder="", label="Order", visible=False)
 
-            chatbot = gr.Chatbot(elem_id='chatbot', label="Alpaca-LoRA")
+            chatbot = gr.Chatbot(elem_id='chatbot', label=global_vars.model_type)
             instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Instruction")
             with gr.Row():
                 cancel_btn = gr.Button(value="Cancel")
@@ -136,14 +136,14 @@ def run(args):
             cancels=[
                 send_event, continue_event, summarize_event
             ]            
-        )        
+        )
 
     demo.queue(
         concurrency_count=2,
         max_size=100,
         api_open=args.api_open
     ).launch(
-        max_threads=2,
+        max_threads=10,
         share=args.share,
         server_port=args.port,
         server_name="0.0.0.0",
