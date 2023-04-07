@@ -5,15 +5,16 @@ import gradio as gr
 from gens.batch_gen import get_output_batch
 from miscs.strings import SPECIAL_STRS
 from miscs.constants import num_of_characters_to_keep
-from miscs.utils import generate_prompt
 from miscs.utils import common_post_process, post_processes_batch, post_process_stream
+
+from chats.prompts import generate_prompt
 
 def chat_stream(
     context,
     instruction,
     state_chatbot,
 ):
-    if len(context) > 1000 or len(instruction) > 300:
+    if global_vars.constraints_config.len_exceed(context, instruction):
         raise gr.Error("context or prompt is too long!")
     
     bot_summarized_response = ''
