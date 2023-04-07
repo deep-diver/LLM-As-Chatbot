@@ -79,5 +79,5 @@ DEFAULT_EXAMPLES = {
 
 SPECIAL_STRS = {
     "continue": "continue.",
-    "summarize": "what have we discussed so far? describe in the user's view."
+    "summarize": "what have we discussed so far? describe in the user's view and include important entities. also be brief as much as possible."
 }
