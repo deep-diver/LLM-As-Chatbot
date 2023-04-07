@@ -6,7 +6,7 @@
   <i>auto summarization</i>
 </p>
 
-**UPDATE
+**UPDATE**
 - [X] Other model supports ([flan series](https://huggingface.co/declare-lab/flan-alpaca-xl))
   - you can pass `declare-lab/flan-alpaca-base`(220M), `declare-lab/flan-alpaca-large`(770M), `declare-lab/flan-alpaca-xl`(3B), or `declare-lab/flan-alpaca-xxl`(11B) to `--base_url` CLI option(in this case, checkpoint option will be ignored).
 
