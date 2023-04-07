@@ -5,15 +5,16 @@ import gradio as gr
 from gens.batch_gen import get_output_batch
 from miscs.strings import SPECIAL_STRS
 from miscs.constants import num_of_characters_to_keep
-from miscs.utils import generate_prompt
 from miscs.utils import common_post_process, post_processes_batch, post_process_stream
+
+from chats.prompts import generate_prompt
 
 def chat_stream(
     context,
     instruction,
     state_chatbot,
 ):
-    if len(context) > 1000 or len(instruction) > 300:
+    if global_vars.constraints_config.len_exceed(context, instruction):
         raise gr.Error("context or prompt is too long!")
     
     bot_summarized_response = ''
@@ -21,7 +22,7 @@ def chat_stream(
     instruction_display = common_post_process(instruction)
     instruction_prompt, conv_length = generate_prompt(instruction, state_chatbot, context)
     
-    if conv_length > num_of_characters_to_keep:
+    if global_vars.constraints_config.conv_len_exceed(conv_length):
         instruction_prompt = generate_prompt(SPECIAL_STRS["summarize"], state_chatbot, context, partial=True)[0]
         
         state_chatbot = state_chatbot + [
@@ -33,7 +34,7 @@ def chat_stream(
         yield (state_chatbot, state_chatbot, context)
         
         bot_summarized_response = get_output_batch(
-            global_vars.model, global_vars.tokenizer, [instruction_prompt], global_vars.generation_config
+            global_vars.model, global_vars.tokenizer, [instruction_prompt], global_vars.gen_config_summarization
         )[0]
         bot_summarized_response = bot_summarized_response.split("### Response:")[-1].strip()
         
@@ -116,7 +117,7 @@ def chat_batch(
     ]
         
     bot_responses = get_output_batch(
-        global_vars.model, global_vars.tokenizer, instruct_prompts, global_vars.generation_config
+        global_vars.model, global_vars.tokenizer, instruct_prompts, global_vars.gen_config
     )
     bot_responses = post_processes_batch(bot_responses)
 
