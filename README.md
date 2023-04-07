@@ -6,9 +6,13 @@
   <i>auto summarization</i>
 </p>
 
+**UPDATE
+- [X] Other model supports ([flan series](https://huggingface.co/declare-lab/flan-alpaca-xl))
+  - you can pass `declare-lab/flan-alpaca-base`(220M), `declare-lab/flan-alpaca-large`(770M), `declare-lab/flan-alpaca-xl`(3B), or `declare-lab/flan-alpaca-xxl`(11B) to `--base_url` CLI option(in this case, checkpoint option will be ignored).
+
 **TODO (also contribution requests)**:
 - [ ] Save/load button to save conversation
-- [ ] Other model supports ([baize](baize), [flan series](https://huggingface.co/declare-lab/flan-alpaca-xl))
+- [ ] Other model supports ([baize](https://github.com/project-baize/baize-chatbot), [StackLLaMA](https://huggingface.co/blog/stackllama))
 - [ ] Better context management: other than auto-summarization, retrieving relevant information from the past conversation history based on the current conversation window
 - [ ] `transformers`' `Streamer`: `transformers` starts supporting [streaming generation](https://huggingface.co/docs/transformers/main/en/generation_strategies#streaming). It will help us to remove the monkey patched `StreamModel`
 - [ ] WebGPT like feature: by referencing [webgpt-cli](https://github.com/mukulpatnaik/webgpt-cli)
@@ -29,14 +33,11 @@ This repository demonstrates Alpaca-LoRA as a Chatbot service with [Alpaca-LoRA]
 
 ### Context management
 
-- Alpaca-LoRA as a Chatbot Service manages context in two ways. First of all, it remembers(stores) every history of the conversations by default as in the following code snippet. `context_string` is set as ___"Below is a history of instructions that describe tasks, paired with an input that provides further context. Write a response that appropriately completes the request by remembering the conversation history."___ by default, but it could be set manually via the `Context` field on top of the screen. 
-  - additionally, there is a `Summarize` button in the middle (you need to expand the component labeled as ___"Helper Buttons"___). If you click this button, it automatically input ___"summarize our conversations so far in three sentences."___ as a prompt, and the resulting generated text will be inserted into the `Context` field. THen all the conversation history up to this point will be ignored. That means the conversation fresh restarts with the below code snippet except `context_string` will be filled up with the model generated text.
-  - _NOTE: the only last 2,000 characters are kept, and this number can be configured in `constants.py`_
+- Alpaca-LoRA as a Chatbot Service manages context in two ways. First of all, it remembers(stores) every history of the conversations by default as in the following code snippet. `context_string` is set to empty, but it could be set manually via the `Context` field on top of the screen.
+  - language model has a limit on the number of tokens it can consume at a time. In order to address this issue, appliction automatically summarize the past conversation history and put it as context. If there is already context, they will be concatenated. The constraints can be configured in `configs/constraints.yaml`.
 
 ```python
 f"""{context_string}
-
-### Input: {input} # Surrounding information to AI
 
 ### Instruction: {prompt1} # First instruction/prompt given by user
 
@@ -54,10 +55,11 @@ f"""{context_string}
 - There is a `continue` button in the middle of screen. What it does is to simply send ___"continue."___ prompt to the model. This is useful if you get incomplete previous response from the model. With the ___"continue."___, the model tries to complete the response. Also, since this is a continuation of the response, the ___"continue."___ prompt will be hidden to make chatting history more natural.
 
 ### Currently supported LoRA checkpoints
-  - [tloen/alpaca-lora-7b](https://huggingface.co/tloen/alpaca-lora-7b): the original 7B Alpaca-LoRA checkpoint by tloen
-  - [chansung/alpaca-lora-13b](https://huggingface.co/chansung/alpaca-lora-13b): the 13B Alpaca-LoRA checkpoint by myself(chansung) with the same script to tune the original 7B model
-  - [chansung/koalpaca-lora-13b](https://huggingface.co/chansung/koalpaca-lora-13b): the 13B Alpaca-LoRA checkpoint by myself(chansung) with the Korean dataset created by [KoAlpaca project](https://github.com/Beomi/KoAlpaca) by Beomi. It works for English(user) to Korean(AI) conversations.
-  - [chansung/alpaca-lora-30b](https://huggingface.co/chansung/alpaca-lora-30b): the 30B Alpaca-LoRA checkpoint by myself(chansung) with the same script to tune the original 7B model
+  - [tloen/alpaca-lora-7b](https://huggingface.co/tloen/alpaca-lora-7b): the original 7B Alpaca-LoRA checkpoint by tloen (updated by 4/4/2022)
+  - [chansung/alpaca-lora-13b](https://huggingface.co/chansung/alpaca-lora-13b): the 13B Alpaca-LoRA checkpoint by myself(chansung) with the same script to tune the original 7B model (updated by 4/4/2022)
+  - [chansung/koalpaca-lora-13b](https://huggingface.co/chansung/koalpaca-lora-13b): the 13B Alpaca-LoRA checkpoint by myself(chansung) with the Korean dataset created by [KoAlpaca project](https://github.com/Beomi/KoAlpaca) by Beomi. It works for English(user) to Korean(AI) conversations
+  - [chansung/alpaca-lora-30b](https://huggingface.co/chansung/alpaca-lora-30b): the 30B Alpaca-LoRA checkpoint by myself(chansung) with the same script to tune the original 7B model (updated by 4/4/2022)
+  - [chansung/alpaca-lora-65b](https://huggingface.co/chansung/alpaca-lora-65b): the 65B Alpaca-LoRA checkpoint by myself(chansung) with the same script to tune the original 7B model
 
 ## Instructions
 
@@ -87,8 +89,8 @@ $ python app.py --base_url $BASE_URL --ft_ckpt_url $FINETUNED_CKPT_URL --port 60
 the following flags are supported
 
 ```console
-usage: app.py [-h] [--base_url BASE_URL] [--ft_ckpt_url FT_CKPT_URL] [--port PORT] [--batch_size BATCH_SIZE] [--api_open] [--share]
-              [--gen_config_path GEN_CONFIG_PATH] [--multi_gpu]
+usage: app.py [-h] [--base_url BASE_URL] [--ft_ckpt_url FT_CKPT_URL] [--port PORT] [--batch_size BATCH_SIZE] [--api_open] [--share] [--gen_config_path GEN_CONFIG_PATH] [--gen_config_summarization_path GEN_CONFIG_SUMMARIZATION_PATH]
+              [--get_constraints_config_path GET_CONSTRAINTS_CONFIG_PATH] [--multi_gpu] [--force_download_ckpt]
 
 Gradio Application for Alpaca-LoRA as a chatbot service
 
@@ -104,15 +106,16 @@ options:
   --share               Create and share temporary endpoint (useful in Colab env)
   --gen_config_path GEN_CONFIG_PATH
                         path to GenerationConfig file used in batch mode
+  --gen_config_summarization_path GEN_CONFIG_SUMMARIZATION_PATH
+                        path to GenerationConfig file used in context summarization
+  --get_constraints_config_path GET_CONSTRAINTS_CONFIG_PATH
+                        path to ConstraintsConfig file used to constraint user inputs
   --multi_gpu           Enable multi gpu mode. This will force not to use Int8 but float16, so you need to check if your system has enough GPU memory
+  --force_download_ckpt
+                        Force to download ckpt instead of using cached one
 ```
-
-## Design figure
-
-<p align="center">
-  <img src="https://i.ibb.co/w069GYg/Screenshot-2023-03-20-at-1-25-29-PM.png" />
-</p>
 
 ## Acknowledgements
 
-I am thankful to [Jarvislabs.ai](https://jarvislabs.ai/) who generously provided free GPU resources to experiment with Alpaca-LoRA deployment and share it to communities to try out.
+- I am thankful to [Jarvislabs.ai](https://jarvislabs.ai/) who generously provided free GPU resources to experiment with Alpaca-LoRA deployment and share it to communities to try out.
+- I am thankful to [Common Computer](https://comcom.ai/ko/) who generously provided A100(40G) x 8 DGX workstation for fine-tuning the models.
