@@ -1,3 +1,5 @@
+from functools import partial
+
 from threading import Thread
 import global_vars
 
@@ -19,13 +21,15 @@ def chat_stream(
     if global_vars.constraints_config.len_exceed(context, instruction):
         raise gr.Error("context or prompt is too long!")
     
+    gen_prompt = partial(generate_prompt, ctx_indicator="Context:", user_indicator="Question:", ai_indicator="Answer:")
     bot_summarized_response = ''
+    
     # user input should be appropriately formatted (don't be confused by the function name)
     instruction_display = common_post_process(instruction)
-    instruction_prompt, conv_length = generate_prompt(instruction, state_chatbot, context, "Question:", "Answer:")
+    instruction_prompt, conv_length = gen_prompt(instruction, state_chatbot, context)
     
     if global_vars.constraints_config.conv_len_exceed(conv_length):
-        instruction_prompt = generate_prompt(SPECIAL_STRS["summarize"], state_chatbot, context, "Question:", "Answer:", partial=True)[0]
+        instruction_prompt = gen_prompt(SPECIAL_STRS["summarize"], state_chatbot, context, partial=True)[0]
         
         state_chatbot = state_chatbot + [
             (
@@ -38,7 +42,7 @@ def chat_stream(
         bot_summarized_response = get_output_batch(
             global_vars.model, global_vars.tokenizer, [instruction_prompt], global_vars.gen_config_summarization
         )[0]
-        bot_summarized_response = bot_summarized_response.split("### Response:")[-1].strip()
+        bot_summarized_response = bot_summarized_response.split("Question:")[-1].strip()
         
         state_chatbot[-1] = (
             None, 
@@ -47,10 +51,10 @@ def chat_stream(
         print(f"bot_summarized_response: {bot_summarized_response}")
         yield (state_chatbot, state_chatbot, f"{context}. {bot_summarized_response}".strip())
         
-    instruction_prompt = generate_prompt(instruction, state_chatbot, f"{context} {bot_summarized_response}", "Question:", "Answer:")[0]
+    instruction_prompt = gen_prompt(instruction, state_chatbot, f"{context} {bot_summarized_response}")[0]
     
     model_inputs = global_vars.tokenizer([instruction_prompt], return_tensors="pt").to("cuda")
-    streamer = TextIteratorStreamer(global_vars.tokenizer, timeout=10., skip_prompt=True, skip_special_tokens=True)    
+    streamer = TextIteratorStreamer(global_vars.tokenizer, timeout=10., skip_prompt=True, skip_special_tokens=True, clean_up_tokenization_spaces=True)
     
     generate_kwargs = dict(
         model_inputs,
@@ -67,6 +71,25 @@ def chat_stream(
     
     agg_tokens = ""
     for new_text in streamer:
+        print(f"'{new_text}'")
+        print()
+        if new_text.strip() == 'Comment:':
+            print("Comment: found")
+            break
+        elif "\\begin{code}" in new_text.strip():
+            new_text = "```\n"
+        elif "\\end{code}" in new_text.strip():
+            new_text = "\n```"
+        elif "\\begin{itemize}" in new_text.strip():
+            new_text = ''
+        elif "\\end{itemize}" in new_text.strip():
+            new_text = ''
+        elif "\\item" in new_text.strip():
+            new_text = "- "
+        elif "\\end{blockquote}" in new_text.strip():
+            new_text = ''
+        elif "\\begin{blockquote}" in new_text.strip():
+            new_text = ''
         agg_tokens += new_text
         state_chatbot[-1] = (instruction_display, agg_tokens)
         yield (state_chatbot, state_chatbot, f"{context} {bot_summarized_response}".strip())

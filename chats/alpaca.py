@@ -1,3 +1,4 @@
+from functools import partial
 import global_vars
 
 import gradio as gr
@@ -17,13 +18,15 @@ def chat_stream(
     if global_vars.constraints_config.len_exceed(context, instruction):
         raise gr.Error("context or prompt is too long!")
     
+    gen_prompt = partial(generate_prompt, ctx_indicator="### Input:", user_indicator="### Instruction:", ai_indicator="### Response:")
     bot_summarized_response = ''
+    
     # user input should be appropriately formatted (don't be confused by the function name)
     instruction_display = common_post_process(instruction)
-    instruction_prompt, conv_length = generate_prompt(instruction, state_chatbot, context)
+    instruction_prompt, conv_length = gen_prompt(instruction, state_chatbot, context)
     
     if global_vars.constraints_config.conv_len_exceed(conv_length):
-        instruction_prompt = generate_prompt(SPECIAL_STRS["summarize"], state_chatbot, context, partial=True)[0]
+        instruction_prompt = gen_prompt(SPECIAL_STRS["summarize"], state_chatbot, context, partial=True)[0]
         
         state_chatbot = state_chatbot + [
             (
@@ -45,7 +48,8 @@ def chat_stream(
         print(f"bot_summarized_response: {bot_summarized_response}")
         yield (state_chatbot, state_chatbot, f"{context}. {bot_summarized_response}".strip())
         
-    instruction_prompt = generate_prompt(instruction, state_chatbot, f"{context} {bot_summarized_response}")[0]
+    instruction_prompt = gen_prompt(instruction, state_chatbot, f"{context} {bot_summarized_response}")[0]
+    print(instruction_prompt)
     
     bot_response = global_vars.stream_model(
         instruction_prompt,
