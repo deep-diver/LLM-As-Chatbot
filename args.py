@@ -8,13 +8,13 @@ def parse_args():
     parser.add_argument(
         "--base_url",
         help="Hugging Face Hub URL",
-        default="decapoda-research/llama-7b-hf",
+        default="EleutherAI/gpt-neo-2.7B",
         type=str,
     )
     parser.add_argument(
         "--ft_ckpt_url",
         help="Hugging Face Hub URL",
-        default="tloen/alpaca-lora-7b",
+        default="nathan0/lora-gpt-neo-2.7B-alpaca",
         type=str,
     )
     parser.add_argument(
