@@ -3,8 +3,8 @@ import torch
 from peft import PeftModel
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-def load_model(base_model, lora_weights, multi_gpu, force_download_ckpt, load_8bit=False):
-    tokenizer = AutoTokenizer.from_pretrained(base_model)
+def load_model(base, finetuned, multi_gpu, force_download_ckpt, load_8bit=False):
+    tokenizer = AutoTokenizer.from_pretrained(base)
     tokenizer.pad_token_id = 0
     tokenizer.padding_side = "left"
 
@@ -19,12 +19,12 @@ def load_model(base_model, lora_weights, multi_gpu, force_download_ckpt, load_8b
         pass     
 
     model_revision = "main"
-    if 'gpt-j' in base_model:
+    if 'gpt-j' in base:
         model_revision = "float16"
     
     if device == "cuda":
         model = AutoModelForCausalLM.from_pretrained(
-            base_model,
+            base,
             revision=model_revision,
             load_in_8bit=load_8bit,
             torch_dtype=torch.float16,
@@ -32,31 +32,31 @@ def load_model(base_model, lora_weights, multi_gpu, force_download_ckpt, load_8b
         )
         model = PeftModel.from_pretrained(
             model,
-            lora_weights,
+            finetuned,
             torch_dtype=torch.float16,
         )
     elif device == "mps":
         model = AutoModelForCausalLM.from_pretrained(
-            base_model,
+            base,
             revision=model_revision,
             device_map={"": device},
             torch_dtype=torch.float16,
         )
         model = PeftModel.from_pretrained(
             model,
-            lora_weights,
+            finetuned,
             device_map={"": device},
             torch_dtype=torch.float16,
         )
     else:
         model = AutoModelForCausalLM.from_pretrained(
-            base_model, 
+            base, 
             revision=model_revision,
             device_map={"": device}, low_cpu_mem_usage=True
         )
         model = PeftModel.from_pretrained(
             model,
-            lora_weights,
+            finetuned,
             device_map={"": device},
         )
 
