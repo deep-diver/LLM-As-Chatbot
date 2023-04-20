@@ -1,10 +1,7 @@
 # 🦙 🚀 Alpaca-LoRA as a Chatbot Service
 
-<p align="center">
-  <img height="500" src="https://github.com/deep-diver/Alpaca-LoRA-Serve/raw/main/assets/preview.gif" />
-  <br/>
-  <i>auto summarization</i>
-</p>
+**WARNING**
+I am going to rebrand this repository as `LLM as a Chatbot Service`. It will cause the modification of the current code base a lot in order to support different models in generalized manner. Also, the `Context` field will be gone, and the context management technique will be changed. This modification will be done 20/4/2023. Currently, I have checked it works OK with `LLaMA based Alpaca`, and recently announced `StableLM` models.
 
 **UPDATE**
 - [X] Other model supports ([flan series](https://huggingface.co/declare-lab/flan-alpaca-xl))
