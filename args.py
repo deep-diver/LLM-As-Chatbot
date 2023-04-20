@@ -7,8 +7,8 @@ def parse_args():
     parser.add_argument(
         "--base-url",
         help="Hugging Face Hub URL",
-        # default="decapoda-research/llama-7b-hf",
-        default="stabilityai/stablelm-tuned-alpha-7b",
+        default="decapoda-research/llama-7b-hf",
+        # default="stabilityai/stablelm-tuned-alpha-7b",
         type=str,
     )
     parser.add_argument(
