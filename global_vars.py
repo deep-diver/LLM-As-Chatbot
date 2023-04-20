@@ -8,7 +8,6 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type = "alpaca"
-    batch_enabled = True if args.batch_size > 1 else False    
 
     if "stablelm" in args.base_url:
         model_type = "stablelm"
