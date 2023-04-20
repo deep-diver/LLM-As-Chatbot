@@ -43,7 +43,7 @@ def parse_args():
     parser.add_argument(
         "--gen-config-summarization-path",
         help="path to GenerationConfig file used in context summarization",
-        default="configs/gen_config_summarization.yaml",
+        default="configs/gen_config_summarization_default.yaml",
         type=str
     )
     # parser.add_argument(
