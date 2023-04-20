@@ -49,10 +49,26 @@ $ pip install -r requirements.txt
 
 2. Run Gradio application
 ```console
+### for Alpaca 7B 
 $ BASE_URL=decapoda-research/llama-7b-hf
 $ FINETUNED_CKPT_URL=tloen/alpaca-lora-7b
+$ GEN_CONFIG=configs/gen_config_default.yaml
+$ SUMMARIZE_GEN_CONFIG=configs/gen_config_summarization_default.yaml
 
-$ python app.py --base-url $BASE_URL --ft-ckpt-url $FINETUNED_CKPT_URL
+$ python app.py --base-url $BASE_URL \
+  --ft-ckpt-url $FINETUNED_CKPT_URL \
+  --gen-config-path $GEN_CONFIG \
+  --gen-config-summarization-path $SUMMARIZE_GEN_CONFIG
+  
+### for StableLM 7B   
+$ BASE_URL=stabilityai/stablelm-tuned-alpha-7b
+$ GEN_CONFIG=configs/gen_config_stablelm.yaml
+$ SUMMARIZE_GEN_CONFIG=configs/gen_config_summarization_stablelm.yaml
+
+$ python app.py --base-url $BASE_URL \
+  --ft-ckpt-url $FINETUNED_CKPT_URL \
+  --gen-config-path $GEN_CONFIG \
+  --gen-config-summarization-path $SUMMARIZE_GEN_CONFIG
 ```
 
 the following flags are supported
