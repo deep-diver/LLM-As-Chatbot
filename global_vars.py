@@ -1,31 +1,26 @@
-from models import alpaca_model
-from models import flan_alpaca
-from models import llama_rlhf
-from gens.stream_gen import StreamModel
-
-from miscs.utils import get_generation_config, get_constraints_config
+import yaml
+from transformers import GenerationConfig
+from models import alpaca, stablelm
 
 def initialize_globals(args):
-    global model, stream_model, tokenizer
-    global gen_config_raw, gen_config_summarization_raw, constraints_config_raw
-    global gen_config, gen_config_summarization, constraints_config
-    global model_type, batch_enabled
+    global model, model_type, stream_model, tokenizer
+    global gen_config, gen_config_raw    
+    global gen_config_summarization
     
     model_type = "alpaca"
     batch_enabled = True if args.batch_size > 1 else False    
 
-    if "flan" in args.base_url:
-        model_type = "flan"
+    if "stablelm" in args.base_url:
+        model_type = "stablelm"
+    elif "gpt4-alpaca" in args.ft_ckpt_url:
+        model_type = "alpaca-gpt4"
     elif "alpaca" in args.ft_ckpt_url:
         model_type = "alpaca"
-    elif "baize" in args.ft_ckpt_url:
-        model_type = "baize"
-    elif "llama" in args.ft_ckpt_url:
-        model_type = "llama"
     else:
-        print("unsupported model type. only llamastack, alpaca, flan, and baize are supported")
+        print("unsupported model type")
         quit()
 
+    print(f"determined model type: {model_type}")        
     load_model = get_load_model(model_type)
     model, tokenizer = load_model(
         base=args.base_url,
@@ -35,21 +30,29 @@ def initialize_globals(args):
     )        
         
     gen_config, gen_config_raw = get_generation_config(args.gen_config_path)
-    gen_config_summarization, gen_config_summarization_raw = get_generation_config(args.gen_config_summarization_path)
-    constraints_config, constraints_config_raw = get_constraints_config(args.get_constraints_config_path)
+    gen_config_summarization, _ = get_generation_config(args.gen_config_summarization_path)
     
     if not batch_enabled:
-        if model_type == 'alpaca':
-            stream_model = StreamModel(model, tokenizer)
-        else:
-            stream_model = model
+        stream_model = model
         
 def get_load_model(model_type):
-    if model_type == "alpaca":
-        return alpaca_model.load_model
-    elif model_type == "flan":
-        return flan_alpaca.load_model
-    elif model_type == "llama":
-        return llama_rlhf.load_model
+    if model_type == "alpaca" or model_type == "alpaca-gpt4":
+        return alpaca.load_model
+    elif model_type == "stablelm":
+        return stablelm.load_model
     else:
-        return None    
+        return None
+    
+def get_generation_config(path):
+    with open(path, 'rb') as f:
+        generation_config = yaml.safe_load(f.read())
+        
+    generation_config = generation_config["generation_config"]
+
+    return GenerationConfig(**generation_config), generation_config
+
+def get_constraints_config(path):
+    with open(path, 'rb') as f:
+        constraints_config = yaml.safe_load(f.read())
+        
+    return ConstraintsConfig(**constraints_config), constraints_config["constraints"]

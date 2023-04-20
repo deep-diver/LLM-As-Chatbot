@@ -5,5 +5,5 @@ generation_config:
     num_beams: 1
     use_cache: True
     repetition_penalty: 1.2
-    max_new_tokens: 1024
+    max_new_tokens: 512
     do_sample: True

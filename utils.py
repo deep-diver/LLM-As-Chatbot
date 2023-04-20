@@ -1,16 +1,25 @@
 from chats import alpaca
-from chats import baize
-from chats import flan
-from chats import llama_rlhf
+from chats import alpaca_gpt4
+from chats import stablelm
+from pingpong.gradio import GradioAlpacaChatPPManager
+from pingpong.gradio import GradioStableLMChatPPManager
 
-def get_chat_interface(model_type, batch_enabled):
+def get_chat_interface(model_type):
     if model_type == "alpaca":
-        return alpaca.chat_batch if batch_enabled else alpaca.chat_stream
-    elif model_type == "baize":
-        return baize.chat_batch if batch_enabled else baize.chat_stream
-    elif model_type == "flan":
-        return flan.chat_batch if batch_enabled else flan.chat_stream
-    elif model_type == "llama":
-        return llama_rlhf.chat_batch if batch_enabled else llama_rlhf.chat_stream    
+        return alpaca.chat_stream
+    elif model_type == "alpaca-gpt4":
+        return alpaca_gpt4.chat_stream
+    elif model_type == "stablelm":
+        return stablelm.chat_stream
     else:
         return None
+
+def get_chat_manager(model_type):
+    if model_type == "alpaca":
+        return GradioAlpacaChatPPManager()
+    elif model_type == "alpaca-gpt4":
+        return GradioAlpacaChatPPManager()
+    elif model_type == "stablelm":
+        return GradioStableLMChatPPManager()
+    else:
+        return None    

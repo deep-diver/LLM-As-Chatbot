@@ -1,8 +1,8 @@
 bitsandbytes
 datasets
-loralib 
+loralib
 sentencepiece
 git+https://github.com/huggingface/transformers.git
 git+https://github.com/huggingface/peft.git
-gradio
-tenacity
+gradio==3.20.0
+bingbong

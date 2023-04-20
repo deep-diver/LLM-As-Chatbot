@@ -1,16 +1,13 @@
 PARENT_BLOCK_CSS = """
-#col_container {
+#col-container {
     width: 95%; 
+    height: 100%;
     margin-left: auto; 
     margin-right: auto;
 }
 
 #chatbot {
-    height: 500px; 
+    height: 520px; 
     overflow: auto;
-}
-
-.chat_wrap_space {
-    margin-left: 0.5em
 }
 """
