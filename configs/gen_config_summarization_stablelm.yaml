@@ -7,7 +7,7 @@ generation_config:
     max_length: 150
     min_length: 50
     do_sample: True
-    repetition_penalty: 1.5
-    eos_token_id: 0
-    pad_token_id: 0    
+    repetition_penalty: 1.2
+    eos_token_id: 1
+    pad_token_id: 0
     
