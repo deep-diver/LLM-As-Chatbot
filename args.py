@@ -2,7 +2,7 @@ import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Gradio Application for Alpaca-LoRA as a chatbot service"
+        description="Gradio Application for LLM as a chatbot service"
     )
     parser.add_argument(
         "--base-url",
@@ -23,12 +23,12 @@ def parse_args():
         default=6006,
         type=int,
     )
-    parser.add_argument(
-        "--batch-size",
-        help="Number of requests to handle at the same time",
-        default=1,
-        type=int
-    )        
+    # parser.add_argument(
+    #     "--batch-size",
+    #     help="Number of requests to handle at the same time",
+    #     default=1,
+    #     type=int
+    # )        
     parser.add_argument(
         "--share",
         help="Create and share temporary endpoint (useful in Colab env)",
@@ -67,11 +67,5 @@ def parse_args():
         help="Only show chatting window. Otherwise, other components will be appeared for more sophisticated control",
         action="store_true"
     )
-    parser.add_argument(
-        "--batch_size",
-        help="Number of requests to handle at the same time",
-        default=1,
-        type=int
-    )        
     
     return parser.parse_args()
