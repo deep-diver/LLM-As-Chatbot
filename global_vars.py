@@ -31,8 +31,7 @@ def initialize_globals(args):
     gen_config, gen_config_raw = get_generation_config(args.gen_config_path)
     gen_config_summarization, _ = get_generation_config(args.gen_config_summarization_path)
     
-    if not batch_enabled:
-        stream_model = model
+    stream_model = model
         
 def get_load_model(model_type):
     if model_type == "alpaca" or model_type == "alpaca-gpt4":
