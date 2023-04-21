@@ -47,7 +47,7 @@ def run(args):
                 with gr.Column(elem_id='chatbot-wrapper'):
                     chatbot = gr.Chatbot(elem_id='chatbot', label=global_vars.model_type)
                     instruction_txtbox = gr.Textbox(placeholder="What do you want to say to AI?", label="Instruction")
-            
+
                     with gr.Row():
                         cancel_btn = gr.Button(value="Cancel")
                         reset_btn = gr.Button(value="Reset")
@@ -55,6 +55,41 @@ def run(args):
                 with gr.Column(visible=False) as context_inspector_section:
                     gr.Markdown("#### What model actually sees")
                     inspector = gr.Textbox(label="", lines=28, max_lines=28, interactive=False)
+
+            with gr.Accordion("Constrol Panel", open=False, visible=not args.chat_only_mode):
+                with gr.Column():
+                    with gr.Column():
+                        gr.Markdown("#### GenConfig for **response** text generation")
+                        with gr.Row():
+                            res_temp = gr.Slider(0.0, 2.0, global_vars.gen_config.temperature, step=0.1, label="temp", interactive=True)
+                            res_topp = gr.Slider(0.0, 2.0, global_vars.gen_config.top_p, step=0.1, label="top_p", interactive=True)
+                            res_topk = gr.Slider(20, 100, global_vars.gen_config.top_k, step=1, label="top_k", interactive=True)
+                            res_rpen = gr.Slider(0.0, 2.0, global_vars.gen_config.repetition_penalty, step=0.1, label="rep_penalty", interactive=True)
+                            res_mnts = gr.Slider(64, 1024, global_vars.gen_config.max_new_tokens, step=1, label="max_new_tokens", interactive=True)                            
+                            res_beams = gr.Slider(1, 4, global_vars.gen_config.num_beams, step=1, label="num_beams")
+                            res_cache = gr.Radio([True, False], value=global_vars.gen_config.use_cache, label="use_cache", interactive=True)
+                            res_sample = gr.Radio([True, False], value=global_vars.gen_config.do_sample, label="do_sample", interactive=True)
+
+                    with gr.Column():
+                        gr.Markdown("#### GenConfig for **summary** text generation")
+                        with gr.Row():
+                            sum_temp = gr.Slider(0.0, 2.0, global_vars.gen_config_summarization.temperature, step=0.1, label="temperature", interactive=True)
+                            sum_topp = gr.Slider(0.0, 2.0, global_vars.gen_config_summarization.top_p, step=0.1, label="top_p", interactive=True)
+                            sum_topk = gr.Slider(20, 100, global_vars.gen_config_summarization.top_k, step=1, label="top_k", interactive=True)
+                            sum_rpen = gr.Slider(0.0, 2.0, global_vars.gen_config_summarization.repetition_penalty, step=0.1, label="rep_penalty", interactive=True)
+                            sum_mnts = gr.Slider(64, 1024, global_vars.gen_config_summarization.max_new_tokens, step=1, label="max_new_tokens", interactive=True)
+                            sum_beams = gr.Slider(1, 8, global_vars.gen_config_summarization.num_beams, step=1, label="num_beams", interactive=True)
+                            sum_cache = gr.Radio([True, False], value=global_vars.gen_config_summarization.use_cache, label="use_cache", interactive=True)
+                            sum_sample = gr.Radio([True, False], value=global_vars.gen_config_summarization.do_sample, label="do_sample", interactive=True)
+
+                    with gr.Column():
+                        gr.Markdown("#### Context managements")
+                        with gr.Row():
+                            ctx_num_lconv = gr.Slider(2, 6, 3, step=1, label="num of last talks to keep", interactive=True)
+                            ctx_sum_prompt = gr.Textbox(
+                                "summarize our conversations. what have we discussed about so far?",
+                                label="design a prompt to summarize the conversations"
+                            )
 
             with gr.Accordion("Acknowledgements", open=False, visible=not args.chat_only_mode):
                 gr.Markdown(f"{BOTTOM_LINE}")
@@ -67,7 +102,10 @@ def run(args):
                 
         send_event = instruction_txtbox.submit(
             chat_interface,
-            [instruction_txtbox, chat_state],
+            [instruction_txtbox, chat_state,
+            ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample],
             [instruction_txtbox, chatbot, inspector, chat_state],
         )
         

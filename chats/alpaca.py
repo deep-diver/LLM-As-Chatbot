@@ -20,31 +20,47 @@ def text_stream(ppmanager, streamer):
                 
     yield ppmanager, ppmanager.build_uis()
 
-def summarize(ppmanager):
+def summarize(
+    ppmanager, prompt_to_summarize, win_size,
+    temperature, top_p, top_k, repetition_penalty, 
+    max_new_tokens, num_beams, use_cache, do_sample,
+):
     ctx = ppmanager.ctx
     last_pong = ppmanager.pingpongs[-1].pong
-    ping = f'summarize our conversations. what have we discussed about so far?'
-    ppmanager.add_pingpong(PingPong(ping, ""))
-    prompt = ppmanager.build_prompts(from_idx=-3)
+    ppmanager.add_pingpong(PingPong(prompt_to_summarize, ""))
+    prompt = ppmanager.build_prompts(from_idx=-win_size)
     
+    _, gen_config_summarization = pre.build_gen_config(
+        temperature, top_p, top_k, repetition_penalty, 
+        max_new_tokens, num_beams, use_cache, do_sample,
+    )
     summarize_output = get_output_batch(
-        global_vars.model, global_vars.tokenizer, [prompt], global_vars.gen_config_summarization
+        global_vars.model, global_vars.tokenizer, [prompt], gen_config_summarization
     )[0].split("### Response:")[-1].strip()
     ppmanager.ctx = summarize_output
     ppmanager.pop_pingpong()
     return ppmanager
-    
-def chat_stream(user_message, state):
+
+def chat_stream(
+    user_message, state,
+    ctx_num_lconv, ctx_sum_prompt,
+    res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample,
+    sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample
+):
     ppm = state["ppmanager"]
 
     # add_ping returns a prompt structured in Alpaca form
     ppm.add_pingpong(
         PingPong(user_message, "")
     )
-    prompt = build_prompts(ppm, user_message)
+    prompt = build_prompts(ppm, user_message, ctx_num_lconv)
     
     # prepare text generating streamer & start generating
-    gen_kwargs, streamer = pre.build(prompt, global_vars.gen_config_raw)
+    gen_kwargs, streamer = pre.build(
+        prompt,
+        res_temp, res_topp, res_topk, res_rpen, 
+        res_mnts, res_beams, res_cache, res_sample
+    )
     pre.start_gen(gen_kwargs)
 
     # handling stream
@@ -61,6 +77,10 @@ def chat_stream(user_message, state):
     yield "", ppm.build_uis(), prompt, state
     ppm.pop_pingpong()
     
-    ppm = summarize(ppm)
+    ppm = summarize(
+        ppm, ctx_sum_prompt, ctx_num_lconv,
+        sum_temp, sum_topp, sum_topk, sum_rpen, 
+        sum_mnts, sum_beams, sum_cache, sum_sample
+    )
     state["ppmanager"] = ppm
     yield "", ppm.build_uis(), prompt, state
