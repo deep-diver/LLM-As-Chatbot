@@ -29,6 +29,7 @@ Different model might have different strategies to manage context, so if you wan
   - [chansung/alpaca-lora-30b](https://huggingface.co/chansung/alpaca-lora-30b): the 30B Alpaca-LoRA checkpoint by myself (chansung, updated by 4/4/2022)
   - [chansung/alpaca-lora-65b](https://huggingface.co/chansung/alpaca-lora-65b): the 65B Alpaca-LoRA checkpoint by myself (chansung)
   - [stabilityai/stablelm-tuned-alpha-7b](https://huggingface.co/stabilityai/stablelm-tuned-alpha-7b): StableLM based fine-tuned model
+  - [beomi/KoAlpaca-Polyglot-12.8B](https://huggingface.co/beomi/KoAlpaca-Polyglot-12.8B): [Polyglot](https://github.com/EleutherAI/polyglot) based Alpaca style instruction fine-tuned model
   
 ## Instructions
 
