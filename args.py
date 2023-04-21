@@ -7,8 +7,9 @@ def parse_args():
     parser.add_argument(
         "--base-url",
         help="Hugging Face Hub URL",
-        default="decapoda-research/llama-7b-hf",
+        # default="decapoda-research/llama-7b-hf",
         # default="stabilityai/stablelm-tuned-alpha-7b",
+        default="beomi/KoAlpaca-Polyglot-12.8B",
         type=str,
     )
     parser.add_argument(
@@ -37,13 +38,15 @@ def parse_args():
     parser.add_argument(
         "--gen-config-path",
         help="path to GenerationConfig file",
-        default="configs/gen_config_default.yaml",
+        # default="configs/gen_config_default.yaml",
+        default="configs/gen_config_koalpaca.yaml",
         type=str
     )
     parser.add_argument(
         "--gen-config-summarization-path",
         help="path to GenerationConfig file used in context summarization",
-        default="configs/gen_config_summarization_stablelm.yaml",
+        # default="configs/gen_config_summarization_default.yaml",
+        default="configs/gen_config_summarization_koalpaca.yaml",
         type=str
     )
     # parser.add_argument(

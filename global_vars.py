@@ -1,6 +1,6 @@
 import yaml
 from transformers import GenerationConfig
-from models import alpaca, stablelm
+from models import alpaca, stablelm, koalpaca
 
 def initialize_globals(args):
     global model, model_type, stream_model, tokenizer
@@ -11,6 +11,8 @@ def initialize_globals(args):
 
     if "stablelm" in args.base_url:
         model_type = "stablelm"
+    elif "KoAlpaca-Polyglot" in args.base_url:
+        model_type = "koalpaca-polyglot"
     elif "gpt4-alpaca" in args.ft_ckpt_url:
         model_type = "alpaca-gpt4"
     elif "alpaca" in args.ft_ckpt_url:
@@ -38,6 +40,8 @@ def get_load_model(model_type):
         return alpaca.load_model
     elif model_type == "stablelm":
         return stablelm.load_model
+    elif model_type == "koalpaca-polyglot":
+        return koalpaca.load_model
     else:
         return None
     

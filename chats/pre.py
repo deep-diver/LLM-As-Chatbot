@@ -4,10 +4,11 @@ from threading import Thread
 from transformers import TextIteratorStreamer
 from transformers import GenerationConfig
 
-def build_model_inputs(prompt):
+def build_model_inputs(prompt, return_token_type_ids):
     model_inputs = global_vars.tokenizer(
         [prompt], 
-        return_tensors="pt"
+        return_tensors="pt",
+        return_token_type_ids=return_token_type_ids
     ).to("cuda")
     return model_inputs
 
@@ -69,14 +70,16 @@ def build(
     prompt, 
     temperature, top_p, top_k, repetition_penalty, max_new_tokens, 
     num_beams, use_cache, do_sample, eos_token_id, pad_token_id,
-    stopping_criteria=None
+    stopping_criteria=None, return_token_type_ids=True
 ):
     gen_config_raw, _ = build_gen_config(
         temperature, top_p, top_k, repetition_penalty, max_new_tokens, 
         num_beams, use_cache, do_sample, eos_token_id, pad_token_id 
     )
 
-    model_inputs = build_model_inputs(prompt)
+    model_inputs = build_model_inputs(
+        prompt, return_token_type_ids=return_token_type_ids
+    )
     streamer = build_streamer()
     gen_kwargs = build_gen_kwargs(
         gen_config_raw, 
