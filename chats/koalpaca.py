@@ -36,7 +36,7 @@ def summarize(
     )
     summarize_output = get_output_batch(
         global_vars.model, global_vars.tokenizer, [prompt], gen_config_summarization
-    )[0].split("### Response:")[-1].strip()
+    )[0].split("### 응답:")[-1].strip()
     ppmanager.ctx = summarize_output
     ppmanager.pop_pingpong()
     return ppmanager
