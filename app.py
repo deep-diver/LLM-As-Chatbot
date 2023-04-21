@@ -69,6 +69,8 @@ def run(args):
                             res_beams = gr.Slider(1, 4, global_vars.gen_config.num_beams, step=1, label="num_beams")
                             res_cache = gr.Radio([True, False], value=global_vars.gen_config.use_cache, label="use_cache", interactive=True)
                             res_sample = gr.Radio([True, False], value=global_vars.gen_config.do_sample, label="do_sample", interactive=True)
+                            res_eosid = gr.Number(value=global_vars.gen_config.eos_token_id, visible=False, precision=0)
+                            res_padid = gr.Number(value=global_vars.gen_config.pad_token_id, visible=False, precision=0)
 
                     with gr.Column():
                         gr.Markdown("#### GenConfig for **summary** text generation")
@@ -81,6 +83,8 @@ def run(args):
                             sum_beams = gr.Slider(1, 8, global_vars.gen_config_summarization.num_beams, step=1, label="num_beams", interactive=True)
                             sum_cache = gr.Radio([True, False], value=global_vars.gen_config_summarization.use_cache, label="use_cache", interactive=True)
                             sum_sample = gr.Radio([True, False], value=global_vars.gen_config_summarization.do_sample, label="do_sample", interactive=True)
+                            sum_eosid = gr.Number(value=global_vars.gen_config_summarization.eos_token_id, visible=False, precision=0)
+                            sum_padid = gr.Number(value=global_vars.gen_config_summarization.pad_token_id, visible=False, precision=0)
 
                     with gr.Column():
                         gr.Markdown("#### Context managements")
@@ -104,8 +108,8 @@ def run(args):
             chat_interface,
             [instruction_txtbox, chat_state,
             ctx_num_lconv, ctx_sum_prompt,
-            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample],
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid],
             [instruction_txtbox, chatbot, inspector, chat_state],
         )
         

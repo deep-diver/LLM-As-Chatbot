@@ -4,8 +4,7 @@ generation_config:
     top_k: 50
     num_beams: 1
     use_cache: True
-    max_length: 150
-    min_length: 50
+    max_new_tokens: 1024
     do_sample: True
     repetition_penalty: 1.5
     

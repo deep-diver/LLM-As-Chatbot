@@ -26,8 +26,8 @@ def build_streamer(
 
 
 def build_gen_config(
-    temperature, top_p, top_k, repetition_penalty, 
-    max_new_tokens, num_beams, use_cache, do_sample,
+    temperature, top_p, top_k, repetition_penalty, max_new_tokens, 
+    num_beams, use_cache, do_sample, eos_token_id, pad_token_id 
 ):
     gen_config_raw = {
         "temperature": temperature,
@@ -37,7 +37,9 @@ def build_gen_config(
         "max_new_tokens": max_new_tokens,
         "num_beams": num_beams,
         "use_cache": use_cache,
-        "do_sample": do_sample
+        "do_sample": do_sample,
+        "eos_token_id": eos_token_id, 
+        "pad_token_id": pad_token_id
     }
 
     return gen_config_raw, GenerationConfig(**gen_config_raw)
@@ -65,13 +67,13 @@ def start_gen(gen_kwargs):
 
 def build(
     prompt, 
-    temperature, top_p, top_k, repetition_penalty, 
-    max_new_tokens, num_beams, use_cache, do_sample,
+    temperature, top_p, top_k, repetition_penalty, max_new_tokens, 
+    num_beams, use_cache, do_sample, eos_token_id, pad_token_id,
     stopping_criteria=None
 ):
     gen_config_raw, _ = build_gen_config(
-        temperature, top_p, top_k, repetition_penalty, 
-        max_new_tokens, num_beams, use_cache, do_sample,        
+        temperature, top_p, top_k, repetition_penalty, max_new_tokens, 
+        num_beams, use_cache, do_sample, eos_token_id, pad_token_id 
     )
 
     model_inputs = build_model_inputs(prompt)

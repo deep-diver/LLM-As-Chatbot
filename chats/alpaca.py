@@ -22,8 +22,8 @@ def text_stream(ppmanager, streamer):
 
 def summarize(
     ppmanager, prompt_to_summarize, win_size,
-    temperature, top_p, top_k, repetition_penalty, 
-    max_new_tokens, num_beams, use_cache, do_sample,
+    temperature, top_p, top_k, repetition_penalty, max_new_tokens,
+    num_beams, use_cache, do_sample, eos_token_id, pad_token_id    
 ):
     ctx = ppmanager.ctx
     last_pong = ppmanager.pingpongs[-1].pong
@@ -31,8 +31,8 @@ def summarize(
     prompt = ppmanager.build_prompts(from_idx=-win_size)
     
     _, gen_config_summarization = pre.build_gen_config(
-        temperature, top_p, top_k, repetition_penalty, 
-        max_new_tokens, num_beams, use_cache, do_sample,
+        temperature, top_p, top_k, repetition_penalty, max_new_tokens,
+        num_beams, use_cache, do_sample, eos_token_id, pad_token_id
     )
     summarize_output = get_output_batch(
         global_vars.model, global_vars.tokenizer, [prompt], gen_config_summarization
@@ -44,8 +44,8 @@ def summarize(
 def chat_stream(
     user_message, state,
     ctx_num_lconv, ctx_sum_prompt,
-    res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample,
-    sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample
+    res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+    sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
 ):
     ppm = state["ppmanager"]
 
@@ -58,8 +58,8 @@ def chat_stream(
     # prepare text generating streamer & start generating
     gen_kwargs, streamer = pre.build(
         prompt,
-        res_temp, res_topp, res_topk, res_rpen, 
-        res_mnts, res_beams, res_cache, res_sample
+        res_temp, res_topp, res_topk, res_rpen, res_mnts, 
+        res_beams, res_cache, res_sample, res_eosid, res_padid,
     )
     pre.start_gen(gen_kwargs)
 
@@ -79,8 +79,8 @@ def chat_stream(
     
     ppm = summarize(
         ppm, ctx_sum_prompt, ctx_num_lconv,
-        sum_temp, sum_topp, sum_topk, sum_rpen, 
-        sum_mnts, sum_beams, sum_cache, sum_sample
+        sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, 
+        sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
     )
     state["ppmanager"] = ppm
     yield "", ppm.build_uis(), prompt, state

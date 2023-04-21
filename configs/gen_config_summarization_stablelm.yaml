@@ -4,10 +4,8 @@ generation_config:
     top_k: 50
     num_beams: 1
     use_cache: True
-    max_length: 150
-    min_length: 50
     do_sample: True
     repetition_penalty: 1.2
-    eos_token_id: 1
-    pad_token_id: 0
-    
+    max_new_tokens: 512
+    eos_token_id: 0
+    pad_token_id: 1
