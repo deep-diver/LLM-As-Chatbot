@@ -41,7 +41,6 @@ def summarize(
     ppmanager.add_pingpong(PingPong(prompt_to_summarize, ""))
     prompt = ppmanager.build_prompts(from_idx=-win_size)
 
-    print(prompt)
     _, gen_config_summarization = pre.build_gen_config(
         temperature, top_p, top_k, repetition_penalty, max_new_tokens,
         num_beams, use_cache, do_sample, eos_token_id, pad_token_id
@@ -49,8 +48,6 @@ def summarize(
     summarize_output = get_output_batch(
         global_vars.model, global_vars.tokenizer, [prompt], gen_config_summarization
     )[0].split(prompt_to_summarize)[-1].strip()
-    print("---------------")
-    print(summarize_output)
     ppmanager.ctx = summarize_output
     ppmanager.pop_pingpong()
     return ppmanager
@@ -74,7 +71,7 @@ def chat_stream(
         prompt,
         res_temp, res_topp, res_topk, res_rpen, res_mnts, 
         res_beams, res_cache, res_sample, res_eosid, res_padid,
-        StoppingCriteriaList([StopOnTokens()])
+        StoppingCriteriaList([StopOnTokens()]), False
     )
     pre.start_gen(gen_kwargs)
 

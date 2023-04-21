@@ -60,6 +60,7 @@ def chat_stream(
         prompt,
         res_temp, res_topp, res_topk, res_rpen, res_mnts, 
         res_beams, res_cache, res_sample, res_eosid, res_padid,
+        return_token_type_ids=False
     )
     pre.start_gen(gen_kwargs)
 
