@@ -78,6 +78,14 @@ def toggle_inspector(view_selector):
     else:
         return gr.update(visible=False)
 
+def reset_everything():
+    return (
+        [],
+        {"ppmanager": get_chat_manager(global_vars.model_type)},
+        "",
+        "",
+    )
+
 with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
   with gr.Column() as model_choice_view:
     gr.Markdown("# Choose a Model", elem_classes=["center"])
