@@ -48,7 +48,19 @@ $ cd LLM-As-Chatbot
 $ pip install -r requirements.txt
 ```
 
-2. Run Gradio application
+2. Run Gradio application (GUI Menu)
+
+  - You can choose either `2(GUI Menu)` or `3(CLI)` to run this application. With the `2(GUI Menu)`, you don't have to worry about setting up the environment variables and options yourself. However, `2(GUI Menu)` is inteded to be used for personla usage while `3(CLI)` is intended to be used for serving purpose. With `2(GUI Menu)`, you will see the landing page like below.
+
+```console
+# it is recommended to use latest version of Gradio
+$ pip -U install gradio >= 3.27.0
+$ python menu_app.py
+```
+
+![](https://github.com/deep-diver/LLM-As-Chatbot/blob/main/assets/guimode_preview.gif?raw=true)
+
+3. Run Gradio application (CLI)
 ```console
 ### for Alpaca 7B 
 $ BASE_URL=decapoda-research/llama-7b-hf
