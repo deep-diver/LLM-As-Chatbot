@@ -1,0 +1,90 @@
+{
+    "camel-5b": {
+        "category": "<10B",
+        "display_name": "Camel",
+        "thumb": "https://i.ibb.co/qD5HN9T/camel-removebg-preview.png",
+        "parameters": "5 Billion",
+        "hub(base)": "Writer/camel-5b-hf",
+        "hub(ckpt)": "N/A"
+    },
+    "alpaca-lora-7b": {
+        "category": "<10B",
+        "display_name": "Alpaca-LoRA",
+        "thumb": "https://i.ibb.co/z89FTz2/alpaca-lora.png",
+        "parameters": "7 Billion",
+        "hub(base)": "elinas/llama-7b-hf-transformers-4.29",
+        "hub(ckpt)": "LLMs/Alpaca-LoRA-7B-elina"
+    },
+    "alpaca-lora-13b": {
+        "category": "<20B",
+        "display_name": "Alpaca-LoRA",
+        "thumb": "https://i.ibb.co/z89FTz2/alpaca-lora.png",
+        "parameters": "13 Billion",
+        "hub(base)": "elinas/llama-13b-hf-transformers-4.29",
+        "hub(ckpt)": "LLMs/Alpaca-LoRA-13B-elina"
+    },
+    "koalpaca": {
+        "category": "<20B",
+        "display_name": "KoAlpaca",
+        "thumb": "https://i.ibb.co/jWJTKcL/Ko-Alpaca-removebg-preview.png",
+        "parameters": "12.8 Billion",
+        "hub(base)": "beomi/KoAlpaca-Polyglot-12.8B",
+        "hub(ckpt)": "N/A"        
+    },
+    "stablelm-7b": {
+        "category": "<10B",
+        "display_name": "StableLM",
+        "thumb": "https://i.ibb.co/d2pd5wk/stable-LM-cropped.png",
+        "parameters": "7 Billion",
+        "hub(base)": "stabilityai/stablelm-tuned-alpha-7b",
+        "hub(ckpt)": "N/A"
+    },
+    "stackllama-7b": {
+        "category": "<10B",
+        "display_name": "StackLLaMA",
+        "thumb": "https://i.ibb.co/Q9vLcYm/tuxpi-com-1682256296-removebg-preview.png",
+        "parameters": "7 Billion",
+        "hub(base)": "elinas/llama-7b-hf-transformers-4.29",
+        "hub(ckpt)": "trl-lib/llama-7b-se-rl-peft"        
+    },
+    "flan-3b": {
+        "category": "<10B",
+        "display_name": "Flan-XL",
+        "thumb": "https://i.ibb.co/yBTk5bv/flan.png",
+        "parameters": "3 Billion",
+        "hub(base)": "declare-lab/flan-alpaca-xl",
+        "hub(ckpt)": "N/A"        
+    },
+    "flan-11b": {
+        "category": "<20B",
+        "display_name": "Flan-XXL",
+        "thumb": "https://i.ibb.co/yBTk5bv/flan.png",
+        "parameters": "11 Billion",
+        "hub(base)": "declare-lab/flan-alpaca-xxl",
+        "hub(ckpt)": "N/A"        
+    },
+    "20b-placeholder1": {
+        "category": "<20B",
+        "display_name": "Flan-XXL",
+        "thumb": "https://i.ibb.co/yBTk5bv/flan.png",
+        "parameters": "11 Billion",
+        "hub(base)": "declare-lab/flan-alpaca-xxl",
+        "hub(ckpt)": "N/A"        
+    },
+    "20b-placeholder2": {
+        "category": "<20B",
+        "display_name": "Flan-XXL",
+        "thumb": "https://i.ibb.co/yBTk5bv/flan.png",
+        "parameters": "11 Billion",
+        "hub(base)": "declare-lab/flan-alpaca-xxl",
+        "hub(ckpt)": "N/A"        
+    },
+    "20b-placeholder3": {
+        "category": "<20B",
+        "display_name": "Flan-XXL",
+        "thumb": "https://i.ibb.co/yBTk5bv/flan.png",
+        "parameters": "11 Billion",
+        "hub(base)": "declare-lab/flan-alpaca-xxl",
+        "hub(ckpt)": "N/A"        
+    }
+}
