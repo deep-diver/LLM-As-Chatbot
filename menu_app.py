@@ -36,20 +36,23 @@ def move_to_first_view():
 
 def download_completed(
   model_name, model_base, model_ckpt,
-  gen_config_path, gen_config_sum_path):
+  gen_config_path, gen_config_sum_path,
+  multi_gpu, chat_only_mode):
 
   tmp_args = args.parse_args()
   tmp_args.base_url = model_base.split(":")[-1].split("</p")[0].strip()
   tmp_args.ft_ckpt_url = model_ckpt.split(":")[-1].split("</p")[0].strip()
   tmp_args.gen_config_path = gen_config_path
   tmp_args.gen_config_summarization_path = gen_config_sum_path
-  tmp_args.multi_gpu = True
-  tmp_args.chat_only_mode = False
+  tmp_args.multi_gpu = multi_gpu
+  tmp_args.chat_only_mode = chat_only_mode
 
   global_vars.initialize_globals(tmp_args)
-  # chat_interface = get_chat_interface(global_vars.model_type)
-
-  return "Download completed!", gr.update(visible=not tmp_args.chat_only_mode)
+  return (
+    "Download completed!", 
+    gr.update(visible=not tmp_args.chat_only_mode),
+    gr.update(visible=not tmp_args.chat_only_mode)
+  )
 
 def move_to_third_view():
   gen_config = global_vars.gen_config
@@ -159,6 +162,9 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
       with gr.Column():
         gen_config_path = gr.Dropdown(configs, value="configs/gen_config_default.yaml", interactive=True, label="Gen Config(response)")
         gen_config_sum_path = gr.Dropdown(configs, value="configs/gen_config_summarization_default.yaml", interactive=True, label="GEn Config(summarization)")
+        with gr.Row():
+          multi_gpu = gr.Checkbox(label="Multi GPU")
+          chat_only_mode = gr.Checkbox(label="Chat Only Mode")
 
       with gr.Row():
         back_to_model_choose_btn = gr.Button("Back")
@@ -257,8 +263,8 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
     lambda: "Start downloading/loading the model...", None, txt_view
   ).then(
     download_completed, 
-    [model_name, model_base, model_ckpt, gen_config_path, gen_config_sum_path],
-    [progress_view2, control_panel]
+    [model_name, model_base, model_ckpt, gen_config_path, gen_config_sum_path, multi_gpu, chat_only_mode],
+    [progress_view2, view_selector, control_panel]
   ).then(
     lambda: "Model is fully loaded...", None, txt_view
   ).then(
@@ -284,6 +290,18 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
       res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
       sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid],
       [instruction_txtbox, chatbot, inspector, chat_state],
+  )
+
+  cancel_btn.click(
+      None, None, None, 
+      cancels=[send_event]
+  )
+
+  reset_btn.click(
+      reset_everything,
+      None,
+      [chatbot, chat_state, inspector, instruction_txtbox],
+      cancels=[send_event]
   )
 
 
