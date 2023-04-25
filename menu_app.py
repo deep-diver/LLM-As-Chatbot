@@ -81,7 +81,10 @@ def toggle_inspector(view_selector):
 def reset_everything():
     return (
         [],
-        {"ppmanager": get_chat_manager(global_vars.model_type)},
+        {
+          "ppmanager": get_chat_manager(global_vars.model_type),
+          "model_type": global_vars.model_type
+        },
         "",
         "",
     )
