@@ -163,7 +163,7 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
         gen_config_path = gr.Dropdown(configs, value="configs/gen_config_default.yaml", interactive=True, label="Gen Config(response)")
         gen_config_sum_path = gr.Dropdown(configs, value="configs/gen_config_summarization_default.yaml", interactive=True, label="GEn Config(summarization)")
         with gr.Row():
-          multi_gpu = gr.Checkbox(label="Multi GPU")
+          multi_gpu = gr.Checkbox(label="Multi GPU / (Non 8Bit mode)")
           chat_only_mode = gr.Checkbox(label="Chat Only Mode")
 
       with gr.Row():
