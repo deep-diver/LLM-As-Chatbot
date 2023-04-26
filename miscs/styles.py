@@ -113,4 +113,23 @@ MODEL_SELECTION_CSS = """
   width: 100px;
   height: 100px;
 }
+
+#flan-3b {
+  background: url(https://i.ibb.co/yBTk5bv/flan.png);
+  background-repeat: no-repeat;
+  background-size: 100px 100px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+}
+
+#os-stablelm-7b {
+  background: url(https://i.ibb.co/WszrtVV/stablelm-oasst1.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+}
+
 """

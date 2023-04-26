@@ -39,6 +39,14 @@
         "hub(base)": "stabilityai/stablelm-tuned-alpha-7b",
         "hub(ckpt)": "N/A"
     },
+    "os-stablelm-7b": {
+        "category": "<10B",
+        "display_name": "OA+StableLM",
+        "thumb": "https://i.ibb.co/WszrtVV/stablelm-oasst1.png",
+        "parameters": "7 Billion",
+        "hub(base)": "OpenAssistant/stablelm-7b-sft-v7-epoch-3",
+        "hub(ckpt)": "N/A"
+    },
     "stackllama-7b": {
         "category": "<10B",
         "display_name": "StackLLaMA",

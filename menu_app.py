@@ -101,6 +101,10 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
           #   gr.Markdown("Camel", elem_classes=["center"])
 
           with gr.Column(min_width=20):
+            flan3b = gr.Button("flan-3b", elem_id="flan-3b",elem_classes=["square"])
+            gr.Markdown("Flan-XL", elem_classes=["center"])
+
+          with gr.Column(min_width=20):
             alpaca_lora7b = gr.Button("alpaca-lora-7b", elem_id="alpaca-lora-7b",elem_classes=["square"])
             gr.Markdown("Alpaca-LoRA", elem_classes=["center"])
 
@@ -109,34 +113,34 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
             gr.Markdown("StableLM", elem_classes=["center"])
 
           with gr.Column(min_width=20):
-            gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
-            gr.Markdown("", elem_classes=["center"])
+            os_stablelm7b = gr.Button("os-stablelm-7b", elem_id="os-stablelm-7b",elem_classes=["square"])
+            gr.Markdown("OS+StableLM", elem_classes=["center"])
+
+          # with gr.Column(min_width=20):
+          #   gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
+          #   gr.Markdown("", elem_classes=["center"])
 
           with gr.Column(min_width=20):
             gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
             gr.Markdown("", elem_classes=["center"])
 
-          with gr.Column(min_width=20):
-            gr.Button("", elem_id="10b-placeholder3",elem_classes=["square"])
-            gr.Markdown("", elem_classes=["center"])            
+          # with gr.Column(min_width=20):
+          #   gr.Button("", elem_id="10b-placeholder3",elem_classes=["square"])
+          #   gr.Markdown("", elem_classes=["center"])
 
           # with gr.Column(min_width=20):
           #   stackllama7b = gr.Button("stackllama-7b", elem_id="stackllama-7b",elem_classes=["square"])
-          #   gr.Markdown("StackLLaMA", elem_classes=["center"])
-
-          # with gr.Column(min_width=20):
-          #   flan3b = gr.Button("flan-3b", elem_id="flan-3b",elem_classes=["square"])
-          #   gr.Markdown("Flan-XL", elem_classes=["center"])
+          #   gr.Markdown("StackLLaMA", elem_classes=["center"])            
 
         gr.Markdown("## < 20B")
         with gr.Row():
           with gr.Column(min_width=20):
+            flan11b = flan11b = gr.Button("flan-11b", elem_id="flan-11b",elem_classes=["square"])
+            gr.Markdown("Flan-XXL", elem_classes=["center"])
+
+          with gr.Column(min_width=20):
             koalpaca = gr.Button("koalpaca", elem_id="koalpaca",elem_classes=["square"])
             gr.Markdown("koalpaca", elem_classes=["center"])
-
-          # with gr.Column(min_width=20):
-          #   flan11b = flan11b = gr.Button("flan-11b", elem_id="flan-11b",elem_classes=["square"])
-          #   gr.Markdown("Flan-XXL", elem_classes=["center"])
 
           with gr.Column(min_width=20):
             alpaca_lora13b = alpaca_lora13b = gr.Button("alpaca-lora-13b", elem_id="alpaca-lora-13b",elem_classes=["square"])
@@ -150,9 +154,9 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
             gr.Button("", elem_id="20b-placeholder2",elem_classes=["square"])
             gr.Markdown("", elem_classes=["center"])
 
-          with gr.Column(min_width=20):
-            gr.Button("", elem_id="20b-placeholder3",elem_classes=["square"])
-            gr.Markdown("", elem_classes=["center"])
+          # with gr.Column(min_width=20):
+          #   gr.Button("", elem_id="20b-placeholder3",elem_classes=["square"])
+          #   gr.Markdown("", elem_classes=["center"])
 
         progress_view = gr.Textbox(label="Progress")
 
@@ -217,7 +221,7 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
                     with gr.Row():
                         res_temp = gr.Slider(0.0, 2.0, 0, step=0.1, label="temp", interactive=True)
                         res_topp = gr.Slider(0.0, 2.0, 0, step=0.1, label="top_p", interactive=True)
-                        res_topk = gr.Slider(20, 100, 0, step=1, label="top_k", interactive=True)
+                        res_topk = gr.Slider(20, 1000, 0, step=1, label="top_k", interactive=True)
                         res_rpen = gr.Slider(0.0, 2.0, 0, step=0.1, label="rep_penalty", interactive=True)
                         res_mnts = gr.Slider(64, 1024, 0, step=1, label="max_new_tokens", interactive=True)                            
                         res_beams = gr.Slider(1, 4, 0, step=1, label="num_beams")
@@ -231,7 +235,7 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
                     with gr.Row():
                         sum_temp = gr.Slider(0.0, 2.0, 0, step=0.1, label="temperature", interactive=True)
                         sum_topp = gr.Slider(0.0, 2.0, 0, step=0.1, label="top_p", interactive=True)
-                        sum_topk = gr.Slider(20, 100, 0, step=1, label="top_k", interactive=True)
+                        sum_topk = gr.Slider(20, 1000, 0, step=1, label="top_k", interactive=True)
                         sum_rpen = gr.Slider(0.0, 2.0, 0, step=0.1, label="rep_penalty", interactive=True)
                         sum_mnts = gr.Slider(64, 1024, 0, step=1, label="max_new_tokens", interactive=True)
                         sum_beams = gr.Slider(1, 8, 0, step=1, label="num_beams", interactive=True)
@@ -252,7 +256,10 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
         # with gr.Accordion("Acknowledgements", open=False, visible=not args.chat_only_mode):
         #     gr.Markdown(f"{BOTTOM_LINE}")
 
-  btns = [ alpaca_lora7b, stablelm7b, koalpaca, alpaca_lora13b]
+  btns = [
+    flan3b, alpaca_lora7b, stablelm7b, os_stablelm7b, 
+    flan11b, koalpaca, alpaca_lora13b
+  ]
   for btn in btns:
     btn.click(
         move_to_second_view,
