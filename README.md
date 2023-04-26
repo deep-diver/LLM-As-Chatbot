@@ -30,6 +30,9 @@ Different model might have different strategies to manage context, so if you wan
   - [chansung/alpaca-lora-65b](https://huggingface.co/chansung/alpaca-lora-65b): the 65B Alpaca-LoRA checkpoint by myself (chansung)
   - [stabilityai/stablelm-tuned-alpha-7b](https://huggingface.co/stabilityai/stablelm-tuned-alpha-7b): StableLM based fine-tuned model
   - [beomi/KoAlpaca-Polyglot-12.8B](https://huggingface.co/beomi/KoAlpaca-Polyglot-12.8B): [Polyglot](https://github.com/EleutherAI/polyglot) based Alpaca style instruction fine-tuned model
+  - [declare-lab/flan-alpaca-xl](https://huggingface.co/declare-lab/flan-alpaca-xl): Flan XL(3B) based Alpaca style instruction fine-tuned model.
+  - [declare-lab/flan-alpaca-xxl](https://huggingface.co/declare-lab/flan-alpaca-xxl): Flan XXL(11B) based Alpaca style instruction fine-tuned model.
+  - [OpenAssistant/stablelm-7b-sft-v7-epoch-3](https://huggingface.co/OpenAssistant/stablelm-7b-sft-v7-epoch-3): StableLM(7B) based OpenAssistant's oasst1 instruction fine-tuned model.
   
 ## Instructions
 
@@ -110,9 +113,10 @@ options:
 
 ## Todos
 
-- [ ] Gradio components to control the configurations of the generation
-- [ ] `LLaMA based Dolly` and `Flan based Alpaca` models
-- [ ] Multiple conversation managements
+- [X] Gradio components to control the configurations of the generation
+- [X] `Flan based Alpaca` models
+- [ ] `LLaMA based Dolly` models
+- [ ] Multiple conversation management
 - [ ] Implement server only option w/ FastAPI
 - [ ] ChatGPT's plugin like features
 
