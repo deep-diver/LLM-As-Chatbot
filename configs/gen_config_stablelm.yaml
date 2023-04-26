@@ -1,7 +1,7 @@
 generation_config:
     temperature: 1.0
     top_p: 0.9
-    top_k: 50
+    top_k: 1000
     num_beams: 1
     use_cache: True
     repetition_penalty: 1.2
