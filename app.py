@@ -63,7 +63,7 @@ def run(args):
                         with gr.Row():
                             res_temp = gr.Slider(0.0, 2.0, global_vars.gen_config.temperature, step=0.1, label="temp", interactive=True)
                             res_topp = gr.Slider(0.0, 2.0, global_vars.gen_config.top_p, step=0.1, label="top_p", interactive=True)
-                            res_topk = gr.Slider(20, 100, global_vars.gen_config.top_k, step=1, label="top_k", interactive=True)
+                            res_topk = gr.Slider(20, 1000, global_vars.gen_config.top_k, step=1, label="top_k", interactive=True)
                             res_rpen = gr.Slider(0.0, 2.0, global_vars.gen_config.repetition_penalty, step=0.1, label="rep_penalty", interactive=True)
                             res_mnts = gr.Slider(64, 1024, global_vars.gen_config.max_new_tokens, step=1, label="max_new_tokens", interactive=True)                            
                             res_beams = gr.Slider(1, 4, global_vars.gen_config.num_beams, step=1, label="num_beams")
@@ -77,7 +77,7 @@ def run(args):
                         with gr.Row():
                             sum_temp = gr.Slider(0.0, 2.0, global_vars.gen_config_summarization.temperature, step=0.1, label="temperature", interactive=True)
                             sum_topp = gr.Slider(0.0, 2.0, global_vars.gen_config_summarization.top_p, step=0.1, label="top_p", interactive=True)
-                            sum_topk = gr.Slider(20, 100, global_vars.gen_config_summarization.top_k, step=1, label="top_k", interactive=True)
+                            sum_topk = gr.Slider(20, 1000, global_vars.gen_config_summarization.top_k, step=1, label="top_k", interactive=True)
                             sum_rpen = gr.Slider(0.0, 2.0, global_vars.gen_config_summarization.repetition_penalty, step=0.1, label="rep_penalty", interactive=True)
                             sum_mnts = gr.Slider(64, 1024, global_vars.gen_config_summarization.max_new_tokens, step=1, label="max_new_tokens", interactive=True)
                             sum_beams = gr.Slider(1, 8, global_vars.gen_config_summarization.num_beams, step=1, label="num_beams", interactive=True)
