@@ -1,6 +1,6 @@
 import yaml
 from transformers import GenerationConfig
-from models import alpaca, stablelm, koalpaca
+from models import alpaca, stablelm, koalpaca, flan_alpaca
 
 def initialize_globals(args):
     global model, model_type, stream_model, tokenizer
@@ -8,14 +8,17 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type = "alpaca"
-
-    if "stablelm" in args.base_url:
+    if "flan-alpaca" in args.base_url.lower():
+        model_type = "flan-alpaca"
+    elif "openassistant/stablelm" in args.base_url.lower():
+        model_type = "os-stablelm"
+    elif "stablelm" in args.base_url.lower():
         model_type = "stablelm"
-    elif "KoAlpaca-Polyglot" in args.base_url:
+    elif "KoAlpaca-Polyglot" in args.base_url.lower():
         model_type = "koalpaca-polyglot"
-    elif "gpt4-alpaca" in args.ft_ckpt_url:
+    elif "gpt4-alpaca" in args.ft_ckpt_url.lower():
         model_type = "alpaca-gpt4"
-    elif "alpaca" in args.ft_ckpt_url:
+    elif "alpaca" in args.ft_ckpt_url.lower():
         model_type = "alpaca"
     else:
         print("unsupported model type")
@@ -38,10 +41,12 @@ def initialize_globals(args):
 def get_load_model(model_type):
     if model_type == "alpaca" or model_type == "alpaca-gpt4":
         return alpaca.load_model
-    elif model_type == "stablelm":
+    elif model_type == "stablelm" or model_type == "os-stablelm":
         return stablelm.load_model
     elif model_type == "koalpaca-polyglot":
         return koalpaca.load_model
+    elif model_type == "flan-alpaca":
+        return flan_alpaca.load_model
     else:
         return None
     
