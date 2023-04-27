@@ -7,15 +7,17 @@ def parse_args():
     parser.add_argument(
         "--base-url",
         help="Hugging Face Hub URL",
+        default="elinas/llama-7b-hf-transformers-4.29",
         # default="decapoda-research/llama-7b-hf",
         # default="stabilityai/stablelm-tuned-alpha-7b",
-        default="beomi/KoAlpaca-Polyglot-12.8B",
+        # default="beomi/KoAlpaca-Polyglot-12.8B",
         type=str,
     )
     parser.add_argument(
         "--ft-ckpt-url",
         help="Hugging Face Hub URL",
-        default="tloen/alpaca-lora-7b",
+        # default="tloen/alpaca-lora-7b",
+        default="LLMs/Alpaca-LoRA-7B-elina",
         type=str,
     )
     parser.add_argument(
@@ -38,16 +40,16 @@ def parse_args():
     parser.add_argument(
         "--gen-config-path",
         help="path to GenerationConfig file",
-        # default="configs/gen_config_default.yaml",
-        default="configs/gen_config_koalpaca.yaml",
+        default="configs/response_configs/default.yaml",
+        # default="configs/gen_config_koalpaca.yaml",
         # default="configs/gen_config_stablelm.yaml",
         type=str
     )
     parser.add_argument(
         "--gen-config-summarization-path",
         help="path to GenerationConfig file used in context summarization",
-        # default="configs/gen_config_summarization_default.yaml",
-        default="configs/gen_config_summarization_koalpaca.yaml",
+        default="configs/summarization_configs/default.yaml",
+        # default="configs/gen_config_summarization_koalpaca.yaml",
         # default="configs/gen_config_summarization_stablelm.yaml",
         type=str
     )
