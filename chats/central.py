@@ -21,7 +21,15 @@ def chat_stream(
         )
 
     elif model_type == "alpaca":
-        cs = stablelm.chat_stream(
+        cs = alpaca.chat_stream(
+            user_message, state,
+            ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+        )
+
+    elif model_type == "camel":
+        cs = alpaca.chat_stream(
             user_message, state,
             ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,

@@ -10,7 +10,17 @@ from transformers import AutoModelForCausalLM
 from miscs.styles import MODEL_SELECTION_CSS
 from utils import get_chat_interface, get_chat_manager
 
-configs = [f"configs/{f}" for f in listdir("configs") if isfile(join("configs", f))]
+response_configs = [
+  f"configs/response_configs/{f}" 
+  for f in listdir("configs/response_configs") 
+  if isfile(join("configs/response_configs", f))
+]
+
+summarization_configs = [
+  f"configs/summarization_configs/{f}" 
+  for f in listdir("configs/summarization_configs") 
+  if isfile(join("configs/summarization_configs", f))
+]
 
 model_info = json.load(open("model_cards.json"))
 
@@ -96,13 +106,13 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
       with gr.Column():
         gr.Markdown("## < 10B")
         with gr.Row():
-          # with gr.Column(min_width=20):
-          #   camel5b = gr.Button("camel-5b", elem_id="camel-5b",elem_classes=["square"])
-          #   gr.Markdown("Camel", elem_classes=["center"])
-
           with gr.Column(min_width=20):
             flan3b = gr.Button("flan-3b", elem_id="flan-3b",elem_classes=["square"])
             gr.Markdown("Flan-XL", elem_classes=["center"])
+
+          with gr.Column(min_width=20):
+            camel5b = gr.Button("camel-5b", elem_id="camel-5b",elem_classes=["square"])
+            gr.Markdown("Camel", elem_classes=["center"])
 
           with gr.Column(min_width=20):
             alpaca_lora7b = gr.Button("alpaca-lora-7b", elem_id="alpaca-lora-7b",elem_classes=["square"])
@@ -120,9 +130,9 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
           #   gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
           #   gr.Markdown("", elem_classes=["center"])
 
-          with gr.Column(min_width=20):
-            gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
-            gr.Markdown("", elem_classes=["center"])
+          # with gr.Column(min_width=20):
+          #   gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
+          #   gr.Markdown("", elem_classes=["center"])
 
           # with gr.Column(min_width=20):
           #   gr.Button("", elem_id="10b-placeholder3",elem_classes=["square"])
@@ -175,8 +185,8 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
           model_ckpt = gr.Markdown("🤗 Hub(ckpt)\n: ...")
 
       with gr.Column():
-        gen_config_path = gr.Dropdown(configs, value="configs/gen_config_default.yaml", interactive=True, label="Gen Config(response)")
-        gen_config_sum_path = gr.Dropdown(configs, value="configs/gen_config_summarization_default.yaml", interactive=True, label="GEn Config(summarization)")
+        gen_config_path = gr.Dropdown(response_configs, value=response_configs[0], interactive=True, label="Gen Config(response)")
+        gen_config_sum_path = gr.Dropdown(summarization_configs, value=summarization_configs[0], interactive=True, label="Gen Config(summarization)")
         with gr.Row():
           multi_gpu = gr.Checkbox(label="Multi GPU / (Non 8Bit mode)")
           chat_only_mode = gr.Checkbox(label="Chat Only Mode")
@@ -257,7 +267,7 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
         #     gr.Markdown(f"{BOTTOM_LINE}")
 
   btns = [
-    flan3b, alpaca_lora7b, stablelm7b, os_stablelm7b, 
+    flan3b, camel5b, alpaca_lora7b, stablelm7b, os_stablelm7b, 
     flan11b, koalpaca, alpaca_lora13b
   ]
   for btn in btns:

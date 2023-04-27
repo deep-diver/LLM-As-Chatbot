@@ -22,6 +22,8 @@ def get_chat_interface(model_type):
         return koalpaca.chat_stream
     elif model_type == "flan-alpaca":
         return flan_alpaca.chat_stream
+    elif model_type == "camel":
+        return alpaca.chat_stream
     else:
         return None
 
@@ -38,5 +40,7 @@ def get_chat_manager(model_type):
         return GradioKoAlpacaChatPPManager()
     elif model_type == "flan-alpaca":
         return GradioFlanAlpacaChatPPManager()
+    elif model_type == "camel":
+        return GradioAlpacaChatPPManager()        
     else:
         return None

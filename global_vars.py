@@ -1,6 +1,6 @@
 import yaml
 from transformers import GenerationConfig
-from models import alpaca, stablelm, koalpaca, flan_alpaca
+from models import alpaca, stablelm, koalpaca, flan_alpaca, camel
 
 def initialize_globals(args):
     global model, model_type, stream_model, tokenizer
@@ -8,7 +8,9 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type = "alpaca"
-    if "flan-alpaca" in args.base_url.lower():
+    if "camel" in args.base_url.lower():
+        model_type = "camel"
+    elif "flan-alpaca" in args.base_url.lower():
         model_type = "flan-alpaca"
     elif "openassistant/stablelm" in args.base_url.lower():
         model_type = "os-stablelm"
@@ -47,6 +49,8 @@ def get_load_model(model_type):
         return koalpaca.load_model
     elif model_type == "flan-alpaca":
         return flan_alpaca.load_model
+    elif model_type == "camel":
+        return camel.load_model
     else:
         return None
     
