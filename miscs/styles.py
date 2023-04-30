@@ -106,7 +106,7 @@ MODEL_SELECTION_CSS = """
 }
 
 #koalpaca {
-  background: url(https://i.ibb.co/jWJTKcL/Ko-Alpaca-removebg-preview.png);
+  background: url(https://raw.githubusercontent.com/Beomi/KoAlpaca/main/assets/new_koalpaca_final.png);
   background-repeat: no-repeat;
   background-size: 100px 100px;
   color: transparent;  
