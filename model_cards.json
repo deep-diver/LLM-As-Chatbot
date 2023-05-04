@@ -1,4 +1,12 @@
 {
+    "t5-vicuna-3b": {
+        "category": "<10B",
+        "display_name": "T5 Vicuna",
+        "thumb": "https://i.ibb.co/4W7n78b/chansung-vector-logo-of-collective-intelligence-of-cute-llamas-3ef46884-72e6-44da-b88a-e831e5fee747.png",
+        "parameters": "3 Billion",
+        "hub(base)": "lmsys/fastchat-t5-3b-v1.0",
+        "hub(ckpt)": "N/A"
+    },
     "camel-5b": {
         "category": "<10B",
         "display_name": "Camel",
@@ -61,8 +69,24 @@
         "thumb": "https://i.ibb.co/yBTk5bv/flan.png",
         "parameters": "3 Billion",
         "hub(base)": "declare-lab/flan-alpaca-xl",
-        "hub(ckpt)": "N/A"        
+        "hub(ckpt)": "N/A"
     },
+    "gpt4-alpaca-7b": {
+        "category": "<10B",
+        "display_name": "GPT4-Alpaca-LoRA",
+        "thumb": "https://i.ibb.co/qDz3HCG/chansung-vector-logo-of-alpaca-made-out-of-machines-Side-shot-39b27595-8202-48a6-97d1-266a745b2a29-r.png",
+        "parameters": "7 Billion",
+        "hub(base)": "elinas/llama-7b-hf-transformers-4.29",
+        "hub(ckpt)": "LLMs/AlpacaGPT4-LoRA-7B-elina"
+    },
+    "gpt4-alpaca-13b": {
+        "category": "<20B",
+        "display_name": "GPT4-Alpaca-LoRA",
+        "thumb": "https://i.ibb.co/qDz3HCG/chansung-vector-logo-of-alpaca-made-out-of-machines-Side-shot-39b27595-8202-48a6-97d1-266a745b2a29-r.png",
+        "parameters": "13 Billion",
+        "hub(base)": "elinas/llama-13b-hf-transformers-4.29",
+        "hub(ckpt)": "LLMs/AlpacaGPT4-LoRA-13B-elina"
+    },    
     "flan-11b": {
         "category": "<20B",
         "display_name": "Flan-XXL",

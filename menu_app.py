@@ -107,6 +107,10 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
         gr.Markdown("## < 10B")
         with gr.Row():
           with gr.Column(min_width=20):
+            t5_vicuna_3b = gr.Button("t5-vicuna-3b", elem_id="t5-vicuna-3b",elem_classes=["square"])
+            gr.Markdown("T5 Vicuna", elem_classes=["center"])
+
+          with gr.Column(min_width=20):
             flan3b = gr.Button("flan-3b", elem_id="flan-3b",elem_classes=["square"])
             gr.Markdown("Flan-XL", elem_classes=["center"])
 
@@ -122,26 +126,36 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
             stablelm7b = gr.Button("stablelm-7b", elem_id="stablelm-7b",elem_classes=["square"])
             gr.Markdown("StableLM", elem_classes=["center"])
 
+
+        with gr.Row():
           with gr.Column(min_width=20):
             os_stablelm7b = gr.Button("os-stablelm-7b", elem_id="os-stablelm-7b",elem_classes=["square"])
             gr.Markdown("OS+StableLM", elem_classes=["center"])
 
-          # with gr.Column(min_width=20):
-          #   gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
-          #   gr.Markdown("", elem_classes=["center"])
+          with gr.Column(min_width=20):
+            gpt4_alpaca_7b = gr.Button("gpt4-alpaca-7b", elem_id="gpt4-alpaca-7b",elem_classes=["square"])
+            gr.Markdown("GPT4-Alpaca-LoRA", elem_classes=["center"])
+
+          with gr.Column(min_width=20):
+            _ = gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
+            gr.Markdown("", elem_classes=["center"])
+
+          with gr.Column(min_width=20):
+            _ = gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
+            gr.Markdown("", elem_classes=["center"])
+
+          with gr.Column(min_width=20):
+            _ = gr.Button("", elem_id="10b-placeholder3",elem_classes=["square"])
+            gr.Markdown("", elem_classes=["center"])
 
           # with gr.Column(min_width=20):
-          #   gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
-          #   gr.Markdown("", elem_classes=["center"])
-
-          # with gr.Column(min_width=20):
-          #   gr.Button("", elem_id="10b-placeholder3",elem_classes=["square"])
-          #   gr.Markdown("", elem_classes=["center"])
+          #   _ = gr.Button("", elem_id="10b-placeholder4",elem_classes=["square"])
+          #   gr.Markdown("", elem_classes=["center"])            
 
           # with gr.Column(min_width=20):
           #   stackllama7b = gr.Button("stackllama-7b", elem_id="stackllama-7b",elem_classes=["square"])
           #   gr.Markdown("StackLLaMA", elem_classes=["center"])            
-
+# 
         gr.Markdown("## < 20B")
         with gr.Row():
           with gr.Column(min_width=20):
@@ -157,12 +171,16 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
             gr.Markdown("Alpaca-LoRA", elem_classes=["center"])
 
           with gr.Column(min_width=20):
+            gpt4_alpaca_13b = gr.Button("gpt4-alpaca-13b", elem_id="gpt4-alpaca-13b",elem_classes=["square"])
+            gr.Markdown("GPT4-Alpaca-LoRA", elem_classes=["center"])
+
+          with gr.Column(min_width=20):
             gr.Button("", elem_id="20b-placeholder1",elem_classes=["square"])
             gr.Markdown("", elem_classes=["center"])
 
-          with gr.Column(min_width=20):
-            gr.Button("", elem_id="20b-placeholder2",elem_classes=["square"])
-            gr.Markdown("", elem_classes=["center"])
+          # with gr.Column(min_width=20):
+          #   gr.Button("", elem_id="20b-placeholder2",elem_classes=["square"])
+          #   gr.Markdown("", elem_classes=["center"])
 
           # with gr.Column(min_width=20):
           #   gr.Button("", elem_id="20b-placeholder3",elem_classes=["square"])
@@ -233,24 +251,24 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
                         res_topp = gr.Slider(0.0, 2.0, 0, step=0.1, label="top_p", interactive=True)
                         res_topk = gr.Slider(20, 1000, 0, step=1, label="top_k", interactive=True)
                         res_rpen = gr.Slider(0.0, 2.0, 0, step=0.1, label="rep_penalty", interactive=True)
-                        res_mnts = gr.Slider(64, 1024, 0, step=1, label="max_new_tokens", interactive=True)                            
-                        res_beams = gr.Slider(1, 4, 0, step=1, label="num_beams")
-                        res_cache = gr.Radio([True, False], value=0, label="use_cache", interactive=True)
-                        res_sample = gr.Radio([True, False], value=0, label="do_sample", interactive=True)
+                        res_mnts = gr.Slider(64, 2048, 0, step=1, label="new_tokens", interactive=True)                            
+                        res_beams = gr.Slider(1, 4, 0, step=1, label="beams")
+                        res_cache = gr.Radio([True, False], value=0, label="cache", interactive=True)
+                        res_sample = gr.Radio([True, False], value=0, label="sample", interactive=True)
                         res_eosid = gr.Number(value=0, visible=False, precision=0)
                         res_padid = gr.Number(value=0, visible=False, precision=0)
 
                 with gr.Column():
                     gr.Markdown("#### GenConfig for **summary** text generation")
                     with gr.Row():
-                        sum_temp = gr.Slider(0.0, 2.0, 0, step=0.1, label="temperature", interactive=True)
+                        sum_temp = gr.Slider(0.0, 2.0, 0, step=0.1, label="temp", interactive=True)
                         sum_topp = gr.Slider(0.0, 2.0, 0, step=0.1, label="top_p", interactive=True)
                         sum_topk = gr.Slider(20, 1000, 0, step=1, label="top_k", interactive=True)
                         sum_rpen = gr.Slider(0.0, 2.0, 0, step=0.1, label="rep_penalty", interactive=True)
-                        sum_mnts = gr.Slider(64, 1024, 0, step=1, label="max_new_tokens", interactive=True)
-                        sum_beams = gr.Slider(1, 8, 0, step=1, label="num_beams", interactive=True)
-                        sum_cache = gr.Radio([True, False], value=0, label="use_cache", interactive=True)
-                        sum_sample = gr.Radio([True, False], value=0, label="do_sample", interactive=True)
+                        sum_mnts = gr.Slider(64, 2048, 0, step=1, label="new_tokens", interactive=True)
+                        sum_beams = gr.Slider(1, 8, 0, step=1, label="beams", interactive=True)
+                        sum_cache = gr.Radio([True, False], value=0, label="cache", interactive=True)
+                        sum_sample = gr.Radio([True, False], value=0, label="sample", interactive=True)
                         sum_eosid = gr.Number(value=0, visible=False, precision=0)
                         sum_padid = gr.Number(value=0, visible=False, precision=0)
 
@@ -267,8 +285,9 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
         #     gr.Markdown(f"{BOTTOM_LINE}")
 
   btns = [
-    flan3b, camel5b, alpaca_lora7b, stablelm7b, os_stablelm7b, 
-    flan11b, koalpaca, alpaca_lora13b
+    t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
+    gpt4_alpaca_7b,  os_stablelm7b, 
+    flan11b, koalpaca, alpaca_lora13b, gpt4_alpaca_13b
   ]
   for btn in btns:
     btn.click(
