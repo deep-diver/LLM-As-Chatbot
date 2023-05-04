@@ -1,5 +1,6 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from optimum.bettertransformer import BetterTransformer
 
 def load_model(base, finetuned, multi_gpu, force_download_ckpt):
 
@@ -12,5 +13,9 @@ def load_model(base, finetuned, multi_gpu, force_download_ckpt):
     tokenizer.pad_token_id = 0
     tokenizer.padding_side = "left"
     
+    if multi_gpu:
+        model.half()
+
+    model = BetterTransformer.transform(model)
     return model, tokenizer
 

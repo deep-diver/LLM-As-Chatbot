@@ -1,6 +1,7 @@
 import torch
 from peft import PeftModel
 from transformers import LlamaTokenizer, LlamaForCausalLM
+from optimum.bettertransformer import BetterTransformer
 
 def load_model(base, finetuned, multi_gpu, force_download_ckpt):
     tokenizer = LlamaTokenizer.from_pretrained(base)
@@ -20,6 +21,7 @@ def load_model(base, finetuned, multi_gpu, force_download_ckpt):
             force_download=force_download_ckpt,
             device_map={'': 0}
         )
+        # model = BetterTransformer.transform(model)
         return model, tokenizer
     else:
         model = LlamaForCausalLM.from_pretrained(
@@ -35,5 +37,6 @@ def load_model(base, finetuned, multi_gpu, force_download_ckpt):
             torch_dtype=torch.float16
         )
         model.half()
-        return model, tokenizer        
+        # model = BetterTransformer.transform(model)
+        return model, tokenizer
 
