@@ -106,7 +106,7 @@ MODEL_SELECTION_CSS = """
 }
 
 #koalpaca {
-  background: url(https://i.ibb.co/jWJTKcL/Ko-Alpaca-removebg-preview.png);
+  background: url(https://raw.githubusercontent.com/Beomi/KoAlpaca/main/assets/new_koalpaca_final.png);
   background-repeat: no-repeat;
   background-size: 100px 100px;
   color: transparent;  
@@ -125,24 +125,6 @@ MODEL_SELECTION_CSS = """
 
 #os-stablelm-7b {
   background: url(https://i.ibb.co/WszrtVV/stablelm-oasst1.png);
-  background-repeat: no-repeat;
-  background-size: 100px 95px;
-  color: transparent;  
-  width: 100px;
-  height: 100px;
-}
-
-#t5-vicuna-3b {
-  background: url(https://i.ibb.co/4W7n78b/chansung-vector-logo-of-collective-intelligence-of-cute-llamas-3ef46884-72e6-44da-b88a-e831e5fee747.png);
-  background-repeat: no-repeat;
-  background-size: 100px 95px;
-  color: transparent;  
-  width: 100px;
-  height: 100px;
-}
-
-#gpt4-alpaca-7b, #gpt4-alpaca-13b {
-  background: url(https://i.ibb.co/qDz3HCG/chansung-vector-logo-of-alpaca-made-out-of-machines-Side-shot-39b27595-8202-48a6-97d1-266a745b2a29-r.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
   color: transparent;  

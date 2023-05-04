@@ -34,7 +34,7 @@
     "koalpaca": {
         "category": "<20B",
         "display_name": "KoAlpaca",
-        "thumb": "https://i.ibb.co/jWJTKcL/Ko-Alpaca-removebg-preview.png",
+        "thumb": "https://raw.githubusercontent.com/Beomi/KoAlpaca/main/assets/new_koalpaca_final.png",
         "parameters": "12.8 Billion",
         "hub(base)": "beomi/KoAlpaca-Polyglot-12.8B",
         "hub(ckpt)": "N/A"        
