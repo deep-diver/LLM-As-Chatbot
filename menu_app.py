@@ -175,8 +175,8 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
             gr.Markdown("GPT4-Alpaca-LoRA", elem_classes=["center"])
 
           with gr.Column(min_width=20):
-            gr.Button("", elem_id="20b-placeholder1",elem_classes=["square"])
-            gr.Markdown("", elem_classes=["center"])
+            stable_vicuna_13b = gr.Button("stable-vicuna-13b", elem_id="stable-vicuna-13b",elem_classes=["square"])
+            gr.Markdown("Stable-Vicuna", elem_classes=["center"])
 
           # with gr.Column(min_width=20):
           #   gr.Button("", elem_id="20b-placeholder2",elem_classes=["square"])
@@ -286,8 +286,8 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
 
   btns = [
     t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
-    gpt4_alpaca_7b,  os_stablelm7b, 
-    flan11b, koalpaca, alpaca_lora13b, gpt4_alpaca_13b
+    gpt4_alpaca_7b, os_stablelm7b, 
+    flan11b, koalpaca, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b
   ]
   for btn in btns:
     btn.click(

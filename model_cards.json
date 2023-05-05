@@ -93,6 +93,14 @@
         "thumb": "https://i.ibb.co/yBTk5bv/flan.png",
         "parameters": "11 Billion",
         "hub(base)": "declare-lab/flan-alpaca-xxl",
+        "hub(ckpt)": "N/A"
+    },
+    "stable-vicuna-13b": {
+        "category": "<20B",
+        "display_name": "Stable-Vicuna",        
+        "thumb": "https://i.ibb.co/b6Vv6Jh/sv.png",
+        "parameters": "13 Billion",
+        "hub(base)": "LLMs/Stable-Vicuna-13B",
         "hub(ckpt)": "N/A"        
     },
     "20b-placeholder1": {

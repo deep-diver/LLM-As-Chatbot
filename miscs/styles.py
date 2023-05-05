@@ -150,4 +150,13 @@ MODEL_SELECTION_CSS = """
   height: 100px;
 }
 
+#stable-vicuna-13b {
+  background: url(https://i.ibb.co/b6Vv6Jh/sv.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;  
+}
+
 """

@@ -6,4 +6,5 @@ git+https://github.com/huggingface/transformers.git
 git+https://github.com/huggingface/peft.git
 gradio==3.20.0
 bingbong
-optimum
+git+https://github.com/huggingface/optimum.git
+tokenizers==0.13.3

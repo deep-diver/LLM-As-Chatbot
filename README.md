@@ -38,6 +38,7 @@ Different model might have different strategies to manage context, so if you wan
   - [OpenAssistant/stablelm-7b-sft-v7-epoch-3](https://huggingface.co/OpenAssistant/stablelm-7b-sft-v7-epoch-3): StableLM(7B) based OpenAssistant's oasst1 instruction fine-tuned model.
   - [Writer/camel-5b-hf](https://huggingface.co/Writer/camel-5b-hf): Palmyra-base based instruction fine-tuned model. The foundation model and the data are from its creator, [Writer](https://dev.writer.com).
   - [lmsys/fastchat-t5-3b-v1.0](https://huggingface.co/lmsys/fastchat-t5-3b-v1.0): T5(3B) based Vicuna style instruction fine-tuned model on SharedGPT by [lm-sys](https://github.com/lm-sys/FastChat) 
+  - [LLMs/Stable-Vicuna-13B](https://huggingface.co/LLMs/Stable-Vicuna-13B): Stable Vicuna(13B) from Carpel AI and Stability AI. This is not a delta weight, so use it at your own risk. I will make this repo as private soon and add Hugging Face token field.
   
 ## Instructions
 

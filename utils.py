@@ -11,6 +11,7 @@ from pingpong.gradio import GradioStableLMChatPPManager
 from pingpong.gradio import GradioFlanAlpacaChatPPManager
 from pingpong.gradio import GradioOSStableLMChatPPManager
 from pingpong.gradio import GradioVicunaChatPPManager
+from pingpong.gradio import GradioStableVicunaChatPPManager
 
 def get_chat_interface(model_type):
     if model_type == "alpaca":
@@ -28,6 +29,8 @@ def get_chat_interface(model_type):
     elif model_type == "camel":
         return alpaca.chat_stream
     elif model_type == "t5-vicuna":
+        return vicuna.chat_stream
+    elif model_type == "stable-vicuna":
         return vicuna.chat_stream
     else:
         return None
@@ -49,5 +52,7 @@ def get_chat_manager(model_type):
         return GradioAlpacaChatPPManager()
     elif model_type == "t5-vicuna":
         return GradioVicunaChatPPManager()
+    elif model_type == "stable-vicuna":
+        return GradioStableVicunaChatPPManager()
     else:
         return None
