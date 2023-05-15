@@ -1,10 +1,11 @@
+torch
 bitsandbytes
 datasets
 loralib
 sentencepiece
 git+https://github.com/huggingface/transformers.git
 git+https://github.com/huggingface/peft.git
-gradio==3.20.0
+gradio
 bingbong
 git+https://github.com/huggingface/optimum.git
 tokenizers==0.13.3
