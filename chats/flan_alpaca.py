@@ -9,7 +9,16 @@ from pingpong.context import CtxLastWindowStrategy
 def build_prompts(ppmanager, user_message, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
     lws = CtxLastWindowStrategy(win_size)
-    
+
+    dummy_ppm.ctx = """Below are a series of dialogues between human and an AI assistant.
+The AI tries to answer the given instruction as in response.
+The AI MUST not generate any text containing `### Response` or `### Instruction`.
+The AI MUST be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable.
+The assistant MUST be happy to help with almost anything, and will do its best to understand exactly what is needed.
+It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
+That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
+"""
+
     prompt = lws(dummy_ppm)  
     return prompt
 
@@ -72,16 +81,16 @@ def chat_stream(
     yield "", ppm.build_uis(), prompt, state
     
     # summarization
-    ppm.add_pingpong(
-        PingPong(None, "![](https://i.postimg.cc/ZKNKDPBd/Vanilla-1s-209px.gif)")
-    )
-    yield "", ppm.build_uis(), prompt, state
-    ppm.pop_pingpong()
+    # ppm.add_pingpong(
+    #     PingPong(None, "![](https://i.postimg.cc/ZKNKDPBd/Vanilla-1s-209px.gif)")
+    # )
+    # yield "", ppm.build_uis(), prompt, state
+    # ppm.pop_pingpong()
     
-    ppm = summarize(
-        ppm, ctx_sum_prompt, ctx_num_lconv,
-        sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, 
-        sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
-    )
+    # ppm = summarize(
+    #     ppm, ctx_sum_prompt, ctx_num_lconv,
+    #     sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, 
+    #     sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+    # )
     state["ppmanager"] = ppm
     yield "", ppm.build_uis(), prompt, state
