@@ -44,7 +44,15 @@ MODEL_SELECTION_CSS = """
   overflow: hidden;
 }
 
-#20b-placeholder1, #20b-placeholder2, #20b-placeholder3 {
+#30b-placeholder1, #30b-placeholder2, #30b-placeholder3, #30b-placeholder4 {
+  background: red;
+  box-shadow: none;
+  pointer-events: none;
+  width: 100px;
+  height: 100px;
+}
+
+#20b-placeholder1, #20b-placeholder2, #20b-placeholder3, #20b-placeholder4 {
   background: red;
   box-shadow: none;
   pointer-events: none;
@@ -60,7 +68,7 @@ MODEL_SELECTION_CSS = """
   height: 100px;  
 }
 
-#camel-5b {
+#camel-5b, #camel-20b {
   background: url(https://i.ibb.co/qD5HN9T/camel-removebg-preview.png);
   background-repeat: no-repeat;
   background-size: 100px 100px;
@@ -152,6 +160,42 @@ MODEL_SELECTION_CSS = """
 
 #stable-vicuna-13b {
   background: url(https://i.ibb.co/b6Vv6Jh/sv.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;  
+}
+
+#starchat-15b { 
+  background: url(https://i.ibb.co/QjPP0Vv/starcoder.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;    
+}
+
+#redpajama-7b {
+  background: url(https://i.ibb.co/JdqqDtq/Red-Pajama.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+}
+
+#mpt-7b {
+  background: url(https://i.ibb.co/DwN44Z9/mpt.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+}
+
+#vicuna-7b {
+  background: url(https://i.ibb.co/vqPDrPQ/vicuna.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
   color: transparent;  

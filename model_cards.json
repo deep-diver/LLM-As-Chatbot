@@ -15,6 +15,22 @@
         "hub(base)": "Writer/camel-5b-hf",
         "hub(ckpt)": "N/A"
     },
+    "mpt-7b": {
+        "category": "<10B",
+        "display_name": "MPT",
+        "thumb": "https://i.ibb.co/DwN44Z9/mpt.png",
+        "parameters": "7 Billion",
+        "hub(base)": "mosaicml/mpt-7b-chat",
+        "hub(ckpt)": "N/A"
+    },
+    "redpajama-7b": {
+        "category": "<10B",
+        "display_name": "RedPajama",
+        "thumb": "https://i.ibb.co/JdqqDtq/Red-Pajama.png",
+        "parameters": "7 Billion",
+        "hub(base)": "togethercomputer/RedPajama-INCITE-Chat-7B-v0.1",
+        "hub(ckpt)": "N/A"
+    },    
     "alpaca-lora-7b": {
         "category": "<10B",
         "display_name": "Alpaca-LoRA",
@@ -79,6 +95,14 @@
         "hub(base)": "elinas/llama-7b-hf-transformers-4.29",
         "hub(ckpt)": "LLMs/AlpacaGPT4-LoRA-7B-elina"
     },
+    "vicuna-7b": {
+        "category": "<20B",
+        "display_name": "Vicuna",
+        "thumb": "https://i.ibb.co/vqPDrPQ/vicuna.png",
+        "parameters": "7 Billion",
+        "hub(base)": "LLMs/Vicuna-7b-v1.1",
+        "hub(ckpt)": "N/A"        
+    },    
     "gpt4-alpaca-13b": {
         "category": "<20B",
         "display_name": "GPT4-Alpaca-LoRA",
@@ -101,8 +125,24 @@
         "thumb": "https://i.ibb.co/b6Vv6Jh/sv.png",
         "parameters": "13 Billion",
         "hub(base)": "LLMs/Stable-Vicuna-13B",
-        "hub(ckpt)": "N/A"        
+        "hub(ckpt)": "N/A"
     },
+    "camel-20b": {
+        "category": "<30B",
+        "display_name": "Camel",
+        "thumb": "https://i.ibb.co/qD5HN9T/camel-removebg-preview.png",
+        "parameters": "20 Billion",
+        "hub(base)": "Writer/camel-20b",
+        "hub(ckpt)": "N/A"
+    },
+    "starchat-15b": {
+        "category": "<20B",
+        "display_name": "StarChat",
+        "thumb": "https://i.ibb.co/QjPP0Vv/starcoder.png",
+        "parameters": "15.5 Billion",
+        "hub(base)": "HuggingFaceH4/starchat-alpha",
+        "hub(ckpt)": "N/A"
+    },    
     "20b-placeholder1": {
         "category": "<20B",
         "display_name": "Flan-XXL",
