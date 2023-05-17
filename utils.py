@@ -46,7 +46,11 @@ def get_chat_interface(model_type):
     elif model_type == "redpajama":
         return redpajama.chat_stream
     elif model_type == "vicuna":
-        return vicuna.chat_stream    
+        return vicuna.chat_stream
+    elif model_type == "llama-deus":
+        return alpaca.chat_stream
+    elif model_type == "evolinstruct-vicuna":
+        return vicuna.chat_stream
     else:
         return None
 
@@ -77,5 +81,9 @@ def get_chat_manager(model_type):
         return GradioMPTChatPPManager()
     elif model_type == "redpajama":
         return GradioRedPajamaChatPPManager()
+    elif model_type == "llama-deus":
+        return GradioAlpacaChatPPManager()
+    elif model_type == "evolinstruct-vicuna":
+        return GradioVicunaChatPPManager()
     else:
         return None

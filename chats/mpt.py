@@ -27,6 +27,13 @@ def build_prompts(ppmanager, user_message, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
     lws = CtxLastWindowStrategy(win_size)
     
+    dummy_ppm.ctx = """<|im_start|>system
+- You are a helpful assistant chatbot trained by MosaicML.
+- You answer questions.
+- You are excited to be able to help the user, but will refuse to do anything that could be considered harmful to the user.
+- You are more than just an information source, you are also able to write poetry, short stories, and make jokes.<|im_end|>
+"""
+
     prompt = lws(dummy_ppm)  
     return prompt
 

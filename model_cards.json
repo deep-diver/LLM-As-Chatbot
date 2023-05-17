@@ -26,7 +26,7 @@
     "redpajama-7b": {
         "category": "<10B",
         "display_name": "RedPajama",
-        "thumb": "https://i.ibb.co/JdqqDtq/Red-Pajama.png",
+        "thumb": "https://i.ibb.co/NNB6qPj/redpajama.png",
         "parameters": "7 Billion",
         "hub(base)": "togethercomputer/RedPajama-INCITE-Chat-7B-v0.1",
         "hub(ckpt)": "N/A"
@@ -96,11 +96,19 @@
         "hub(ckpt)": "LLMs/AlpacaGPT4-LoRA-7B-elina"
     },
     "vicuna-7b": {
-        "category": "<20B",
+        "category": "<10B",
         "display_name": "Vicuna",
         "thumb": "https://i.ibb.co/vqPDrPQ/vicuna.png",
         "parameters": "7 Billion",
         "hub(base)": "LLMs/Vicuna-7b-v1.1",
+        "hub(ckpt)": "N/A"        
+    },
+    "vicuna-13b": {
+        "category": "<20B",
+        "display_name": "Vicuna",
+        "thumb": "https://i.ibb.co/vqPDrPQ/vicuna.png",
+        "parameters": "13 Billion",
+        "hub(base)": "LLMs/Vicuna-13b-v1.1",
         "hub(ckpt)": "N/A"        
     },    
     "gpt4-alpaca-13b": {
@@ -142,6 +150,30 @@
         "parameters": "15.5 Billion",
         "hub(base)": "HuggingFaceH4/starchat-alpha",
         "hub(ckpt)": "N/A"
+    },
+    "llama-deus-7b": {
+        "category": "<10B",
+        "display_name": "LLaMA Deus",        
+        "thumb": "https://i.ibb.co/4mH9LRQ/llama-deus.png",
+        "parameters": "7 Billion",
+        "hub(base)": "elinas/llama-7b-hf-transformers-4.29",
+        "hub(ckpt)": "teknium/llama-deus-7b-v3-lora"
+    },
+    "evolinstruct-vicuna-7b": {
+        "category": "<10B",
+        "display_name": "EvolInstruct Vicuna",        
+        "thumb": "https://i.ibb.co/xHDRjLS/evol-vicuna.png",
+        "parameters": "7 Billion",
+        "hub(base)": "elinas/llama-7b-hf-transformers-4.29",
+        "hub(ckpt)": "LLMs/Vicuna-EvolInstruct-7B"
+    },
+    "evolinstruct-vicuna-13b": {
+        "category": "<20B",
+        "display_name": "EvolInstruct Vicuna",        
+        "thumb": "https://i.ibb.co/xHDRjLS/evol-vicuna.png",
+        "parameters": "13 Billion",
+        "hub(base)": "elinas/llama-13b-hf-transformers-4.29",
+        "hub(ckpt)": "LLMs/Vicuna-EvolInstruct-13B"
     },    
     "20b-placeholder1": {
         "category": "<20B",

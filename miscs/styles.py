@@ -177,7 +177,7 @@ MODEL_SELECTION_CSS = """
 }
 
 #redpajama-7b {
-  background: url(https://i.ibb.co/JdqqDtq/Red-Pajama.png);
+  background: url(https://i.ibb.co/NNB6qPj/redpajama.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
   color: transparent;  
@@ -194,13 +194,31 @@ MODEL_SELECTION_CSS = """
   height: 100px;
 }
 
-#vicuna-7b {
+#vicuna-7b, #vicuna-13b {
   background: url(https://i.ibb.co/vqPDrPQ/vicuna.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
   color: transparent;  
   width: 100px;
   height: 100px;  
+}
+
+#llama-deus-7b {
+  background: url(https://i.ibb.co/4mH9LRQ/llama-deus.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+}
+
+#evolinstruct-vicuna-7b, #evolinstruct-vicuna-13b {
+  background: url(https://i.ibb.co/xHDRjLS/evol-vicuna.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
 }
 
 """

@@ -35,6 +35,10 @@ def initialize_globals(args):
         model_type = "alpaca-gpt4"
     elif "alpaca" in args.ft_ckpt_url.lower():
         model_type = "alpaca"
+    elif "llama-deus" in args.ft_ckpt_url.lower():
+        model_type = "llama-deus"
+    elif "vicuna-evolinstruct" in args.ft_ckpt_url.lower():
+        model_type = "evolinstruct-vicuna"
     else:
         print("unsupported model type")
         quit()
@@ -54,7 +58,9 @@ def initialize_globals(args):
     stream_model = model
         
 def get_load_model(model_type):
-    if model_type == "alpaca" or model_type == "alpaca-gpt4":
+    if model_type == "alpaca" or \
+        model_type == "alpaca-gpt4" or \
+        model_type == "llama-deus":
         return alpaca.load_model
     elif model_type == "stablelm" or model_type == "os-stablelm":
         return stablelm.load_model
@@ -74,7 +80,8 @@ def get_load_model(model_type):
         return mpt.load_model
     elif model_type == "redpajama":
         return redpajama.load_model
-    elif model_type == "vicuna":
+    elif model_type == "vicuna" or \
+        model_type == "evolinstruct-vicuna":
         return vicuna.load_model
     else:
         return None

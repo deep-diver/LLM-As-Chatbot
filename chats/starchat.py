@@ -10,6 +10,8 @@ def build_prompts(ppmanager, user_message, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
     lws = CtxLastWindowStrategy(win_size)
     
+    dummy_ppm.ctx = "Below is a conversation between a human user and a helpful AI coding assistant."
+
     prompt = lws(dummy_ppm)  
     return prompt
 
@@ -72,16 +74,16 @@ def chat_stream(
     yield "", ppm.build_uis(), prompt, state
     
     # summarization
-    ppm.add_pingpong(
-        PingPong(None, "![](https://i.postimg.cc/ZKNKDPBd/Vanilla-1s-209px.gif)")
-    )
-    yield "", ppm.build_uis(), prompt, state
-    ppm.pop_pingpong()
+    # ppm.add_pingpong(
+    #     PingPong(None, "![](https://i.postimg.cc/ZKNKDPBd/Vanilla-1s-209px.gif)")
+    # )
+    # yield "", ppm.build_uis(), prompt, state
+    # ppm.pop_pingpong()
     
-    ppm = summarize(
-        ppm, ctx_sum_prompt, ctx_num_lconv,
-        sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, 
-        sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
-    )
+    # ppm = summarize(
+    #     ppm, ctx_sum_prompt, ctx_num_lconv,
+    #     sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, 
+    #     sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+    # )
     state["ppmanager"] = ppm
     yield "", ppm.build_uis(), prompt, state
