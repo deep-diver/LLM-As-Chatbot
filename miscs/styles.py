@@ -7,8 +7,12 @@ PARENT_BLOCK_CSS = """
 }
 
 #chatbot {
-    height: 520px; 
+    height: 800px; 
     overflow: auto;
+}
+
+#chatbot > .wrap {
+    max-height: 780px;
 }
 """
 
@@ -21,8 +25,12 @@ MODEL_SELECTION_CSS = """
 }
 
 #chatbot {
-    height: 520px; 
+    height: 800px; 
     overflow: auto;
+}
+
+#chatbot > .wrap {
+    max-height: 780px;
 }
 
 #container {
@@ -219,6 +227,15 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+}
+
+#alpacoom-7b {
+  background: url(https://huggingface.co/mrm8488/Alpacoom/resolve/main/alpacoom_logo__1___1___1_-removebg-preview.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;  
 }
 
 """

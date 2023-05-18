@@ -8,6 +8,7 @@ from chats import flan_alpaca
 from chats import starchat
 from chats import redpajama
 from chats import mpt
+from chats import alpacoom
 
 from pingpong.gradio import GradioAlpacaChatPPManager
 from pingpong.gradio import GradioKoAlpacaChatPPManager
@@ -51,6 +52,8 @@ def get_chat_interface(model_type):
         return alpaca.chat_stream
     elif model_type == "evolinstruct-vicuna":
         return vicuna.chat_stream
+    elif model_type == "alpacoom":
+        return alpacoom.chat_stream
     else:
         return None
 
@@ -85,5 +88,7 @@ def get_chat_manager(model_type):
         return GradioAlpacaChatPPManager()
     elif model_type == "evolinstruct-vicuna":
         return GradioVicunaChatPPManager()
+    elif model_type == "alpacoom":
+        return GradioAlpacaChatPPManager()
     else:
         return None

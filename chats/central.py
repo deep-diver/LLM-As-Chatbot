@@ -7,6 +7,7 @@ from chats import vicuna
 from chats import starchat
 from chats import redpajama
 from chats import mpt
+from chats import alpacoom
 
 def chat_stream(
     user_message, state,
@@ -39,6 +40,14 @@ def chat_stream(
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
             sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
         )
+
+    elif model_type == "alpacoom":
+        cs = alpacoom.chat_stream(
+            user_message, state,
+            ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+        )        
 
     elif model_type == "llama-deus":
         cs = alpaca.chat_stream(

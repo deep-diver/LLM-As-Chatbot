@@ -157,13 +157,17 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
             evolinstruct_vicuna_7b = gr.Button("evolinstruct-vicuna-7b", elem_id="evolinstruct-vicuna-7b",elem_classes=["square"])
             gr.Markdown("EvolInstruct Vicuna", elem_classes=["center"])
 
+          with gr.Column(min_width=20):
+            alpacoom_7b = gr.Button("alpacoom-7b", elem_id="alpacoom-7b",elem_classes=["square"])
+            gr.Markdown("Alpacoom", elem_classes=["center"])
+
           # with gr.Column(min_width=20):
           #   _ = gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
           #   gr.Markdown("", elem_classes=["center"])
 
-          with gr.Column(min_width=20):
-            _ = gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
-            gr.Markdown("", elem_classes=["center"])
+          # with gr.Column(min_width=20):
+          #   _ = gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
+          #   gr.Markdown("", elem_classes=["center"])
 
           with gr.Column(min_width=20):
             _ = gr.Button("", elem_id="10b-placeholder3",elem_classes=["square"])
@@ -351,7 +355,7 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
   btns = [
     t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
     gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, 
-    llama_deus_7b, evolinstruct_vicuna_7b,
+    llama_deus_7b, evolinstruct_vicuna_7b, alpacoom_7b,
     flan11b, koalpaca, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
     starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b,
     camel20b

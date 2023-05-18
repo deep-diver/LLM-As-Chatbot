@@ -165,7 +165,7 @@
         "thumb": "https://i.ibb.co/xHDRjLS/evol-vicuna.png",
         "parameters": "7 Billion",
         "hub(base)": "elinas/llama-7b-hf-transformers-4.29",
-        "hub(ckpt)": "LLMs/Vicuna-EvolInstruct-7B"
+        "hub(ckpt)": "LLMs/Vicuna-LoRA-EvolInstruct-7B"
     },
     "evolinstruct-vicuna-13b": {
         "category": "<20B",
@@ -173,7 +173,15 @@
         "thumb": "https://i.ibb.co/xHDRjLS/evol-vicuna.png",
         "parameters": "13 Billion",
         "hub(base)": "elinas/llama-13b-hf-transformers-4.29",
-        "hub(ckpt)": "LLMs/Vicuna-EvolInstruct-13B"
+        "hub(ckpt)": "LLMs/Vicuna-LoRA-EvolInstruct-13B"
+    },
+    "alpacoom-7b": {
+        "category": "<10B",
+        "display_name": "Alpacoom",        
+        "thumb": "https://huggingface.co/mrm8488/Alpacoom/resolve/main/alpacoom_logo__1___1___1_-removebg-preview.png",
+        "parameters": "7 Billion",
+        "hub(base)": "bigscience/bloom-7b1",
+        "hub(ckpt)": "mrm8488/Alpacoom"
     },    
     "20b-placeholder1": {
         "category": "<20B",

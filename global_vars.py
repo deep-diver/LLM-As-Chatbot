@@ -1,7 +1,7 @@
 import yaml
 from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
-from models import camel, t5_vicuna, vicuna, starchat, redpajama
+from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
 
 def initialize_globals(args):
     global model, model_type, stream_model, tokenizer
@@ -37,13 +37,25 @@ def initialize_globals(args):
         model_type = "alpaca"
     elif "llama-deus" in args.ft_ckpt_url.lower():
         model_type = "llama-deus"
-    elif "vicuna-evolinstruct" in args.ft_ckpt_url.lower():
+    elif "vicuna-lora-evolinstruct" in args.ft_ckpt_url.lower():
         model_type = "evolinstruct-vicuna"
+    elif "alpacoom" in args.ft_ckpt_url.lower():
+        model_type = "alpacoom"
     else:
         print("unsupported model type")
         quit()
 
     print(f"determined model type: {model_type}")        
+
+    try:
+        if model is not None:
+            del model
+
+        if tokenizer is not None:
+            del tokenizer
+    except NameError:
+        pass
+
     load_model = get_load_model(model_type)
     model, tokenizer = load_model(
         base=args.base_url,
@@ -80,9 +92,12 @@ def get_load_model(model_type):
         return mpt.load_model
     elif model_type == "redpajama":
         return redpajama.load_model
-    elif model_type == "vicuna" or \
-        model_type == "evolinstruct-vicuna":
+    elif model_type == "vicuna":
         return vicuna.load_model
+    elif model_type == "evolinstruct-vicuna":
+        return alpaca.load_model
+    elif model_type == "alpacoom":
+        return bloom.load_model
     else:
         return None
     
