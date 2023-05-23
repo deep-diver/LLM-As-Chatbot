@@ -8,44 +8,44 @@ def initialize_globals(args):
     global gen_config, gen_config_raw    
     global gen_config_summarization
     
-    model_type = "alpaca"
+    model_type_tmp = "alpaca"
     if "vicuna" in args.base_url.lower():
-        model_type = "vicuna"
+        model_type_tmp = "vicuna"
     elif "mpt" in args.base_url.lower():
-        model_type = "mpt"
+        model_type_tmp = "mpt"
     elif "redpajama" in args.base_url.lower():
-        model_type = "redpajama"
+        model_type_tmp = "redpajama"
     elif "starchat" in args.base_url.lower():
-        model_type = "starchat"
+        model_type_tmp = "starchat"
     elif "camel" in args.base_url.lower():
-        model_type = "camel"
+        model_type_tmp = "camel"
     elif "flan-alpaca" in args.base_url.lower():
-        model_type = "flan-alpaca"
+        model_type_tmp = "flan-alpaca"
     elif "openassistant/stablelm" in args.base_url.lower():
-        model_type = "os-stablelm"
+        model_type_tmp = "os-stablelm"
     elif "stablelm" in args.base_url.lower():
-        model_type = "stablelm"
+        model_type_tmp = "stablelm"
     elif "fastchat-t5" in args.base_url.lower():
-        model_type = "t5-vicuna"
+        model_type_tmp = "t5-vicuna"
     elif "koalpaca-polyglot" in args.base_url.lower():
-        model_type = "koalpaca-polyglot"
+        model_type_tmp = "koalpaca-polyglot"
     elif "stable-vicuna" in args.base_url.lower():
-        model_type = "stable-vicuna"
+        model_type_tmp = "stable-vicuna"
     elif "alpacagpt4" in args.ft_ckpt_url.lower():
-        model_type = "alpaca-gpt4"
+        model_type_tmp = "alpaca-gpt4"
     elif "alpaca" in args.ft_ckpt_url.lower():
-        model_type = "alpaca"
+        model_type_tmp = "alpaca"
     elif "llama-deus" in args.ft_ckpt_url.lower():
-        model_type = "llama-deus"
+        model_type_tmp = "llama-deus"
     elif "vicuna-lora-evolinstruct" in args.ft_ckpt_url.lower():
-        model_type = "evolinstruct-vicuna"
+        model_type_tmp = "evolinstruct-vicuna"
     elif "alpacoom" in args.ft_ckpt_url.lower():
-        model_type = "alpacoom"
+        model_type_tmp = "alpacoom"
     else:
         print("unsupported model type")
         quit()
 
-    print(f"determined model type: {model_type}")        
+    print(f"determined model type: {model_type_tmp}")        
 
     try:
         if model is not None:
@@ -56,7 +56,7 @@ def initialize_globals(args):
     except NameError:
         pass
 
-    load_model = get_load_model(model_type)
+    load_model = get_load_model(model_type_tmp)
     model, tokenizer = load_model(
         base=args.base_url,
         finetuned=args.ft_ckpt_url,
@@ -66,7 +66,7 @@ def initialize_globals(args):
         
     gen_config, gen_config_raw = get_generation_config(args.gen_config_path)
     gen_config_summarization, _ = get_generation_config(args.gen_config_summarization_path)
-    
+    model_type = model_type_tmp
     stream_model = model
         
 def get_load_model(model_type):

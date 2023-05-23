@@ -17,6 +17,159 @@ PARENT_BLOCK_CSS = """
 """
 
 MODEL_SELECTION_CSS = """
+.custom-btn {
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    display: block !important;
+    text-align: left !important;
+}
+.custom-btn:hover {
+    background: rgb(243 244 246) !important;
+}
+
+.custom-btn-highlight {
+    border: none !important;
+    background: rgb(243 244 246) !important;
+    box-shadow: none !important;
+    display: block !important;
+    text-align: left !important;
+}
+
+#prompt-txt > label > span {
+    display: none !important;
+}
+#prompt-txt > label > textarea {
+    border: transparent;
+    border-radius: 20px;
+}
+#chatbot {
+    height: 800px; 
+    overflow: auto;
+    box-shadow: none !important;
+    border: none !important;
+}
+#chatbot > .wrap {
+    max-height: 780px;
+}
+#chatbot + div {
+  border-radius: 35px !important;
+  width: 80% !important;
+  margin: auto !important;  
+}
+
+#left-pane {
+    background-color: #f9fafb;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+#left-top {
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: large;    
+}
+
+#chat-history-accordion {
+    background: transparent;
+    border: 0.8px !important;  
+}
+
+#right-pane {
+  margin-left: 20px;
+  margin-right: 70px;
+  background: white;
+  border-radius: 20px;  
+}
+
+#initial-popup {
+    z-index: 100;
+    position: absolute;
+    width: 50%;
+    top: 50%;
+    height: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 35px;
+    padding: 15px;
+}
+
+#initial-popup-title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;    
+}
+
+#initial-popup-left-pane {
+    min-width: 150px !important;
+}
+
+#initial-popup-right-pane {
+    text-align: right;
+}
+
+.example-btn {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    background: linear-gradient(to bottom right, #f7faff, #ffffff) !important;
+    box-shadow: none !important;
+    border-radius: 20px !important;
+}
+
+.example-btn:hover {
+    box-shadow: 0.3px 0.3px 0.3px gray !important;
+}
+
+#example-title {
+  margin-bottom: 15px;
+}
+
+#aux-btns-popup {
+    z-index: 200;
+    position: absolute !important;
+    bottom: 75px !important;
+    right: 15px !important;
+}
+
+#aux-btns-popup > div {
+    flex-wrap: nowrap;
+    width: auto;
+    margin: auto;  
+}
+
+.aux-btn {
+    height: 30px !important;
+    flex-wrap: initial !important;
+    flex: none !important;
+    min-width: min(100px,100%) !important;
+    font-weight: unset !important;
+    font-size: 10pt !important;
+
+    background: linear-gradient(to bottom right, #f7faff, #ffffff) !important;
+    box-shadow: none !important;
+    border-radius: 20px !important;
+    
+    opacity: 0.5;
+    border-width: 0.5px;
+    border-color: grey;    
+}
+
+.aux-btn:hover {
+    opacity: 1.0;
+    box-shadow: 0.3px 0.3px 0.3px gray !important;
+}
+
+
+
+
+
+
+
+
 #col-container {
     width: 100%; 
     height: 100%;
@@ -24,14 +177,6 @@ MODEL_SELECTION_CSS = """
     margin-right: auto;
 }
 
-#chatbot {
-    height: 800px; 
-    overflow: auto;
-}
-
-#chatbot > .wrap {
-    max-height: 780px;
-}
 
 #container {
   width: 600px;

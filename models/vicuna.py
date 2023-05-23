@@ -13,5 +13,5 @@ def load_model(base, finetuned, multi_gpu, force_download_ckpt):
     if multi_gpu:
         model.half()
 
-    model = BetterTransformer.transform(model)
+    # model = BetterTransformer.transform(model)
     return model, tokenizer

@@ -8,9 +8,6 @@ def parse_args():
         "--base-url",
         help="Hugging Face Hub URL",
         default="elinas/llama-7b-hf-transformers-4.29",
-        # default="decapoda-research/llama-7b-hf",
-        # default="stabilityai/stablelm-tuned-alpha-7b",
-        # default="beomi/KoAlpaca-Polyglot-12.8B",
         type=str,
     )
     parser.add_argument(
@@ -26,12 +23,6 @@ def parse_args():
         default=6006,
         type=int,
     )
-    # parser.add_argument(
-    #     "--batch-size",
-    #     help="Number of requests to handle at the same time",
-    #     default=1,
-    #     type=int
-    # )        
     parser.add_argument(
         "--share",
         help="Create and share temporary endpoint (useful in Colab env)",
@@ -49,16 +40,8 @@ def parse_args():
         "--gen-config-summarization-path",
         help="path to GenerationConfig file used in context summarization",
         default="configs/summarization_configs/default.yaml",
-        # default="configs/gen_config_summarization_koalpaca.yaml",
-        # default="configs/gen_config_summarization_stablelm.yaml",
         type=str
     )
-    # parser.add_argument(
-    #     "--get-constraints-config-path",
-    #     help="path to ConstraintsConfig file used to constraint user inputs",
-    #     default="configs/constraints_config.yaml",
-    #     type=str
-    # )
     parser.add_argument(
         "--multi-gpu",
         help="Enable multi gpu mode. This will force not to use Int8 but float16, so you need to check if your system has enough GPU memory",

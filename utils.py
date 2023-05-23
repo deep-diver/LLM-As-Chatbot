@@ -59,7 +59,7 @@ def get_chat_interface(model_type):
 
 def get_chat_manager(model_type):
     if model_type == "alpaca":
-        return GradioAlpacaChatPPManager()
+        return GradioAlpacaChatPPManager
     elif model_type == "alpaca-gpt4":
         return GradioAlpacaChatPPManager()
     elif model_type == "stablelm":

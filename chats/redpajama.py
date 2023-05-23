@@ -1,4 +1,5 @@
 import copy
+import json
 import global_vars
 from chats import pre, post
 from pingpong import PingPong
@@ -42,19 +43,24 @@ def summarize(
     return ppmanager
 
 def chat_stream(
-    user_message, state,
+    idx, local_data, user_message, state,
     ctx_num_lconv, ctx_sum_prompt,
     res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
     sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
 ):
-    ppm = state["ppmanager"]
+    res = [
+      state["ppmanager_type"].from_json(json.dumps(ppm))
+      for ppm in local_data
+    ]
+
+    ppm = res[idx]
 
     # add_ping returns a prompt structured in Alpaca form
     ppm.add_pingpong(
         PingPong(user_message, "")
     )
     prompt = build_prompts(ppm, user_message, ctx_num_lconv)
-    
+
     # prepare text generating streamer & start generating
     gen_kwargs, streamer = pre.build(
         prompt,
@@ -66,22 +72,21 @@ def chat_stream(
 
     # handling stream
     for ppmanager, uis in text_stream(ppm, streamer):
-        yield "", uis, prompt, state
+        yield "", uis, str(res)
 
     ppm = post.strip_pong(ppm)
-    yield "", ppm.build_uis(), prompt, state
+    yield "", ppm.build_uis(), str(res)
     
     # summarization
-    ppm.add_pingpong(
-        PingPong(None, "![](https://i.postimg.cc/ZKNKDPBd/Vanilla-1s-209px.gif)")
-    )
-    yield "", ppm.build_uis(), prompt, state
-    ppm.pop_pingpong()
+    # ppm.add_pingpong(
+    #     PingPong(None, "![](https://i.postimg.cc/ZKNKDPBd/Vanilla-1s-209px.gif)")
+    # )
+    # yield "", ppm.build_uis(), prompt, state
+    # ppm.pop_pingpong()
     
-    ppm = summarize(
-        ppm, ctx_sum_prompt, ctx_num_lconv,
-        sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, 
-        sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
-    )
-    state["ppmanager"] = ppm
-    yield "", ppm.build_uis(), prompt, state
+    # ppm = summarize(
+    #     ppm, ctx_sum_prompt, ctx_num_lconv,
+    #     sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, 
+    #     sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+    # )
+    yield "", ppm.build_uis(), str(res)
