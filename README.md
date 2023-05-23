@@ -64,6 +64,16 @@ $ pip install -r requirements.txt
 $ python app.py
 ```
 
+## How to plugin your own model
+
+You need to follow the following steps to bring your own models in this project.
+
+1. Add your model spec in [`model_cards.json`](https://github.com/deep-diver/LLM-As-Chatbot/blob/main/model_cards.json). If you don't have thumnail image, just leave it as blank string(`""`).
+2. Add the button for your model in [`app.py`](https://github.com/deep-diver/LLM-As-Chatbot/blob/2efbb004a1989483cbdbd57a6d2b808f966f516a/app.py#L405). Don't forget to give it a name in the `gr.Button` and `gr.Markdown`. For placeholders, their names are omitted. Assign the `gr.Button` to a variable with the name of your choice.
+3. Add the button variable to the [button list](https://github.com/deep-diver/LLM-As-Chatbot/blob/2efbb004a1989483cbdbd57a6d2b808f966f516a/app.py#L559) in the `app.py`
+4. Determine the model type in [`global_vars.py`](https://github.com/deep-diver/LLM-As-Chatbot/blob/2efbb004a1989483cbdbd57a6d2b808f966f516a/global_vars.py#L12). If you think your model is similar to one of the existings, just add a filtering rules(`if-else`) and give it the same name. 
+5. (Optional) if your model is totally new one, you need to give a new `model_type` in `global_vars.py`, and make changes accordingly in `utils.py`, and `chats/central.py`. 
+
 ## Todos
 
 - [X] Gradio components to control the configurations of the generation
