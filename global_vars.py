@@ -2,6 +2,7 @@ import yaml
 from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
+from models import baize
 
 def initialize_globals(args):
     global model, model_type, stream_model, tokenizer
@@ -9,7 +10,9 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "vicuna" in args.base_url.lower():
+    if "baize" in args.base_url.lower():
+        model_type_tmp = "baize"
+    elif "vicuna" in args.base_url.lower():
         model_type_tmp = "vicuna"
     elif "mpt" in args.base_url.lower():
         model_type_tmp = "mpt"
@@ -98,6 +101,8 @@ def get_load_model(model_type):
         return alpaca.load_model
     elif model_type == "alpacoom":
         return bloom.load_model
+    elif model_type == "baize":
+        return baize.load_model
     else:
         return None
     

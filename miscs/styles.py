@@ -383,4 +383,13 @@ MODEL_SELECTION_CSS = """
   height: 100px;  
 }
 
+#baize-7b, #baize-13b {
+  background: url(https://i.ibb.co/j5VpHb0/baize.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+}
+
 """
