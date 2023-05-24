@@ -33,30 +33,12 @@ summarization_configs = [
 
 model_info = json.load(open("model_cards.json"))
 
-
 def channel_num(btn_title):
     choice = 0
 
-    if btn_title == "1st Channel":
-        choice = 0
-    elif btn_title == "2nd Channel":
-        choice = 1
-    elif btn_title == "3rd Channel":
-        choice = 2
-    elif btn_title == "4th Channel":
-        choice = 3
-    elif btn_title == "5th Channel":
-        choice = 4
-    elif btn_title == "6th Channel":
-        choice = 5
-    elif btn_title == "7th Channel":
-        choice = 6
-    elif btn_title == "8th Channel":
-        choice = 7
-    elif btn_title == "9th Channel":
-        choice = 8
-    elif btn_title == "10th Channel":
-        choice = 9
+    for idx, channel in enumerate(channels):
+        if channel == btn_title:
+            choice = idx
 
     return choice
 
@@ -527,6 +509,15 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
                         regenerate = gr.Button("Regenerate", interactive=False, elem_classes=["aux-btn"])
                         clean = gr.Button("Clean", elem_classes=["aux-btn"])
 
+                with gr.Accordion("Context Inspector", elem_id="aux-viewer", open=False):
+                    context_inspector = gr.Textbox(
+                        "",
+                        elem_id="aux-viewer-inspector",
+                        label="",
+                        lines=30,
+                        max_lines=50,
+                    )                        
+                        
                 chatbot = gr.Chatbot(elem_id='chatbot')
                 instruction_txtbox = gr.Textbox(
                     placeholder="Ask anything", label="",
@@ -647,7 +638,7 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
             ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
             sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid],
-            [instruction_txtbox, chatbot, local_data],
+            [instruction_txtbox, chatbot, context_inspector, local_data],
         )
         
         instruction_txtbox.submit(
@@ -665,7 +656,7 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
             ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
             sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid],
-            [instruction_txtbox, chatbot, local_data],            
+            [instruction_txtbox, chatbot, context_inspector, local_data],            
         ).then(
             lambda: gr.update(interactive=True),
             None,

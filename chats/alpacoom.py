@@ -74,10 +74,10 @@ def chat_stream(
 
     # handling stream
     for ppmanager, uis in text_stream(ppm, streamer):
-        yield "", uis, str(res)
+        yield "", uis, prompt, str(res)
 
     ppm = post.strip_pong(ppm)
-    yield "", ppm.build_uis(), str(res)
+    yield "", ppm.build_uis(), prompt, str(res)
     
     # summarization
     # ppm.add_pingpong(
@@ -91,4 +91,4 @@ def chat_stream(
     #     sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, 
     #     sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
     # )
-    yield "", ppm.build_uis(), str(res)
+    yield "", ppm.build_uis(), prompt, str(res)

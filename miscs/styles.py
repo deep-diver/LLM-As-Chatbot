@@ -163,7 +163,44 @@ MODEL_SELECTION_CSS = """
     box-shadow: 0.3px 0.3px 0.3px gray !important;
 }
 
+#aux-viewer {
+    position: absolute !important;
+    border-style: solid !important;
+    overflow: visible !important;
+    border: none !important;
+    box-shadow: none !important;
+    z-index: 1000 !important;
+    opacity: 0.0 !important;
+    width: 75% !important;
+    right: 1px !important; 
+    transition: all 0.5s;
+}
 
+#aux-viewer:hover {
+  opacity: 1.0 !important;
+  box-shadow: 0px 0.5px 0px 0px gray !important;
+}
+
+#aux-viewer > .label-wrap {
+  justify-content: end;
+}
+
+#aux-viewer > .label-wrap > span {
+  margin-right: 10px;
+}
+
+#aux-viewer-inspector {
+  padding: 0px;
+}
+
+#aux-viewer-inspector > label > span {
+  display: none !important;
+}
+
+#aux-viewer-inspector > label > textarea {
+  box-shadow: none;
+  border-color: transparent;
+}
 
 
 
