@@ -52,7 +52,7 @@ $ conda create -n llm-serve python=3.9
 $ conda activate llm-serve
 ```
 
-1. Install dependencies. `flash-attn` and `triton` are included to support `MPT` models, but it will take a long time to install them. If you don't want to use `MPT`, comment them out.
+1. Install dependencies. `flash-attn` and `triton` are included to support `MPT` models, If you don't want to use `MPT`, comment them out, otherwise you will face two `module not found errors`, then you will have to install `packaging` and `torch` packages while facing the errors.
 ```console
 $ cd LLM-As-Chatbot
 $ pip install -r requirements.txt
