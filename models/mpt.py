@@ -10,7 +10,7 @@ def load_model(base, finetuned, multi_gpu, force_download_ckpt):
         base,
         trust_remote_code=True
     )
-    config.attn_config['attn_impl'] = 'triton'
+    # config.attn_config['attn_impl'] = 'triton'
     model = AutoModelForCausalLM.from_pretrained(
         base, 
         # config=config,
