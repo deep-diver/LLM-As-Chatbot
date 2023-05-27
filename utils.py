@@ -9,6 +9,8 @@ from chats import starchat
 from chats import redpajama
 from chats import mpt
 from chats import alpacoom
+from chats import baize
+from chats import guanaco
 
 from pingpong.gradio import GradioAlpacaChatPPManager
 from pingpong.gradio import GradioKoAlpacaChatPPManager
@@ -20,13 +22,14 @@ from pingpong.gradio import GradioStableVicunaChatPPManager
 from pingpong.gradio import GradioStarChatPPManager
 from pingpong.gradio import GradioMPTChatPPManager
 from pingpong.gradio import GradioRedPajamaChatPPManager
+from pingpong.gradio import GradioBaizeChatPPManager
 
 from pingpong.pingpong import PPManager
 from pingpong.pingpong import PromptFmt
 from pingpong.pingpong import UIFmt
 from pingpong.gradio import GradioChatUIFmt
 
-class BaizePromptFmt(PromptFmt):
+class GuanacoPromptFmt(PromptFmt):
     @classmethod
     def ctx(cls, context):
         if context is None or context == "":
@@ -39,12 +42,12 @@ class BaizePromptFmt(PromptFmt):
     def prompt(cls, pingpong, truncate_size):
         ping = pingpong.ping[:truncate_size]
         pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
-        return f"""[|Human|]: {ping}
-[|AI|]: {pong}
+        return f"""### Human: {ping}
+### Assistant: {pong}
 """
   
-class BaizeChatPPManager(PPManager):
-    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=BaizePromptFmt, truncate_size: int=None):
+class GuanacoChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=GuanacoPromptFmt, truncate_size: int=None):
         if to_idx == -1 or to_idx >= len(self.pingpongs):
             to_idx = len(self.pingpongs)
             
@@ -55,7 +58,7 @@ class BaizeChatPPManager(PPManager):
             
         return results
 
-class GradioBaizeChatPPManager(BaizeChatPPManager):
+class GradioGuanacoChatPPManager(GuanacoChatPPManager):
     def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
         if to_idx == -1 or to_idx >= len(self.pingpongs):
             to_idx = len(self.pingpongs)
@@ -102,6 +105,8 @@ def get_chat_interface(model_type):
         return alpacoom.chat_stream
     elif model_type == "baize":
         return baize.chat_stream
+    elif model_type == "guanaco":
+        return guanaco.chat_stream
     else:
         return None
 
@@ -140,5 +145,7 @@ def get_chat_manager(model_type):
         return GradioAlpacaChatPPManager()
     elif model_type == "baize":
         return GradioBaizeChatPPManager()
+    elif model_type == "guanaco":
+        return GradioGuanacoChatPPManager()
     else:
         return None

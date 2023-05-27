@@ -279,6 +279,13 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
                         )
                         gr.Markdown("Baize", elem_classes=["center"])                        
                         
+                    with gr.Column(min_width=20):
+                        guanaco_7b = gr.Button(
+                            "guanaco-7b",
+                            elem_id="guanaco-7b",
+                            elem_classes=["square"],
+                        )
+                        gr.Markdown("Guanaco", elem_classes=["center"])  
                     # with gr.Column(min_width=20):
                     #   _ = gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
                     #   gr.Markdown("", elem_classes=["center"])
@@ -293,11 +300,11 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
                     #     )
                     #     gr.Markdown("", elem_classes=["center"])
 
-                    with gr.Column(min_width=20):
-                        _ = gr.Button(
-                            "", elem_id="10b-placeholder4", elem_classes=["square"]
-                        )
-                        gr.Markdown("", elem_classes=["center"])
+                    # with gr.Column(min_width=20):
+                    #     _ = gr.Button(
+                    #         "", elem_id="10b-placeholder4", elem_classes=["square"]
+                    #     )
+                    #     gr.Markdown("", elem_classes=["center"])
 
                     # with gr.Column(min_width=20):
                     #   stackllama7b = gr.Button("stackllama-7b", elem_id="stackllama-7b",elem_classes=["square"])
@@ -372,6 +379,14 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
                         )
                         gr.Markdown("Baize", elem_classes=["center"])                          
                         
+                    with gr.Column(min_width=20):
+                        guanaco_13b = gr.Button(
+                            "guanaco-13b",
+                            elem_id="guanaco-13b",
+                            elem_classes=["square"],
+                        )
+                        gr.Markdown("Guanaco", elem_classes=["center"])                          
+
                     # with gr.Column(min_width=20):
                     #   gr.Button("", elem_id="20b-placeholder1",elem_classes=["square"])
                     #   gr.Markdown("", elem_classes=["center"])
@@ -386,11 +401,11 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
                     #     )
                     #     gr.Markdown("", elem_classes=["center"])
 
-                    with gr.Column(min_width=20):
-                        gr.Button(
-                            "", elem_id="20b-placeholder4", elem_classes=["square"]
-                        )
-                        gr.Markdown("", elem_classes=["center"])
+                    # with gr.Column(min_width=20):
+                    #     gr.Button(
+                    #         "", elem_id="20b-placeholder4", elem_classes=["square"]
+                    #     )
+                    #     gr.Markdown("", elem_classes=["center"])
 
                 gr.Markdown("## < 30B")
                 with gr.Row():
@@ -566,9 +581,9 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
         btns = [
             t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
             gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, llama_deus_7b, 
-            evolinstruct_vicuna_7b, alpacoom_7b, baize_7b,
+            evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b,
             flan11b, koalpaca, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
-            starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, baize_13b,
+            starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, baize_13b, guanaco_13b,
             camel20b
         ]
         for btn in btns:

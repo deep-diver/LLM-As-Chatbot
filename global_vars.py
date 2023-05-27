@@ -2,7 +2,7 @@ import yaml
 from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
-from models import baize
+from models import baize, guanaco
 
 def initialize_globals(args):
     global model, model_type, stream_model, tokenizer
@@ -44,6 +44,8 @@ def initialize_globals(args):
         model_type_tmp = "evolinstruct-vicuna"
     elif "alpacoom" in args.ft_ckpt_url.lower():
         model_type_tmp = "alpacoom"
+    elif "guanaco" in args.ft_ckpt_url.lower():
+        model_type_tmp = "guanaco"
     else:
         print("unsupported model type")
         quit()
@@ -103,6 +105,8 @@ def get_load_model(model_type):
         return bloom.load_model
     elif model_type == "baize":
         return baize.load_model
+    elif model_type == "guanaco":
+        return guanaco.load_model
     else:
         return None
     

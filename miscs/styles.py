@@ -429,4 +429,13 @@ MODEL_SELECTION_CSS = """
   height: 100px;
 }
 
+#guanaco-7b, #guanaco-13b, #guanaco-33b, #guanaco-65b {
+  background: url(https://i.ibb.co/HF4n434/guanaco.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+}
+
 """
