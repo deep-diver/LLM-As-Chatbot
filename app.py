@@ -539,7 +539,7 @@ with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
                     elem_id="prompt-txt"
                 )
 
-        with gr.Accordion("Constrol Panel", open=False) as control_panel:
+        with gr.Accordion("Control Panel", open=False) as control_panel:
             with gr.Column():
                 with gr.Column():
                     gr.Markdown("#### GenConfig for **response** text generation")
