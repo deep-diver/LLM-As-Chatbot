@@ -706,7 +706,7 @@ def main(root_path):
             
     demo.queue().launch(
         server_port=6006, server_name="0.0.0.0", debug=True,
-        root_path=f"/{root_path}"
+        root_path=f"{root_path}"
     )
 
 if __name__ == "__main__":
