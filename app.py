@@ -211,43 +211,7 @@ def main(root_path):
                             )
                             gr.Markdown("StableLM", elem_classes=["center"])
     
-                    with gr.Row():
-                        with gr.Column(min_width=20):
-                            os_stablelm7b = gr.Button(
-                                "os-stablelm-7b",
-                                elem_id="os-stablelm-7b",
-                                elem_classes=["square"],
-                            )
-                            gr.Markdown("OS+StableLM", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            gpt4_alpaca_7b = gr.Button(
-                                "gpt4-alpaca-7b",
-                                elem_id="gpt4-alpaca-7b",
-                                elem_classes=["square"],
-                            )
-                            gr.Markdown("GPT4-Alpaca-LoRA", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            mpt_7b = gr.Button(
-                                "mpt-7b", elem_id="mpt-7b", elem_classes=["square"]
-                            )
-                            gr.Markdown("MPT", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            redpajama_7b = gr.Button(
-                                "redpajama-7b",
-                                elem_id="redpajama-7b",
-                                elem_classes=["square"],
-                            )
-                            gr.Markdown("RedPajama(7B)", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            vicuna_7b = gr.Button(
-                                "vicuna-7b", elem_id="vicuna-7b", elem_classes=["square"]
-                            )
-                            gr.Markdown("Vicuna", elem_classes=["center"])
-    
+                    
                     with gr.Row():
                         with gr.Column(min_width=20):
                             llama_deus_7b = gr.Button(
@@ -309,7 +273,7 @@ def main(root_path):
                         #     gr.Markdown("", elem_classes=["center"])
     
                         # with gr.Column(min_width=20):
-                        #   stackllama7b = gr.Button("stackllama-7b", elem_id="stackllama-7b",elem_classes=["square"])
+                        #   stackllama7b = gr.Button("stackllama-7b", elm_id="stackllama-7b",elem_classes=["square"])
                         #   gr.Markdown("StackLLaMA", elem_classes=["center"])
                     #
                     gr.Markdown("## < 20B")
