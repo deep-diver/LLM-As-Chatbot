@@ -23,7 +23,7 @@ def build_prompts(ppmanager, user_message, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
     lws = CtxLastWindowStrategy(win_size)
     
-    dummy_ppm.ctx = """A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.
+    dummy_ppm.ctx = """A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions in markdown format.
 """
 
     prompt = lws(dummy_ppm)  
