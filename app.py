@@ -173,6 +173,21 @@ def main(root_path):
             gr.Markdown("# Choose a Model", elem_classes=["center"])
             with gr.Row(elem_id="container"):
                 with gr.Column():
+                    gr.Markdown("## Custom")
+                    with gr.Row(elem_classes=["sub-container"]):
+                        with gr.Column(min_width=20):
+                            byom = gr.Button(
+                                "byom",
+                                elem_id="byom",
+                                elem_classes=["square"],
+                            )
+                            gr.Markdown("Bring Your Own Model", elem_classes=["center"])
+                        
+                        # for _ in range(8):
+                        #     with gr.Column(min_width=20, elem_classes=["placeholders"]):
+                        #       _ = gr.Button("" ,elem_classes=["square"])
+                        #       gr.Markdown("", elem_classes=["center"])                        
+                        
                     gr.Markdown("## < 10B")
                     with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):

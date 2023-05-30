@@ -216,11 +216,12 @@ MODEL_SELECTION_CSS = """
 
 
 #container {
+  max-width: 70%;
   margin: auto;
 }
 
 #container2 {
-  max-width: 70%;
+  max-width: 60%;
   margin: auto;  
 }
 
@@ -483,6 +484,16 @@ MODEL_SELECTION_CSS = """
 
 #falcon-7b, #falcon-40b {
   background: url(https://i.ibb.co/86yNWwG/falcon.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+#byom {
+  background: url(https://i.ibb.co/YhM4B2X/byom.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
   color: transparent;  
