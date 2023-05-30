@@ -220,8 +220,24 @@
         "display_name": "Guanaco",        
         "thumb": "https://i.ibb.co/HF4n434/guanaco.png",
         "parameters": "33 Billion",
-        "hub(base)": "decapoda-research/llama-33b-hf",
-        "hub(ckpt)": "timdettmers/guanaco-33b"
+        "hub(base)": "timdettmers/guanaco-33b-merged",
+        "hub(ckpt)": "N/A"
+    },
+    "falcon-7b": {
+        "category": "<10B",
+        "display_name": " Falcon",
+        "thumb": "https://i.ibb.co/86yNWwG/falcon.png",
+        "parameters": "7 Billion",
+        "hub(base)": "tiiuae/falcon-7b-instruct",
+        "hub(ckpt)": "N/A"
+    },
+    "falcon-40b": {
+        "category": "<40B",
+        "display_name": " Falcon",
+        "thumb": "https://i.ibb.co/86yNWwG/falcon.png",
+        "parameters": "40 Billion",
+        "hub(base)": "tiiuae/falcon-40b-instruct",
+        "hub(ckpt)": "N/A"
     },    
     "20b-placeholder1": {
         "category": "<20B",

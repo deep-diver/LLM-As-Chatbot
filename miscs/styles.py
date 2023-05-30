@@ -438,4 +438,12 @@ MODEL_SELECTION_CSS = """
   height: 100px;
 }
 
+#falcon-7b, #falcon-40b {
+  background: url(https://i.ibb.co/86yNWwG/falcon.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+}
 """

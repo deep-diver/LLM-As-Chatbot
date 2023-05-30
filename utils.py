@@ -11,6 +11,7 @@ from chats import mpt
 from chats import alpacoom
 from chats import baize
 from chats import guanaco
+from chats import falcon
 
 from pingpong.gradio import GradioAlpacaChatPPManager
 from pingpong.gradio import GradioKoAlpacaChatPPManager
@@ -107,12 +108,14 @@ def get_chat_interface(model_type):
         return baize.chat_stream
     elif model_type == "guanaco":
         return guanaco.chat_stream
+    elif model_type == "falcon":
+        return falcon.chat_stream
     else:
         return None
 
 def get_chat_manager(model_type):
     if model_type == "alpaca":
-        return GradioAlpacaChatPPManager
+        return GradioAlpacaChatPPManager()
     elif model_type == "alpaca-gpt4":
         return GradioAlpacaChatPPManager()
     elif model_type == "stablelm":
@@ -147,5 +150,7 @@ def get_chat_manager(model_type):
         return GradioBaizeChatPPManager()
     elif model_type == "guanaco":
         return GradioGuanacoChatPPManager()
+    elif model_type == "falcon":
+        return GradioAlpacaChatPPManager()
     else:
         return None

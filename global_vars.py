@@ -2,7 +2,7 @@ import yaml
 from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
-from models import baize, guanaco
+from models import baize, guanaco, falcon
 
 def initialize_globals(args):
     global model, model_type, stream_model, tokenizer
@@ -10,7 +10,11 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "baize" in args.base_url.lower():
+    if "guanaco" in args.base_url.lower():
+        model_type_tmp = "guanaco"
+    elif "falcon" in args.base_url.lower():
+        model_type_tmp = "falcon"
+    elif "baize" in args.base_url.lower():
         model_type_tmp = "baize"
     elif "vicuna" in args.base_url.lower():
         model_type_tmp = "vicuna"
@@ -107,6 +111,8 @@ def get_load_model(model_type):
         return baize.load_model
     elif model_type == "guanaco":
         return guanaco.load_model
+    elif model_type == "falcon":
+        return falcon.load_model
     else:
         return None
     

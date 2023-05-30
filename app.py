@@ -4,7 +4,7 @@ from os import listdir
 from os.path import isfile, join
 import argparse
 import gradio as gr
-import args
+import extra_args
 import global_vars
 from chats import central
 from transformers import AutoModelForCausalLM
@@ -89,7 +89,7 @@ def download_completed(
     force_download,
 ):
 
-    tmp_args = args.parse_args()
+    tmp_args = extra_args.parse_args()
     tmp_args.base_url = model_base.split(":")[-1].split("</p")[0].strip()
     tmp_args.ft_ckpt_url = model_ckpt.split(":")[-1].split("</p")[0].strip()
     tmp_args.gen_config_path = gen_config_path
@@ -288,25 +288,31 @@ def main(root_path):
                                 elem_classes=["square"],
                             )
                             gr.Markdown("Guanaco", elem_classes=["center"])  
-                        # with gr.Column(min_width=20):
-                        #   _ = gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
-                        #   gr.Markdown("", elem_classes=["center"])
+                            
+                    with gr.Row():
+                        with gr.Column(min_width=20):
+                            falcon_7b = gr.Button(
+                                "falcon-7b",
+                                elem_id="falcon-7b",
+                                elem_classes=["square"],
+                            )
+                            gr.Markdown("Falcon", elem_classes=["center"])    
+                            
+                        with gr.Column(min_width=20):
+                          _ = gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
+                          gr.Markdown("", elem_classes=["center"])
     
-                        # with gr.Column(min_width=20):
-                        #   _ = gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
-                        #   gr.Markdown("", elem_classes=["center"])
+                        with gr.Column(min_width=20):
+                          _ = gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
+                          gr.Markdown("", elem_classes=["center"])
     
-                        # with gr.Column(min_width=20):
-                        #     _ = gr.Button(
-                        #         "", elem_id="10b-placeholder3", elem_classes=["square"]
-                        #     )
-                        #     gr.Markdown("", elem_classes=["center"])
+                        with gr.Column(min_width=20):
+                            _ = gr.Button("", elem_id="10b-placeholder3", elem_classes=["square"])
+                            gr.Markdown("", elem_classes=["center"])
     
-                        # with gr.Column(min_width=20):
-                        #     _ = gr.Button(
-                        #         "", elem_id="10b-placeholder4", elem_classes=["square"]
-                        #     )
-                        #     gr.Markdown("", elem_classes=["center"])
+                        with gr.Column(min_width=20):
+                            _ = gr.Button("", elem_id="10b-placeholder4", elem_classes=["square"])
+                            gr.Markdown("", elem_classes=["center"])
     
                         # with gr.Column(min_width=20):
                         #   stackllama7b = gr.Button("stackllama-7b", elem_id="stackllama-7b",elem_classes=["square"])
@@ -440,7 +446,49 @@ def main(root_path):
                                 "", elem_id="30b-placeholder4", elem_classes=["square"]
                             )
                             gr.Markdown("", elem_classes=["center"])
+
+                    gr.Markdown("## < 40B")
+                    with gr.Row():
+                        with gr.Column(min_width=20):
+                            guanaco_33b = gr.Button(
+                                "guanaco-33b",
+                                elem_id="guanaco-33b",
+                                elem_classes=["square"],
+                            )
+                            gr.Markdown("Guanaco", elem_classes=["center"])                           
+                        
+                        with gr.Column(min_width=20):
+                            falcon_40b = gr.Button(
+                                "falcon-40b",
+                                elem_id="falcon-40b",
+                                elem_classes=["square"],
+                            )
+                            gr.Markdown("Falcon", elem_classes=["center"])
+                            
+                        # with gr.Column(min_width=20):
+                        #     gr.Button(
+                        #         "", elem_id="40b-placeholder1", elem_classes=["square"]
+                        #     )
+                        #     gr.Markdown("", elem_classes=["center"])
     
+                        with gr.Column(min_width=20):
+                            gr.Button(
+                                "", elem_id="40b-placeholder2", elem_classes=["square"]
+                            )
+                            gr.Markdown("", elem_classes=["center"])
+    
+                        with gr.Column(min_width=20):
+                            gr.Button(
+                                "", elem_id="40b-placeholder3", elem_classes=["square"]
+                            )
+                            gr.Markdown("", elem_classes=["center"])
+    
+                        with gr.Column(min_width=20):
+                            gr.Button(
+                                "", elem_id="40b-placeholder4", elem_classes=["square"]
+                            )
+                            gr.Markdown("", elem_classes=["center"])                            
+                            
                     progress_view = gr.Textbox(label="Progress")
     
         with gr.Column(visible=False) as model_review_view:
@@ -584,9 +632,11 @@ def main(root_path):
                 t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, llama_deus_7b, 
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b,
+                falcon_7b,
                 flan11b, koalpaca, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, baize_13b, guanaco_13b,
-                camel20b
+                camel20b,
+                guanaco_33b, falcon_40b,
             ]
             for btn in btns:
                 btn.click(

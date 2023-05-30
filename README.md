@@ -41,7 +41,10 @@ Different model might have different strategies to manage context, so if you wan
   - [project-baize/baize-v2-7b](https://huggingface.co/project-baize/baize-v2-7b): LLaMA 7B based Baize
   - [project-baize/baize-v2-13b](https://huggingface.co/project-baize/baize-v2-7b): LLaMA 13B based Baize
   - [timdettmers/guanaco-7b](https://huggingface.co/timdettmers/guanaco-7b): LLaMA 7B based Guanaco which is fine-tuned on OASST1 dataset with QLoRA techniques introduced in "QLoRA: Efficient Finetuning of Quantized LLMs" paper. 
-  - [timdettmers/guanaco-13b](https://huggingface.co/timdettmers/guanaco-13b): LLaMA 13B based Guanaco which is fine-tuned on OASST1 dataset with QLoRA techniques introduced in "QLoRA: Efficient Finetuning of Quantized LLMs" paper.   
+  - [timdettmers/guanaco-13b](https://huggingface.co/timdettmers/guanaco-13b): LLaMA 13B based Guanaco which is fine-tuned on OASST1 dataset with QLoRA techniques introduced in "QLoRA: Efficient Finetuning of Quantized LLMs" paper.
+  - [timdettmers/guanaco-33b-merged](https://huggingface.co/timdettmers/guanaco-33b-merged): LLaMA 30B based Guanaco which is fine-tuned on OASST1 dataset with QLoRA techniques introduced in "QLoRA: Efficient Finetuning of Quantized LLMs" paper.
+  - [tiiuae/falcon-7b-instruct](https://huggingface.co/tiiuae/falcon-7b-instruct): Falcon 7B based instruction fine-tuned model on Baize, GPT4All, GPTeacher, and RefinedWeb-English datasets.
+  - [tiiuae/falcon-40b-instruct](https://huggingface.co/tiiuae/falcon-40b-instruct): Falcon 40B based instruction fine-tuned model on Baize and RefinedWeb-English datasets.
 
 </details>
   
