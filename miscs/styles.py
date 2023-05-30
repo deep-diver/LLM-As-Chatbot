@@ -79,7 +79,7 @@ MODEL_SELECTION_CSS = """
 
 #right-pane {
   margin-left: 20px;
-  margin-right: 70px;
+  margin-right: 20px;
   background: white;
   border-radius: 20px;  
 }
@@ -137,7 +137,7 @@ MODEL_SELECTION_CSS = """
 
 #aux-btns-popup > div {
     flex-wrap: nowrap;
-    width: auto;
+    width: fit-content;
     margin: auto;  
 }
 
@@ -208,7 +208,7 @@ MODEL_SELECTION_CSS = """
 
 
 #col-container {
-    width: 100%; 
+    max-width: 70%; 
     height: 100%;
     margin-left: auto; 
     margin-right: auto;
@@ -216,17 +216,27 @@ MODEL_SELECTION_CSS = """
 
 
 #container {
-  width: 600px;
   margin: auto;
 }
 
 #container2 {
-  width: 600px;
+  max-width: 70%;
   margin: auto;  
 }
 
 .square {
   height: 100px;
+}
+
+.placeholders {
+  min-width: max-content !important;
+}
+
+.placeholders > button {
+  border-color: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  cursor: default !important;
 }
 
 .center {
@@ -240,6 +250,10 @@ MODEL_SELECTION_CSS = """
   pointer-events: none;
   width: 100px;
   height: 100px;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  cursor: default !important;
 }
 
 #20b-placeholder1, #20b-placeholder2, #20b-placeholder3, #20b-placeholder4 {
@@ -248,6 +262,11 @@ MODEL_SELECTION_CSS = """
   pointer-events: none;
   width: 100px;
   height: 100px;
+  margin: auto;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  cursor: default !important;
 }
 
 #10b-placeholder1, #10b-placeholder3, #10b-placeholder3, #10b-placeholder4 {
@@ -255,7 +274,12 @@ MODEL_SELECTION_CSS = """
   box-shadow: none;
   pointer-events: none;
   width: 100px;
-  height: 100px;  
+  height: 100px;
+  margin: auto;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  cursor: default !important;
 }
 
 #camel-5b, #camel-20b {
@@ -265,6 +289,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #alpaca-lora-7b, #alpaca-lora-13b {
@@ -274,6 +299,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #stablelm-7b {
@@ -283,6 +309,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #stackllama-7b {
@@ -292,6 +319,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #flan-3b, #flan-11b {
@@ -301,6 +329,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #koalpaca {
@@ -310,6 +339,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #flan-3b {
@@ -319,6 +349,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #os-stablelm-7b {
@@ -328,6 +359,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #t5-vicuna-3b {
@@ -337,6 +369,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #gpt4-alpaca-7b, #gpt4-alpaca-13b {
@@ -346,6 +379,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #stable-vicuna-13b {
@@ -363,7 +397,8 @@ MODEL_SELECTION_CSS = """
   background-size: 100px 95px;
   color: transparent;  
   width: 100px;
-  height: 100px;    
+  height: 100px;
+  margin: auto;
 }
 
 #redpajama-7b {
@@ -373,6 +408,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #mpt-7b {
@@ -382,6 +418,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #vicuna-7b, #vicuna-13b {
@@ -390,7 +427,8 @@ MODEL_SELECTION_CSS = """
   background-size: 100px 95px;
   color: transparent;  
   width: 100px;
-  height: 100px;  
+  height: 100px;
+  margin: auto;
 }
 
 #llama-deus-7b {
@@ -400,6 +438,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;  
 }
 
 #evolinstruct-vicuna-7b, #evolinstruct-vicuna-13b {
@@ -409,6 +448,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #alpacoom-7b {
@@ -417,7 +457,8 @@ MODEL_SELECTION_CSS = """
   background-size: 100px 95px;
   color: transparent;  
   width: 100px;
-  height: 100px;  
+  height: 100px;
+  margin: auto;
 }
 
 #baize-7b, #baize-13b {
@@ -427,6 +468,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #guanaco-7b, #guanaco-13b, #guanaco-33b, #guanaco-65b {
@@ -436,6 +478,7 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
 }
 
 #falcon-7b, #falcon-40b {
@@ -445,5 +488,10 @@ MODEL_SELECTION_CSS = """
   color: transparent;  
   width: 100px;
   height: 100px;
+  margin: auto;
+}
+
+.sub-container > div {
+  min-width: max-content !important;
 }
 """

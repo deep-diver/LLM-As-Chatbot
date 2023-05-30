@@ -174,7 +174,7 @@ def main(root_path):
             with gr.Row(elem_id="container"):
                 with gr.Column():
                     gr.Markdown("## < 10B")
-                    with gr.Row():
+                    with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
                             t5_vicuna_3b = gr.Button(
                                 "t5-vicuna-3b",
@@ -211,7 +211,6 @@ def main(root_path):
                             )
                             gr.Markdown("StableLM", elem_classes=["center"])
     
-                    with gr.Row():
                         with gr.Column(min_width=20):
                             os_stablelm7b = gr.Button(
                                 "os-stablelm-7b",
@@ -248,7 +247,6 @@ def main(root_path):
                             )
                             gr.Markdown("Vicuna", elem_classes=["center"])
     
-                    with gr.Row():
                         with gr.Column(min_width=20):
                             llama_deus_7b = gr.Button(
                                 "llama-deus-7b",
@@ -289,7 +287,6 @@ def main(root_path):
                             )
                             gr.Markdown("Guanaco", elem_classes=["center"])  
                             
-                    with gr.Row():
                         with gr.Column(min_width=20):
                             falcon_7b = gr.Button(
                                 "falcon-7b",
@@ -298,28 +295,17 @@ def main(root_path):
                             )
                             gr.Markdown("Falcon", elem_classes=["center"])    
                             
-                        with gr.Column(min_width=20):
-                          _ = gr.Button("", elem_id="10b-placeholder1",elem_classes=["square"])
-                          gr.Markdown("", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                          _ = gr.Button("", elem_id="10b-placeholder2",elem_classes=["square"])
-                          gr.Markdown("", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            _ = gr.Button("", elem_id="10b-placeholder3", elem_classes=["square"])
-                            gr.Markdown("", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            _ = gr.Button("", elem_id="10b-placeholder4", elem_classes=["square"])
-                            gr.Markdown("", elem_classes=["center"])
+                        for _ in range(8):
+                            with gr.Column(min_width=20, elem_classes=["placeholders"]):
+                              _ = gr.Button("" ,elem_classes=["square"])
+                              gr.Markdown("", elem_classes=["center"])
     
                         # with gr.Column(min_width=20):
                         #   stackllama7b = gr.Button("stackllama-7b", elem_id="stackllama-7b",elem_classes=["square"])
                         #   gr.Markdown("StackLLaMA", elem_classes=["center"])
                     #
                     gr.Markdown("## < 20B")
-                    with gr.Row():
+                    with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
                             flan11b = gr.Button(
                                 "flan-11b", elem_id="flan-11b", elem_classes=["square"]
@@ -356,7 +342,6 @@ def main(root_path):
                             )
                             gr.Markdown("Stable-Vicuna", elem_classes=["center"])
     
-                    with gr.Row():
                         with gr.Column(min_width=20):
                             starchat_15b = gr.Button(
                                 "starchat-15b",
@@ -395,60 +380,26 @@ def main(root_path):
                             )
                             gr.Markdown("Guanaco", elem_classes=["center"])                          
     
-                        # with gr.Column(min_width=20):
-                        #   gr.Button("", elem_id="20b-placeholder1",elem_classes=["square"])
-                        #   gr.Markdown("", elem_classes=["center"])
-    
-                        # with gr.Column(min_width=20):
-                        #   gr.Button("", elem_id="20b-placeholder2",elem_classes=["square"])
-                        #   gr.Markdown("", elem_classes=["center"])
-    
-                        # with gr.Column(min_width=20):
-                        #     gr.Button(
-                        #         "", elem_id="20b-placeholder3", elem_classes=["square"]
-                        #     )
-                        #     gr.Markdown("", elem_classes=["center"])
-    
-                        # with gr.Column(min_width=20):
-                        #     gr.Button(
-                        #         "", elem_id="20b-placeholder4", elem_classes=["square"]
-                        #     )
-                        #     gr.Markdown("", elem_classes=["center"])
+                        for _ in range(2):
+                            with gr.Column(min_width=20, elem_classes=["placeholders"]):
+                              _ = gr.Button("" ,elem_classes=["square"])
+                              gr.Markdown("", elem_classes=["center"])               
     
                     gr.Markdown("## < 30B")
-                    with gr.Row():
+                    with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
                             camel20b = gr.Button(
                                 "camel-20b", elem_id="camel-20b", elem_classes=["square"]
                             )
                             gr.Markdown("Camel", elem_classes=["center"])
     
-                        with gr.Column(min_width=20):
-                            gr.Button(
-                                "", elem_id="30b-placeholder1", elem_classes=["square"]
-                            )
-                            gr.Markdown("", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            gr.Button(
-                                "", elem_id="30b-placeholder2", elem_classes=["square"]
-                            )
-                            gr.Markdown("", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            gr.Button(
-                                "", elem_id="30b-placeholder3", elem_classes=["square"]
-                            )
-                            gr.Markdown("", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            gr.Button(
-                                "", elem_id="30b-placeholder4", elem_classes=["square"]
-                            )
-                            gr.Markdown("", elem_classes=["center"])
+                        for _ in range(11):
+                            with gr.Column(min_width=20, elem_classes=["placeholders"]):
+                              _ = gr.Button("" ,elem_classes=["square"])
+                              gr.Markdown("", elem_classes=["center"])
 
                     gr.Markdown("## < 40B")
-                    with gr.Row():
+                    with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
                             guanaco_33b = gr.Button(
                                 "guanaco-33b",
@@ -465,29 +416,10 @@ def main(root_path):
                             )
                             gr.Markdown("Falcon", elem_classes=["center"])
                             
-                        # with gr.Column(min_width=20):
-                        #     gr.Button(
-                        #         "", elem_id="40b-placeholder1", elem_classes=["square"]
-                        #     )
-                        #     gr.Markdown("", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            gr.Button(
-                                "", elem_id="40b-placeholder2", elem_classes=["square"]
-                            )
-                            gr.Markdown("", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            gr.Button(
-                                "", elem_id="40b-placeholder3", elem_classes=["square"]
-                            )
-                            gr.Markdown("", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            gr.Button(
-                                "", elem_id="40b-placeholder4", elem_classes=["square"]
-                            )
-                            gr.Markdown("", elem_classes=["center"])                            
+                        for _ in range(10):
+                            with gr.Column(min_width=20, elem_classes=["placeholders"]):
+                              _ = gr.Button("" ,elem_classes=["square"])
+                              gr.Markdown("", elem_classes=["center"])                          
                             
                     progress_view = gr.Textbox(label="Progress")
     
@@ -538,7 +470,7 @@ def main(root_path):
                     gr.Markdown("GradioChat", elem_id="left-top")
     
                     with gr.Column(elem_id="left-pane"):
-                        with gr.Accordion("Histories", elem_id="chat-history-accordion"):
+                        with gr.Accordion("Histories", elem_id="chat-history-accordion", open=False):
                             channel_btns.append(gr.Button(channels[0], elem_classes=["custom-btn-highlight"]))
     
                             for channel in channels[1:]:
