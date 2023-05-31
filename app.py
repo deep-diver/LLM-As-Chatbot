@@ -1,16 +1,30 @@
 import time
 import json
+import copy
+import types
 from os import listdir
 from os.path import isfile, join
 import argparse
 import gradio as gr
-import extra_args
 import global_vars
 from chats import central
 from transformers import AutoModelForCausalLM
 from miscs.styles import MODEL_SELECTION_CSS
 from miscs.js import GET_LOCAL_STORAGE, UPDATE_LEFT_BTNS_STATE
 from utils import get_chat_interface, get_chat_manager
+
+from pingpong.pingpong import PingPong
+from pingpong.gradio import GradioAlpacaChatPPManager
+from pingpong.gradio import GradioKoAlpacaChatPPManager
+from pingpong.gradio import GradioStableLMChatPPManager
+from pingpong.gradio import GradioFlanAlpacaChatPPManager
+from pingpong.gradio import GradioOSStableLMChatPPManager
+from pingpong.gradio import GradioVicunaChatPPManager
+from pingpong.gradio import GradioStableVicunaChatPPManager
+from pingpong.gradio import GradioStarChatPPManager
+from pingpong.gradio import GradioMPTChatPPManager
+from pingpong.gradio import GradioRedPajamaChatPPManager
+from pingpong.gradio import GradioBaizeChatPPManager
 
 ex_file = open("examples.txt", "r")
 examples = ex_file.read().split("\n")
@@ -19,6 +33,27 @@ ex_btns = []
 chl_file = open("channels.txt", "r")
 channels = chl_file.read().split("\n")
 channel_btns = []
+
+default_ppm = GradioAlpacaChatPPManager()
+default_ppm.ctx = "Context at top"
+default_ppm.pingpongs = [
+    PingPong("user input #1...", "bot response #1..."),
+    PingPong("user input #2...", "bot response #2..."),
+]
+chosen_ppm = copy.deepcopy(default_ppm)
+
+prompt_styles = {
+    "Alpaca": default_ppm,
+    "Baize": GradioBaizeChatPPManager(),
+    "Koalpaca": GradioKoAlpacaChatPPManager(),
+    "MPT": GradioMPTChatPPManager(),
+    "OpenAssistant StableLM": GradioOSStableLMChatPPManager(),
+    "RedPajama": GradioRedPajamaChatPPManager(),
+    "StableVicuna": GradioVicunaChatPPManager(),
+    "StableLM": GradioStableLMChatPPManager(),
+    "StarChat": GradioStarChatPPManager(),
+    "Vicuna": GradioVicunaChatPPManager()
+}
 
 response_configs = [
     f"configs/response_configs/{f}"
@@ -34,6 +69,40 @@ summarization_configs = [
 
 model_info = json.load(open("model_cards.json"))
 
+def move_to_byom_view():
+    return (
+        gr.update(visible=False),
+        gr.update(visible=True),
+        ""
+    )
+
+def prompt_style_change(key):
+    ppm = prompt_styles[key]
+    ppm.ctx = "Context at top"
+    ppm.pingpongs = [
+        PingPong("user input #1...", "bot response #1..."),
+        PingPong("user input #2...", "bot response #2..."),
+    ]
+    chosen_ppm = copy.deepcopy(ppm)
+    chosen_ppm.ctx = ""
+    chosen_ppm.pingpongs = []
+    
+    return ppm.build_prompts()
+
+def byom_load(
+    base, ckpt, model_cls, tokenizer_cls,
+    bos_token_id, eos_token_id, pad_token_id, 
+    multi_gpu, force_redownload,
+):
+    global_vars.initialize_globals_byom(
+        base, ckpt, model_cls, tokenizer_cls,
+        bos_token_id, eos_token_id, pad_token_id, 
+        multi_gpu, force_redownload,
+    )
+
+    return (
+    )
+    
 def channel_num(btn_title):
     choice = 0
 
@@ -74,10 +143,8 @@ def move_to_second_view(btn):
         "",
     )
 
-
 def move_to_first_view():
     return (gr.update(visible=True), gr.update(visible=False))
-
 
 def download_completed(
     model_name,
@@ -88,8 +155,7 @@ def download_completed(
     multi_gpu,
     force_download,
 ):
-
-    tmp_args = extra_args.parse_args()
+    tmp_args = types.SimpleNamespace()
     tmp_args.base_url = model_base.split(":")[-1].split("</p")[0].strip()
     tmp_args.ft_ckpt_url = model_ckpt.split(":")[-1].split("</p")[0].strip()
     tmp_args.gen_config_path = gen_config_path
@@ -104,13 +170,18 @@ def move_to_third_view():
     gen_config = global_vars.gen_config
     gen_sum_config = global_vars.gen_config_summarization
 
+    if global_vars.model_type == "custom":
+        ppmanager_type = chosen_ppm
+    else:
+        ppmanager_type = get_chat_manager(global_vars.model_type)
+    
     return (
         "Preparation done!",
         gr.update(visible=False),
         gr.update(visible=True),
         gr.update(label=global_vars.model_type),
         {
-            "ppmanager_type": get_chat_manager(global_vars.model_type),
+            "ppmanager_type": ppmanager_type,
             "model_type": global_vars.model_type,
         },
         gen_config.temperature,
@@ -176,17 +247,8 @@ def main(root_path):
                     gr.Markdown("## Custom")
                     with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
-                            byom = gr.Button(
-                                "byom",
-                                elem_id="byom",
-                                elem_classes=["square"],
-                            )
-                            gr.Markdown("Bring Your Own Model", elem_classes=["center"])
-                        
-                        # for _ in range(8):
-                        #     with gr.Column(min_width=20, elem_classes=["placeholders"]):
-                        #       _ = gr.Button("" ,elem_classes=["square"])
-                        #       gr.Markdown("", elem_classes=["center"])                        
+                            byom = gr.Button("byom", elem_id="byom", elem_classes=["square"],)
+                            gr.Markdown("Bring Your Own Model", elem_classes=["center"])                
                         
                     gr.Markdown("## < 10B")
                     with gr.Row(elem_classes=["sub-container"]):
@@ -437,7 +499,52 @@ def main(root_path):
                               gr.Markdown("", elem_classes=["center"])                          
                             
                     progress_view = gr.Textbox(label="Progress")
-    
+
+        with gr.Column(visible=False) as byom_input_view:
+            with gr.Column(elem_id="container3"):
+                gr.Markdown("# Bring Your Own Model", elem_classes=["center"])
+                
+                gr.Markdown("### Model configuration")
+                byom_base = gr.Textbox(label="Base", placeholder="Enter path or 🤗 hub ID of the base model", interactive=True)
+                byom_ckpt = gr.Textbox(label="LoRA ckpt", placeholder="Enter path or 🤗 hub ID of the LoRA checkpoint", interactive=True)
+                
+                with gr.Accordion("Advanced options", open=False):
+                    gr.Markdown("If you leave the below textboxes empty, `transformers.AutoModelForCausalLM` and `transformers.AutoTokenizer` classes will be used by default. If you need any specific class, please type them below.")
+                    byom_model_cls = gr.Textbox(label="Base model class", placeholder="Enter base model class", interactive=True)
+                    byom_tokenizer_cls = gr.Textbox(label="Base tokenizer class", placeholder="Enter base tokenizer class", interactive=True)
+
+                    with gr.Column():
+                        gr.Markdown("If you leave the below textboxes empty, any token ids for bos, eos, and pad will not be specified in `GenerationConfig`. If you think that you need to specify them. please type them below in decimal format.")                        
+                        with gr.Row():
+                            byom_bos_token_id = gr.Textbox(label="bos_token_id", placeholder="for GenerationConfig")
+                            byom_eos_token_id = gr.Textbox(label="eos_token_id", placeholder="for GenerationConfig")
+                            byom_pad_token_id = gr.Textbox(label="pad_token_id", placeholder="for GenerationConfig")
+                    
+                    with gr.Row():
+                        byom_multi_gpu = gr.Checkbox(label="Multi GPU / (Non 8Bit mode)")  
+                        byom_force_redownload = gr.Checkbox(label="Force Re-download")
+                
+                gr.Markdown("### Prompt configuration")
+                prompt_style_selector = gr.Dropdown(
+                    label="Prompt style", 
+                    interactive=True,
+                    choices=list(prompt_styles.keys()), 
+                    value="Alpaca"
+                )
+                with gr.Accordion("Prompt style preview", open=False):
+                    prompt_style_previewer = gr.Textbox(
+                        label="How prompt is actually structured",
+                        lines=16,
+                        value=default_ppm.build_prompts())
+                    
+                with gr.Row():
+                    byom_back_btn = gr.Button("Back")
+                    byom_confirm_btn = gr.Button("Confirm")
+
+                with gr.Column():
+                    txt_view3 = gr.Textbox(label="Status")
+                    progress_view3 = gr.Textbox(label="Progress")
+        
         with gr.Column(visible=False) as model_review_view:
             gr.Markdown("# Confirm the chosen model", elem_classes=["center"])
             with gr.Column(elem_id="container2"):
@@ -595,7 +702,43 @@ def main(root_path):
                         progress_view
                     ]
                 )
-    
+
+            byom.click(
+                move_to_byom_view,
+                None,
+                [model_choice_view, byom_input_view, progress_view]
+            )
+
+            byom_back_btn.click(
+                move_to_first_view,
+                None,
+                [model_choice_view, byom_input_view]
+            )
+
+            byom_confirm_btn.click(
+                lambda: "Start downloading/loading the model...", None, txt_view3
+            ).then(
+                byom_load,
+                [byom_base, byom_ckpt, byom_model_cls, byom_tokenizer_cls,
+                byom_bos_token_id, byom_eos_token_id, byom_pad_token_id, 
+                byom_multi_gpu, byom_force_redownload],
+                [progress_view3]
+            ).then(
+                lambda: "Model is fully loaded...", None, txt_view3
+            ).then(
+                move_to_third_view,
+                None,
+                [progress_view3, byom_input_view, chat_view, chatbot, chat_state,
+                res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+                sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid]
+            )
+
+            prompt_style_selector.change(
+                prompt_style_change,
+                prompt_style_selector,
+                prompt_style_previewer
+            )
+            
             back_to_model_choose_btn.click(
                 move_to_first_view,
                 None,
@@ -618,7 +761,7 @@ def main(root_path):
                 [progress_view2, model_review_view, chat_view, chatbot, chat_state,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid]
-            )                        
+            )
              
             for btn in channel_btns:
                 btn.click(

@@ -222,7 +222,12 @@ MODEL_SELECTION_CSS = """
 
 #container2 {
   max-width: 60%;
-  margin: auto;  
+  margin: auto;
+}
+
+#container3 {
+  max-width: 60%;
+  margin: auto;
 }
 
 .square {
