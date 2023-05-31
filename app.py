@@ -848,7 +848,7 @@ def main(args):
         server_port=6006, 
         server_name="0.0.0.0", 
         debug=args.debug,
-        share=args.share
+        share=args.share,
         root_path=f"{args.root_path}"
     )
 
