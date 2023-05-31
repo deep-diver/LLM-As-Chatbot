@@ -238,7 +238,7 @@ def rollback_last(idx, ld, state):
         gr.update(interactive=False)
     )
 
-def main(root_path):
+def main(args):
     with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
         with gr.Column() as model_choice_view:
             gr.Markdown("# Choose a Model", elem_classes=["center"])
@@ -845,13 +845,18 @@ def main(root_path):
             )          
             
     demo.queue().launch(
-        server_port=6006, server_name="0.0.0.0", debug=True,
-        root_path=f"{root_path}"
+        server_port=6006, 
+        server_name="0.0.0.0", 
+        debug=args.debug,
+        share=args.share
+        root_path=f"{args.root_path}"
     )
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--root-path', default="")
+    parser.add_argument('--share', default=False, action=argparse.BooleanOptionalAction)
+    parser.add_argument('--debug', default=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
     
     main(args.root_path)
