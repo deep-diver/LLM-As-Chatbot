@@ -11,6 +11,7 @@ from chats import alpacoom
 from chats import baize
 from chats import guanaco
 from chats import falcon
+from chats import custom
 
 def chat_stream(
     idx, local_data, user_message, state, 
@@ -20,6 +21,14 @@ def chat_stream(
 ):
     model_type = state["model_type"]
 
+    if model_type == "custom":
+        cs = custom.chat_stream(
+            idx, local_data, user_message, state,
+            ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+        )
+    
     if model_type == "stablelm":
         cs = stablelm.chat_stream(
             idx, local_data, user_message, state,

@@ -3,6 +3,39 @@ from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
 from models import baize, guanaco, falcon
+from models import byom
+
+def initialize_globals_byom(
+    base, ckpt, model_cls, tokenizer_cls, 
+    bos_token_id, eos_token_id, pad_token_id, 
+    multi_gpu, force_redownload,    
+):
+    global model, model_type, stream_model, tokenizer
+    global gen_config, gen_config_raw
+    global gen_config_summarization
+
+    model_type = "custom"
+
+    model, tokenizer = byom.load_model(
+        base=base,
+        finetuned=ckpt,
+        multi_gpu=multi_gpu,
+        force_download_ckpt=force_redownload,
+        model_cls=model_cls if model_cls != "" else None,
+        tokenizer_cls=tokenizer_cls if tokenizer_cls != "" else None
+    )
+    
+    stream_model = model
+    gen_config, gen_config_raw = get_generation_config("configs/response_configs/default.yaml")
+    gen_config_summarization, _ = get_generation_config("configs/summarization_configs/default.yaml")
+    if bos_token_id != "" or bos_token_id.isdigit():
+        gen_config.bos_token_id = int(bos_token_id)
+
+    if eos_token_id != "" or eos_token_id.isdigit():
+        gen_config.eos_token_id = int(eos_token_id)
+
+    if pad_token_id != "" or pad_token_id.isdigit():
+        gen_config.pad_token_id = int(pad_token_id)       
 
 def initialize_globals(args):
     global model, model_type, stream_model, tokenizer
