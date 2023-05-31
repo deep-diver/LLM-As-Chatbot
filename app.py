@@ -859,4 +859,4 @@ if __name__ == "__main__":
     parser.add_argument('--debug', default=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
     
-    main(args.root_path)
+    main(args)
