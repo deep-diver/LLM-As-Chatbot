@@ -34,6 +34,10 @@ MODEL_SELECTION_CSS = """
     box-shadow: none !important;
     display: block !important;
     text-align: left !important;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: rgba(17,24,39,255) !important;
+    }
 }
 
 #prompt-txt > label > span {
@@ -59,69 +63,91 @@ MODEL_SELECTION_CSS = """
 }
 
 #left-pane {
-    background-color: #f9fafb;
-    border-radius: 15px;
-    padding: 10px;
+  background-color: #f9fafb;
+  border-radius: 15px;
+  padding: 10px;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(31,41,55,255) !important;
+  }  
 }
 
 #left-top {
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: center;
-    font-weight: bold;
-    font-size: large;    
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: large;    
 }
 
 #chat-history-accordion {
-    background: transparent;
-    border: 0.8px !important;  
+  background: transparent;
+  border: 0.8px !important;  
 }
 
 #right-pane {
   margin-left: 20px;
   margin-right: 20px;
   background: white;
-  border-radius: 20px;  
+  border-radius: 20px;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(31,41,55,255) !important;
+  }
 }
 
 #initial-popup {
-    z-index: 100;
-    position: absolute;
-    width: 50%;
-    top: 50%;
-    height: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 35px;
-    padding: 15px;
+  z-index: 100;
+  position: absolute;
+  width: 50%;
+  top: 50%;
+  height: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 35px;
+  padding: 15px;
 }
 
 #initial-popup-title {
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;    
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;    
 }
 
 #initial-popup-left-pane {
-    min-width: 150px !important;
+  min-width: 150px !important;
 }
 
 #initial-popup-right-pane {
-    text-align: right;
+  text-align: right;
 }
 
 .example-btn {
-    padding-top: 20px !important;
-    padding-bottom: 20px !important;
-    padding-left: 5px !important;
-    padding-right: 5px !important;
-    background: linear-gradient(to bottom right, #f7faff, #ffffff) !important;
-    box-shadow: none !important;
-    border-radius: 20px !important;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+  background: linear-gradient(to bottom right, #f7faff, #ffffff) !important;
+  box-shadow: none !important;
+  border-radius: 20px !important;
+
+  @media (prefers-color-scheme: dark) {
+    background: rgba(70,79,86,255) !important;
+  }
 }
 
 .example-btn:hover {
-    box-shadow: 0.3px 0.3px 0.3px gray !important;
+  box-shadow: 0.3px 0.3px 0.3px gray !important;
+
+  @media (prefers-color-scheme: dark) {
+    background: rgba(34,37,42,255) !important;
+  }
+}
+
+.example-btn:active {
+  @media (prefers-color-scheme: dark) {
+    background: rgba(70,79,86,255) !important;
+  }
 }
 
 #example-title {
@@ -155,12 +181,22 @@ MODEL_SELECTION_CSS = """
     
     opacity: 0.5;
     border-width: 0.5px;
-    border-color: grey;    
+    border-color: grey;
+
+    @media (prefers-color-scheme: dark) {
+      opacity: 0.2 !important;
+      color: black !important;
+    }
 }
 
 .aux-btn:hover {
     opacity: 1.0;
     box-shadow: 0.3px 0.3px 0.3px gray !important;
+
+    @media (prefers-color-scheme: dark) {
+      opacity: 1.0 !important;
+      box-shadow: 0.3px 0.3px 0.3px gray !important;
+    }    
 }
 
 #aux-viewer {
@@ -235,6 +271,22 @@ MODEL_SELECTION_CSS = """
 
 .square {
   height: 100px;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(70,79,86,255) !important;
+  }
+}
+
+.square:hover {
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(34,37,42,255) !important;
+  }
+}
+
+.square:active {
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(70,79,86,255) !important;
+  }
 }
 
 .placeholders {
@@ -342,7 +394,7 @@ MODEL_SELECTION_CSS = """
 }
 
 #koalpaca {
-  background: url(https://raw.githubusercontent.com/Beomi/KoAlpaca/main/assets/new_koalpaca_final.png);
+  background: url(https://i.ibb.co/hF9NL7r/koalpaca.png);
   background-repeat: no-repeat;
   background-size: 100px 100px;
   color: transparent;  
@@ -481,7 +533,7 @@ MODEL_SELECTION_CSS = """
 }
 
 #guanaco-7b, #guanaco-13b, #guanaco-33b, #guanaco-65b {
-  background: url(https://i.ibb.co/HF4n434/guanaco.png);
+  background: url(https://i.ibb.co/DWWsZn7/guanaco.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
   color: transparent;  

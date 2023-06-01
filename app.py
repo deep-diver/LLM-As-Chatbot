@@ -626,7 +626,7 @@ def main(args):
                     with gr.Column(elem_id="aux-btns-popup", visible=True):
                         with gr.Row():
                             stop = gr.Button("Stop", elem_classes=["aux-btn"])
-                            regenerate = gr.Button("Regenerate", interactive=False, elem_classes=["aux-btn"])
+                            regenerate = gr.Button("Regen", interactive=False, elem_classes=["aux-btn"])
                             clean = gr.Button("Clean", elem_classes=["aux-btn"])
     
                     with gr.Accordion("Context Inspector", elem_id="aux-viewer", open=False):

@@ -1,4 +1,2 @@
-Tell me about Alpaca
-Tell me about GPT
-Write a Python program to print Fibonacci numbers
+Tell me about Generative AI
 What is the meaning of life?
