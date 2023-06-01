@@ -7,10 +7,9 @@ from gens.batch_gen import get_output_batch
 
 from pingpong.context import CtxLastWindowStrategy
 
-def build_prompts(ppmanager, user_message, win_size=3):
+def build_prompts(ppmanager, user_message, global_context, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
-    dummy_ppm.ctx = """The following is a conversation between a human and an AI assistant named Baize (named after a mythical creature in Chinese folklore). Baize is an open-source AI assistant developed by UCSD and Sun Yat-Sen University. The human and the AI assistant take turns chatting. Human statements start with [|Human|] and AI assistant statements start with [|AI|]. The AI assistant always provides responses in as much detail as possible, and in Markdown format. The AI assistant always declines to engage with topics, questions and instructions related to unethical, controversial, or sensitive issues. Complete the transcript in exactly that format.\n[|Human|]Hello!\n[|AI|]Hi!
-"""
+    dummy_ppm.ctx = global_context
     lws = CtxLastWindowStrategy(win_size)
     
     prompt = lws(dummy_ppm)
@@ -49,7 +48,7 @@ def summarize(
 
 def chat_stream(
     idx, local_data, user_message, state,
-    ctx_num_lconv, ctx_sum_prompt,
+    global_context, ctx_num_lconv, ctx_sum_prompt,
     res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
     sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
 ):
@@ -64,7 +63,7 @@ def chat_stream(
     ppm.add_pingpong(
         PingPong(user_message, "")
     )
-    prompt = build_prompts(ppm, user_message, ctx_num_lconv)
+    prompt = build_prompts(ppm, user_message, global_context, ctx_num_lconv)
 
     # prepare text generating streamer & start generating
     gen_kwargs, streamer = pre.build(

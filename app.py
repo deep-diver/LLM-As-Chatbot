@@ -11,7 +11,7 @@ from chats import central
 from transformers import AutoModelForCausalLM
 from miscs.styles import MODEL_SELECTION_CSS
 from miscs.js import GET_LOCAL_STORAGE, UPDATE_LEFT_BTNS_STATE
-from utils import get_chat_interface, get_chat_manager
+from utils import get_chat_interface, get_chat_manager, get_global_context
 
 from pingpong.pingpong import PingPong
 from pingpong.gradio import GradioAlpacaChatPPManager
@@ -184,6 +184,7 @@ def move_to_third_view():
             "ppmanager_type": ppmanager_type,
             "model_type": global_vars.model_type,
         },
+        get_global_context(global_vars.model_type),
         gen_config.temperature,
         gen_config.top_p,
         gen_config.top_k,
@@ -372,10 +373,10 @@ def main(args):
                             )
                             gr.Markdown("Falcon", elem_classes=["center"])    
                             
-                        for _ in range(8):
-                            with gr.Column(min_width=20, elem_classes=["placeholders"]):
-                              _ = gr.Button("" ,elem_classes=["square"])
-                              gr.Markdown("", elem_classes=["center"])
+                        # for _ in range(8):
+                        #     with gr.Column(min_width=20, elem_classes=["placeholders"]):
+                        #       _ = gr.Button("" ,elem_classes=["square"])
+                        #       gr.Markdown("", elem_classes=["center"])
     
                         # with gr.Column(min_width=20):
                         #   stackllama7b = gr.Button("stackllama-7b", elem_id="stackllama-7b",elem_classes=["square"])
@@ -457,10 +458,10 @@ def main(args):
                             )
                             gr.Markdown("Guanaco", elem_classes=["center"])                          
     
-                        for _ in range(2):
-                            with gr.Column(min_width=20, elem_classes=["placeholders"]):
-                              _ = gr.Button("" ,elem_classes=["square"])
-                              gr.Markdown("", elem_classes=["center"])               
+                        # for _ in range(2):
+                        #     with gr.Column(min_width=20, elem_classes=["placeholders"]):
+                        #       _ = gr.Button("" ,elem_classes=["square"])
+                        #       gr.Markdown("", elem_classes=["center"])               
     
                     gr.Markdown("## < 30B")
                     with gr.Row(elem_classes=["sub-container"]):
@@ -470,10 +471,10 @@ def main(args):
                             )
                             gr.Markdown("Camel", elem_classes=["center"])
     
-                        for _ in range(11):
-                            with gr.Column(min_width=20, elem_classes=["placeholders"]):
-                              _ = gr.Button("" ,elem_classes=["square"])
-                              gr.Markdown("", elem_classes=["center"])
+                        # for _ in range(11):
+                        #     with gr.Column(min_width=20, elem_classes=["placeholders"]):
+                        #       _ = gr.Button("" ,elem_classes=["square"])
+                        #       gr.Markdown("", elem_classes=["center"])
 
                     gr.Markdown("## < 40B")
                     with gr.Row(elem_classes=["sub-container"]):
@@ -493,10 +494,10 @@ def main(args):
                             )
                             gr.Markdown("Falcon", elem_classes=["center"])
                             
-                        for _ in range(10):
-                            with gr.Column(min_width=20, elem_classes=["placeholders"]):
-                              _ = gr.Button("" ,elem_classes=["square"])
-                              gr.Markdown("", elem_classes=["center"])                          
+                        # for _ in range(10):
+                        #     with gr.Column(min_width=20, elem_classes=["placeholders"]):
+                        #       _ = gr.Button("" ,elem_classes=["square"])
+                        #       gr.Markdown("", elem_classes=["center"])                          
                             
                     progress_view = gr.Textbox(label="Progress")
 
@@ -646,6 +647,16 @@ def main(args):
             with gr.Accordion("Constrol Panel", open=False) as control_panel:
                 with gr.Column():
                     with gr.Column():
+                        gr.Markdown("#### Global context")
+                        with gr.Accordion("global context will persist during conversation, and it is placed at the top of the prompt", open=False):
+                            global_context = gr.Textbox(
+                                "global context",
+                                lines=5,
+                                max_lines=10,
+                                interactive=True,
+                                elem_id="global-context"
+                            )
+                        
                         gr.Markdown("#### GenConfig for **response** text generation")
                         with gr.Row():
                             res_temp = gr.Slider(0.0, 2.0, 0, step=0.1, label="temp", interactive=True)
@@ -673,13 +684,14 @@ def main(args):
                             sum_eosid = gr.Number(value=0, visible=False, precision=0)
                             sum_padid = gr.Number(value=0, visible=False, precision=0)
     
-                    with gr.Column(visible=False):
+                    with gr.Column():
                         gr.Markdown("#### Context managements")
                         with gr.Row():
-                            ctx_num_lconv = gr.Slider(2, 6, 3, step=1, label="num of last talks to keep", interactive=True)
+                            ctx_num_lconv = gr.Slider(2, 10, 3, step=1, label="number of recent talks to keep", interactive=True)
                             ctx_sum_prompt = gr.Textbox(
                                 "summarize our conversations. what have we discussed about so far?",
-                                label="design a prompt to summarize the conversations"
+                                label="design a prompt to summarize the conversations",
+                                visible=False
                             )
     
             btns = [
@@ -728,7 +740,7 @@ def main(args):
             ).then(
                 move_to_third_view,
                 None,
-                [progress_view3, byom_input_view, chat_view, chatbot, chat_state,
+                [progress_view3, byom_input_view, chat_view, chatbot, chat_state, global_context,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid]
             )
@@ -758,7 +770,7 @@ def main(args):
             ).then(
                 move_to_third_view,
                 None,
-                [progress_view2, model_review_view, chat_view, chatbot, chat_state,
+                [progress_view2, model_review_view, chat_view, chatbot, chat_state, global_context,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid]
             )
@@ -792,7 +804,7 @@ def main(args):
             send_event = instruction_txtbox.submit(
                 central.chat_stream,
                 [idx, local_data, instruction_txtbox, chat_state,
-                ctx_num_lconv, ctx_sum_prompt,
+                global_context, ctx_num_lconv, ctx_sum_prompt,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid],
                 [instruction_txtbox, chatbot, context_inspector, local_data],
@@ -810,7 +822,7 @@ def main(args):
             ).then(
                 central.chat_stream,
                 [idx, local_data, instruction_txtbox, chat_state,
-                ctx_num_lconv, ctx_sum_prompt,
+                global_context, ctx_num_lconv, ctx_sum_prompt,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid],
                 [instruction_txtbox, chatbot, context_inspector, local_data],            

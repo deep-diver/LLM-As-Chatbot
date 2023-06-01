@@ -7,17 +7,11 @@ from gens.batch_gen import get_output_batch
 
 from pingpong.context import CtxLastWindowStrategy
 
-def build_prompts(ppmanager, user_message, win_size=3):
+def build_prompts(ppmanager, user_message, global_context, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
     lws = CtxLastWindowStrategy(win_size)
 
-    dummy_ppm.ctx = """Below are a series of dialogues between human and an AI assistant.
-Each turn of conversation is distinguished by the delimiter of "-----"
-The AI MUST be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable.
-The assistant MUST be happy to help with almost anything, and will do its best to understand exactly what is needed.
-It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
-That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
-"""
+    dummy_ppm.ctx = global_context
 
     prompt = lws(dummy_ppm)  
     return prompt
@@ -52,7 +46,7 @@ def summarize(
 
 def chat_stream(
     idx, local_data, user_message, state,
-    ctx_num_lconv, ctx_sum_prompt,
+    global_context, ctx_num_lconv, ctx_sum_prompt,
     res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
     sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
 ):
@@ -67,7 +61,7 @@ def chat_stream(
     ppm.add_pingpong(
         PingPong(user_message, "")
     )
-    prompt = build_prompts(ppm, user_message, ctx_num_lconv)
+    prompt = build_prompts(ppm, user_message, global_context, ctx_num_lconv)
 
     # prepare text generating streamer & start generating
     gen_kwargs, streamer = pre.build(

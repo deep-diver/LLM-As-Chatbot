@@ -202,6 +202,9 @@ MODEL_SELECTION_CSS = """
   border-color: transparent;
 }
 
+#global-context > label > span {
+  display: none !important;
+}
 
 
 

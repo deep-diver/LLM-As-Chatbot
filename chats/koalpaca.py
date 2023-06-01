@@ -7,18 +7,11 @@ from gens.batch_gen import get_output_batch
 
 from pingpong.context import CtxLastWindowStrategy
 
-def build_prompts(ppmanager, user_message, win_size=3):
+def build_prompts(ppmanager, user_message, global_context, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
     lws = CtxLastWindowStrategy(win_size)
     
-    dummy_ppm.ctx = """아래는 인간과 AI 어시스턴트 간의 일련의 대화입니다.
-인공지능은 주어진 질문에 대한 응답으로 대답을 시도합니다.
-인공지능은 `### 질문` 또는 `### 응답`가 포함된 텍스트를 생성해서는 안 됩니다.
-AI는 도움이 되고, 예의 바르고, 정직하고, 정교하고, 감정을 인식하고, 겸손하지만 지식이 있어야 합니다.
-어시스턴트는 거의 모든 것을 기꺼이 도와줄 수 있어야 하며, 무엇이 필요한지 정확히 이해하기 위해 최선을 다해야 합니다.
-또한 허위 또는 오해의 소지가 있는 정보를 제공하지 않아야 하며, 정답을 완전히 확신할 수 없을 때는 주의를 환기시켜야 합니다.
-즉, 이 어시스턴트는 실용적이고 정말 최선을 다하며 주의를 기울이는 데 너무 많은 시간을 할애하지 않습니다.
-"""
+    dummy_ppm.ctx = global_context
 
     prompt = lws(dummy_ppm)  
     return prompt
@@ -53,7 +46,7 @@ def summarize(
 
 def chat_stream(
     idx, local_data, user_message, state,
-    ctx_num_lconv, ctx_sum_prompt,
+    global_context, ctx_num_lconv, ctx_sum_prompt,
     res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
     sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
 ):
@@ -68,7 +61,7 @@ def chat_stream(
     ppm.add_pingpong(
         PingPong(user_message, "")
     )
-    prompt = build_prompts(ppm, user_message, ctx_num_lconv)
+    prompt = build_prompts(ppm, user_message, global_context, ctx_num_lconv)
 
     # prepare text generating streamer & start generating
     gen_kwargs, streamer = pre.build(
