@@ -3,7 +3,7 @@ import torch
 from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
-from models import baize, guanaco, falcon
+from models import baize, guanaco, falcon, kullm
 from models import byom
 
 def initialize_globals_byom(
@@ -44,7 +44,9 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "guanaco" in args.base_url.lower():
+    if "kullm" in args.base_url.lower():
+        model_type_tmp = "kullm-polyglot"
+    elif "guanaco" in args.base_url.lower():
         model_type_tmp = "guanaco"
     elif "wizardlm-uncensored-falcon" in args.base_url.lower():
         model_type_tmp = "wizard-falcon"        
@@ -128,6 +130,8 @@ def get_load_model(model_type):
         return stablelm.load_model
     elif model_type == "koalpaca-polyglot":
         return koalpaca.load_model
+    elif model_type == "kullm-polyglot":
+        return kullm.load_model
     elif model_type == "flan-alpaca":
         return flan_alpaca.load_model
     elif model_type == "camel":

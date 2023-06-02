@@ -86,6 +86,7 @@ class WizardPromptFmt(PromptFmt):
         pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
         return f"""{ping}
 ### Response: {pong}
+
 """
   
 class WizardChatPPManager(PPManager):
@@ -110,7 +111,50 @@ class GradioWizardChatPPManager(WizardChatPPManager):
         for pingpong in self.pingpongs[from_idx:to_idx]:
             results.append(fmt.ui(pingpong))
             
-        return results   
+        return results
+
+class KULLMPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""{context}
+"""
+        
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""### 명령어:
+{ping}
+### 응답:
+{pong}
+"""
+  
+class KULLMChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=KULLMPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results
+
+class GradioKULLMChatPPManager(KULLMChatPPManager):
+    def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+        
+        results = []
+        
+        for pingpong in self.pingpongs[from_idx:to_idx]:
+            results.append(fmt.ui(pingpong))
+            
+        return results        
     
 def get_chat_interface(model_type):
     if model_type == "alpaca":
@@ -123,6 +167,8 @@ def get_chat_interface(model_type):
         return os_stablelm.chat_stream
     elif model_type == "koalpaca-polyglot":
         return koalpaca.chat_stream
+    elif model_type == "kullm-polyglot":
+        return kullm.chat_stream
     elif model_type == "flan-alpaca":
         return flan_alpaca.chat_stream
     elif model_type == "camel":
@@ -167,6 +213,8 @@ def get_chat_manager(model_type):
         return GradioOSStableLMChatPPManager()
     elif model_type == "koalpaca-polyglot":
         return GradioKoAlpacaChatPPManager()
+    elif model_type == "kullm-polyglot":
+        return GradioKULLMChatPPManager()
     elif model_type == "flan-alpaca":
         return GradioFlanAlpacaChatPPManager()
     elif model_type == "camel":
@@ -237,6 +285,15 @@ AI는 도움이 되고, 예의 바르고, 정직하고, 정교하고, 감정을 
 또한 허위 또는 오해의 소지가 있는 정보를 제공하지 않아야 하며, 정답을 완전히 확신할 수 없을 때는 주의를 환기시켜야 합니다.
 즉, 이 어시스턴트는 실용적이고 정말 최선을 다하며 주의를 기울이는 데 너무 많은 시간을 할애하지 않습니다.
 """
+    elif model_type == "kullm-polyglot":
+        return """아래는 인간과 AI 어시스턴트 간의 일련의 대화입니다.
+인공지능은 주어진 명령어에 대한 응답으로 대답을 시도합니다.
+인공지능은 `### 명령어` 또는 `### 응답`가 포함된 텍스트를 생성해서는 안 됩니다.
+AI는 도움이 되고, 예의 바르고, 정직하고, 정교하고, 감정을 인식하고, 겸손하지만 지식이 있어야 합니다.
+어시스턴트는 거의 모든 것을 기꺼이 도와줄 수 있어야 하며, 무엇이 필요한지 정확히 이해하기 위해 최선을 다해야 합니다.
+또한 허위 또는 오해의 소지가 있는 정보를 제공하지 않아야 하며, 정답을 완전히 확신할 수 없을 때는 주의를 환기시켜야 합니다.
+즉, 이 어시스턴트는 실용적이고 정말 최선을 다하며 주의를 기울이는 데 너무 많은 시간을 할애하지 않습니다.
+"""        
     elif model_type == "flan-alpaca":
         return """Below are a series of dialogues between human and an AI assistant.
 Each turn of conversation is distinguished by the delimiter of "-----"

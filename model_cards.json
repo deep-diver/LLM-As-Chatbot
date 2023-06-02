@@ -57,6 +57,14 @@
         "hub(base)": "beomi/KoAlpaca-Polyglot-12.8B",
         "hub(ckpt)": "N/A"        
     },
+    "kullm": {
+        "category": "<20B",
+        "display_name": "kullm",
+        "thumb": "https://i.ibb.co/6ZFqk4J/kullm.png",
+        "parameters": "12.8 Billion",
+        "hub(base)": "nlpai-lab/kullm-polyglot-12.8b-v2",
+        "hub(ckpt)": "N/A"        
+    },    
     "stablelm-7b": {
         "category": "<10B",
         "display_name": "StableLM",
