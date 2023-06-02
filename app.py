@@ -367,7 +367,11 @@ def main(args):
                             
                         with gr.Column(min_width=20):
                             falcon_7b = gr.Button("falcon-7b", elem_id="falcon-7b", elem_classes=["square"])
-                            gr.Markdown("Falcon", elem_classes=["center"])    
+                            gr.Markdown("Falcon", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            wizard_falcon_7b = gr.Button("wizard-falcon-7b", elem_id="wizard-falcon-7b", elem_classes=["square"])
+                            gr.Markdown("Wizard Falcon", elem_classes=["center"])                            
 
                     gr.Markdown("## < 20B")
                     with gr.Row(elem_classes=["sub-container"]):
@@ -409,7 +413,7 @@ def main(args):
                             
                         with gr.Column(min_width=20):
                             guanaco_13b = gr.Button("guanaco-13b", elem_id="guanaco-13b", elem_classes=["square"])
-                            gr.Markdown("Guanaco", elem_classes=["center"])        
+                            gr.Markdown("Guanaco", elem_classes=["center"])
     
                     gr.Markdown("## < 30B")
                     with gr.Row(elem_classes=["sub-container"]):
@@ -617,7 +621,7 @@ def main(args):
                 t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, llama_deus_7b, 
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b,
-                falcon_7b,
+                falcon_7b, wizard_falcon_7b,
                 flan11b, koalpaca, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, baize_13b, guanaco_13b,
                 camel20b,

@@ -5,7 +5,8 @@
         "thumb": "https://i.ibb.co/4W7n78b/chansung-vector-logo-of-collective-intelligence-of-cute-llamas-3ef46884-72e6-44da-b88a-e831e5fee747.png",
         "parameters": "3 Billion",
         "hub(base)": "lmsys/fastchat-t5-3b-v1.0",
-        "hub(ckpt)": "N/A"
+        "hub(ckpt)": "N/A",
+        "desc": "This model is based on [Flan-T5-XL](https://huggingface.co/google/flan-t5-xl) from google, and it is fine-tuned on [ShareGPT](https://sharegpt.com/) dataset curated by [LMSYS](https://lmsys.org/) in [Vicuna style](https://github.com/lm-sys/FastChat)"
     },
     "camel-5b": {
         "category": "<10B",
@@ -13,7 +14,8 @@
         "thumb": "https://i.ibb.co/qD5HN9T/camel-removebg-preview.png",
         "parameters": "5 Billion",
         "hub(base)": "Writer/camel-5b-hf",
-        "hub(ckpt)": "N/A"
+        "hub(ckpt)": "N/A",
+        "desc": ""
     },
     "mpt-7b": {
         "category": "<10B",
@@ -225,7 +227,7 @@
     },
     "falcon-7b": {
         "category": "<10B",
-        "display_name": " Falcon",
+        "display_name": "Falcon",
         "thumb": "https://i.ibb.co/86yNWwG/falcon.png",
         "parameters": "7 Billion",
         "hub(base)": "tiiuae/falcon-7b-instruct",
@@ -233,12 +235,20 @@
     },
     "falcon-40b": {
         "category": "<40B",
-        "display_name": " Falcon",
+        "display_name": "Falcon",
         "thumb": "https://i.ibb.co/86yNWwG/falcon.png",
         "parameters": "40 Billion",
         "hub(base)": "tiiuae/falcon-40b-instruct",
         "hub(ckpt)": "N/A"
-    },    
+    },
+    "wizard-falcon-7b": {
+        "category": "<10B",
+        "display_name": "Wizard Falcon",
+        "thumb": "https://i.ibb.co/415s0D4/wizard-falcon.png",
+        "parameters": "7 Billion",
+        "hub(base)": "ehartford/WizardLM-Uncensored-Falcon-7b",
+        "hub(ckpt)": "N/A"        
+    },
     "20b-placeholder1": {
         "category": "<20B",
         "display_name": "Flan-XXL",

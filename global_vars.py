@@ -46,6 +46,8 @@ def initialize_globals(args):
     model_type_tmp = "alpaca"
     if "guanaco" in args.base_url.lower():
         model_type_tmp = "guanaco"
+    elif "wizardlm-uncensored-falcon" in args.base_url.lower():
+        model_type_tmp = "wizard-falcon"        
     elif "falcon" in args.base_url.lower():
         model_type_tmp = "falcon"
     elif "baize" in args.base_url.lower():
@@ -150,7 +152,7 @@ def get_load_model(model_type):
         return baize.load_model
     elif model_type == "guanaco":
         return guanaco.load_model
-    elif model_type == "falcon":
+    elif model_type == "falcon" or model_type == "wizard-falcon":
         return falcon.load_model
     else:
         return None

@@ -158,7 +158,7 @@ MODEL_SELECTION_CSS = """
     z-index: 200;
     position: absolute !important;
     bottom: 75px !important;
-    right: 40px !important
+    right: 40px !important;
 }
 
 #aux-btns-popup > div {
@@ -544,6 +544,16 @@ MODEL_SELECTION_CSS = """
 
 #falcon-7b, #falcon-40b {
   background: url(https://i.ibb.co/86yNWwG/falcon.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+#wizard-falcon-7b {
+  background: url(https://i.ibb.co/415s0D4/wizard-falcon.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
   color: transparent;  

@@ -70,6 +70,47 @@ class GradioGuanacoChatPPManager(GuanacoChatPPManager):
             results.append(fmt.ui(pingpong))
             
         return results    
+
+class WizardPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""{context}
+"""
+        
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""{ping}
+### Response: {pong}
+"""
+  
+class WizardChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=WizardPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results
+
+class GradioWizardChatPPManager(WizardChatPPManager):
+    def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+        
+        results = []
+        
+        for pingpong in self.pingpongs[from_idx:to_idx]:
+            results.append(fmt.ui(pingpong))
+            
+        return results   
     
 def get_chat_interface(model_type):
     if model_type == "alpaca":
@@ -109,6 +150,8 @@ def get_chat_interface(model_type):
     elif model_type == "guanaco":
         return guanaco.chat_stream
     elif model_type == "falcon":
+        return falcon.chat_stream
+    elif model_type == "wizard-falcon":
         return falcon.chat_stream
     else:
         return None
@@ -152,6 +195,8 @@ def get_chat_manager(model_type):
         return GradioGuanacoChatPPManager()
     elif model_type == "falcon":
         return GradioAlpacaChatPPManager()
+    elif model_type == "wizard-falcon":
+        return GradioWizardChatPPManager()
     else:
         return None
 
@@ -270,5 +315,7 @@ The assistant MUST be happy to help with almost anything, and will do its best t
 It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
 That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
 """
+    elif model_type == "wizard_falcon":
+        return ""
     else:
         return ""    
