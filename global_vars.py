@@ -1,4 +1,5 @@
 import yaml
+import torch
 from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
@@ -93,8 +94,13 @@ def initialize_globals(args):
         if model is not None:
             del model
 
+        if stream_model is not None:
+            del stream_model
+
         if tokenizer is not None:
             del tokenizer
+
+        torch.cuda.empty_cache()  
     except NameError:
         pass
 

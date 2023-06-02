@@ -158,7 +158,7 @@ MODEL_SELECTION_CSS = """
     z-index: 200;
     position: absolute !important;
     bottom: 75px !important;
-    right: 15px !important;
+    right: 40px !important
 }
 
 #aux-btns-popup > div {
@@ -560,6 +560,16 @@ MODEL_SELECTION_CSS = """
   width: 100px;
   height: 100px;
   margin: auto;
+}
+
+#chosen-model {
+  background: url(https://i.ibb.co/dLmNh2v/chosen.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;  
 }
 
 .sub-container > div {
