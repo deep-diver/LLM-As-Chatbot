@@ -52,7 +52,7 @@ prompt_styles = {
     "StableVicuna": GradioVicunaChatPPManager(),
     "StableLM": GradioStableLMChatPPManager(),
     "StarChat": GradioStarChatPPManager(),
-    "Vicuna": GradioVicunaChatPPManager()
+    "Vicuna": GradioVicunaChatPPManager(),
 }
 
 response_configs = [
@@ -71,6 +71,13 @@ model_info = json.load(open("model_cards.json"))
 
 ###
 
+def move_to_model_select_view():
+    return (
+        "move to model select view",
+        gr.update(visible=False),
+        gr.update(visible=True),
+    )
+    
 def use_chosen_model():
     try:
         test = global_vars.model
@@ -119,9 +126,9 @@ def use_chosen_model():
     
 def move_to_byom_view():
     return (
+        "move to the byom view",
         gr.update(visible=False),
         gr.update(visible=True),
-        ""
     )
 
 def prompt_style_change(key):
@@ -289,21 +296,35 @@ def rollback_last(idx, ld, state):
 
 def main(args):
     with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
-        with gr.Column(visible=True) as model_choice_view:
+        with gr.Column(visible=True, elem_id="landing-container") as landing_view:
+            gr.Markdown("# Chat with LLM", elem_classes=["center"])
+            with gr.Row(elem_id="landing-container-selection"):
+                with gr.Column():
+                    gr.Markdown("""This is the landing page of the project, [LLM As Chatbot](https://github.com/deep-diver/LLM-As-Chatbot). This appliction is designed for personal use only. A single model will be selected at a time even if you open up a new browser or a tab. As an initial choice, please select one of the following menu""")
+
+                    gr.Markdown("""      
+**Bring your own model**: You can chat with arbitrary models. If your own custom model is based on 🤗 Hugging Face's [transformers](https://huggingface.co/docs/transformers/index) library, you will propbably be able to bring it into this application with this menu
+
+**Select a model from model pool**: You can chat with one of the popular open source Large Language Model
+
+**Use currently selected model**: If you have already selected, but if you came back to this landing page accidently, you can directly go back to the chatting mode with this menu                    
+""")                    
+                    
+                    byom = gr.Button("🫵🏼 Bring your own model", elem_id="go-byom-select", elem_classes=["square", "landing-btn"])
+                    select_model = gr.Button("🦙 Select a model from model pool", elem_id="go-model-select", elem_classes=["square", "landing-btn"])
+                    chosen_model = gr.Button("↪️ Use currently selected model", elem_id="go-use-selected-model", elem_classes=["square", "landing-btn"])
+
+                    with gr.Column(elem_id="landing-bottom"):
+                        progress_view0 = gr.Textbox(label="Progress", elem_classes=["progress-view"])
+                        gr.Markdown("""[project](https://github.com/deep-diver/LLM-As-Chatbot)
+[developer](https://github.com/deep-diver)
+""", elem_classes=["center"])
+    
+        with gr.Column(visible=False) as model_choice_view:
             gr.Markdown("# Choose a Model", elem_classes=["center"])
             with gr.Row(elem_id="container"):
                 with gr.Column():
-                    gr.Markdown("## Others")
-                    with gr.Row(elem_classes=["sub-container"]):
-                        with gr.Column(min_width=20):
-                            byom = gr.Button("byom", elem_id="byom", elem_classes=["square"])
-                            gr.Markdown("Bring Your Own Model", elem_classes=["center"])
-
-                        with gr.Column(min_width=20):
-                            chosen_model = gr.Button("", elem_id="chosen-model", elem_classes=["square"])
-                            gr.Markdown("Use Current Choice", elem_classes=["center"])
-                        
-                    gr.Markdown("## < 10B")
+                    gr.Markdown("## ~ 10B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
                             t5_vicuna_3b = gr.Button("t5-vicuna-3b", elem_id="t5-vicuna-3b", elem_classes=["square"])
@@ -373,7 +394,7 @@ def main(args):
                             wizard_falcon_7b = gr.Button("wizard-falcon-7b", elem_id="wizard-falcon-7b", elem_classes=["square"])
                             gr.Markdown("Wizard Falcon", elem_classes=["center"])                            
 
-                    gr.Markdown("## < 20B")
+                    gr.Markdown("## ~ 20B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
                             flan11b = gr.Button("flan-11b", elem_id="flan-11b", elem_classes=["square"])
@@ -382,7 +403,11 @@ def main(args):
                         with gr.Column(min_width=20):
                             koalpaca = gr.Button("koalpaca", elem_id="koalpaca", elem_classes=["square"])
                             gr.Markdown("koalpaca", elem_classes=["center"])
-    
+
+                        with gr.Column(min_width=20):
+                            kullm = gr.Button("kullm", elem_id="kullm", elem_classes=["square"])
+                            gr.Markdown("KULLM", elem_classes=["center"])
+                        
                         with gr.Column(min_width=20):
                             alpaca_lora13b = gr.Button("alpaca-lora-13b", elem_id="alpaca-lora-13b", elem_classes=["square"])
                             gr.Markdown("Alpaca-LoRA", elem_classes=["center"])
@@ -415,13 +440,13 @@ def main(args):
                             guanaco_13b = gr.Button("guanaco-13b", elem_id="guanaco-13b", elem_classes=["square"])
                             gr.Markdown("Guanaco", elem_classes=["center"])
     
-                    gr.Markdown("## < 30B")
+                    gr.Markdown("## ~ 30B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
                             camel20b = gr.Button("camel-20b", elem_id="camel-20b", elem_classes=["square"])
                             gr.Markdown("Camel", elem_classes=["center"])
 
-                    gr.Markdown("## < 40B")
+                    gr.Markdown("## ~ 40B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
                             guanaco_33b = gr.Button("guanaco-33b", elem_id="guanaco-33b", elem_classes=["square"])
@@ -431,7 +456,7 @@ def main(args):
                             falcon_40b = gr.Button("falcon-40b", elem_id="falcon-40b", elem_classes=["square"])
                             gr.Markdown("Falcon", elem_classes=["center"])
 
-                    progress_view = gr.Textbox(label="Progress")
+                    progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
         with gr.Column(visible=False) as byom_input_view:
             with gr.Column(elem_id="container3"):
@@ -449,9 +474,9 @@ def main(args):
                     with gr.Column():
                         gr.Markdown("If you leave the below textboxes empty, any token ids for bos, eos, and pad will not be specified in `GenerationConfig`. If you think that you need to specify them. please type them below in decimal format.")                        
                         with gr.Row():
-                            byom_bos_token_id = gr.Textbox(label="bos_token_id", placeholder="for GenerationConfig")
-                            byom_eos_token_id = gr.Textbox(label="eos_token_id", placeholder="for GenerationConfig")
-                            byom_pad_token_id = gr.Textbox(label="pad_token_id", placeholder="for GenerationConfig")
+                            byom_bos_token_id = gr.Textbox(label="bos_token_id", placeholder="for GenConfig")
+                            byom_eos_token_id = gr.Textbox(label="eos_token_id", placeholder="for GenConfig")
+                            byom_pad_token_id = gr.Textbox(label="pad_token_id", placeholder="for GenConfig")
                     
                     with gr.Row():
                         byom_multi_gpu = gr.Checkbox(label="Multi GPU / (Non 8Bit mode)")  
@@ -474,7 +499,7 @@ def main(args):
                     byom_back_btn = gr.Button("Back")
                     byom_confirm_btn = gr.Button("Confirm")
 
-                with gr.Column():
+                with gr.Column(elem_classes=["progress-view"]):
                     txt_view3 = gr.Textbox(label="Status")
                     progress_view3 = gr.Textbox(label="Progress")
         
@@ -511,7 +536,7 @@ def main(args):
                     back_to_model_choose_btn = gr.Button("Back")
                     confirm_btn = gr.Button("Confirm")
     
-                with gr.Column():
+                with gr.Column(elem_classes=["progress-view"]):
                     txt_view = gr.Textbox(label="Status")
                     progress_view2 = gr.Textbox(label="Progress")
     
@@ -525,9 +550,11 @@ def main(args):
                     gr.Markdown("GradioChat", elem_id="left-top")
     
                     with gr.Column(elem_id="left-pane"):
+                        chat_back_btn = gr.Button("Back", elem_id="chat-back-btn")
+                        
                         with gr.Accordion("Histories", elem_id="chat-history-accordion", open=False):
                             channel_btns.append(gr.Button(channels[0], elem_classes=["custom-btn-highlight"]))
-    
+
                             for channel in channels[1:]:
                                 channel_btns.append(gr.Button(channel, elem_classes=["custom-btn"]))
     
@@ -622,7 +649,7 @@ def main(args):
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, llama_deus_7b, 
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b,
                 falcon_7b, wizard_falcon_7b,
-                flan11b, koalpaca, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
+                flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, baize_13b, guanaco_13b,
                 camel20b,
                 guanaco_33b, falcon_40b,
@@ -638,10 +665,16 @@ def main(args):
                     ]
                 )
 
+            select_model.click(
+                move_to_model_select_view,
+                None,
+                [progress_view0, landing_view, model_choice_view]
+            )
+            
             chosen_model.click(
                 use_chosen_model,
                 None,
-                [progress_view, model_choice_view, chat_view, chatbot, chat_state, global_context,
+                [progress_view0, landing_view, chat_view, chatbot, chat_state, global_context,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid]
             )
@@ -649,13 +682,13 @@ def main(args):
             byom.click(
                 move_to_byom_view,
                 None,
-                [model_choice_view, byom_input_view, progress_view]
+                [progress_view0, landing_view, byom_input_view]
             )
 
             byom_back_btn.click(
                 move_to_first_view,
                 None,
-                [model_choice_view, byom_input_view]
+                [landing_view, byom_input_view]
             )
 
             byom_confirm_btn.click(
@@ -779,7 +812,13 @@ def main(args):
                 None, local_data, None, 
                 _js="(v)=>{ setStorage('local_data',v) }"
             )
-            
+
+            chat_back_btn.click(
+                lambda: [gr.update(visible=False), gr.update(visible=True)],
+                None,
+                [chat_view, landing_view]
+            )
+          
             demo.load(
               None,
               inputs=None,

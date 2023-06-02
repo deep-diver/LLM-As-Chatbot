@@ -17,6 +17,32 @@ PARENT_BLOCK_CSS = """
 """
 
 MODEL_SELECTION_CSS = """
+
+.progress-view {
+    background: transparent !important;
+    border-radius: 25px !important;
+}
+
+#landing-container {
+    width: 85%;
+    margin: auto;
+}
+
+.landing-btn {
+    font-size: 2.3vw !important;
+    margin-top: 25px !important;
+    border-radius: 25px !important;
+    height: 120px !important;
+    
+    @media screen and (max-width: 1000px) {
+        font-size: 20px !important;
+    }
+}
+
+#landing-bottom {
+    margin-top: 20px !important;
+}
+
 .custom-btn {
     border: none !important;
     background: none !important;
@@ -242,9 +268,21 @@ MODEL_SELECTION_CSS = """
   display: none !important;
 }
 
+#chat-back-btn {
+  background: transparent !important;
+}
 
+#chat-back-btn:hover {
+  @media (prefers-color-scheme: dark) {
+    background: rgb(75,85,99) !important;
+  }
+}
 
-
+#chat-back-btn:active {
+  @media (prefers-color-scheme: dark) {
+    background: transparent !important;
+  }
+}
 
 #col-container {
     max-width: 70%; 
@@ -395,6 +433,16 @@ MODEL_SELECTION_CSS = """
 
 #koalpaca {
   background: url(https://i.ibb.co/hF9NL7r/koalpaca.png);
+  background-repeat: no-repeat;
+  background-size: 100px 100px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+#kullm {
+  background: url(https://i.ibb.co/6ZFqk4J/kullm.png);
   background-repeat: no-repeat;
   background-size: 100px 100px;
   color: transparent;  
