@@ -154,53 +154,7 @@ class GradioKULLMChatPPManager(KULLMChatPPManager):
         for pingpong in self.pingpongs[from_idx:to_idx]:
             results.append(fmt.ui(pingpong))
             
-        return results        
-    
-def get_chat_interface(model_type):
-    if model_type == "alpaca":
-        return alpaca.chat_stream
-    elif model_type == "alpaca-gpt4":
-        return alpaca.chat_stream
-    elif model_type == "stablelm":
-        return stablelm.chat_stream
-    elif model_type == "os-stablelm":
-        return os_stablelm.chat_stream
-    elif model_type == "koalpaca-polyglot":
-        return koalpaca.chat_stream
-    elif model_type == "kullm-polyglot":
-        return kullm.chat_stream
-    elif model_type == "flan-alpaca":
-        return flan_alpaca.chat_stream
-    elif model_type == "camel":
-        return alpaca.chat_stream
-    elif model_type == "t5-vicuna":
-        return vicuna.chat_stream
-    elif model_type == "stable-vicuna":
-        return vicuna.chat_stream
-    elif model_type == "starchat":
-        return starchat.chat_stream
-    elif model_type == "mpt":
-        return mpt.chat_stream
-    elif model_type == "redpajama":
-        return redpajama.chat_stream
-    elif model_type == "vicuna":
-        return vicuna.chat_stream
-    elif model_type == "llama-deus":
-        return alpaca.chat_stream
-    elif model_type == "evolinstruct-vicuna":
-        return vicuna.chat_stream
-    elif model_type == "alpacoom":
-        return alpacoom.chat_stream
-    elif model_type == "baize":
-        return baize.chat_stream
-    elif model_type == "guanaco":
-        return guanaco.chat_stream
-    elif model_type == "falcon":
-        return falcon.chat_stream
-    elif model_type == "wizard-falcon":
-        return falcon.chat_stream
-    else:
-        return None
+        return results
 
 def get_chat_manager(model_type):
     if model_type == "alpaca":
@@ -247,6 +201,8 @@ def get_chat_manager(model_type):
         return GradioAlpacaChatPPManager()
     elif model_type == "wizard-falcon":
         return GradioWizardChatPPManager()
+    elif model_type == "replit-instruct":
+        return GradioAlpacaChatPPManager()
     else:
         return None
 

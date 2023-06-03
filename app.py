@@ -11,7 +11,7 @@ from chats import central
 from transformers import AutoModelForCausalLM
 from miscs.styles import MODEL_SELECTION_CSS
 from miscs.js import GET_LOCAL_STORAGE, UPDATE_LEFT_BTNS_STATE
-from utils import get_chat_interface, get_chat_manager, get_global_context
+from utils import get_chat_manager, get_global_context
 
 from pingpong.pingpong import PingPong
 from pingpong.gradio import GradioAlpacaChatPPManager
@@ -333,7 +333,11 @@ def main(args):
                         with gr.Column(min_width=20):
                             flan3b = gr.Button("flan-3b", elem_id="flan-3b", elem_classes=["square"])
                             gr.Markdown("Flan-XL", elem_classes=["center"])
-    
+
+                        # with gr.Column(min_width=20):
+                        #     replit_3b = gr.Button("replit-3b", elem_id="replit-3b", elem_classes=["square"])
+                        #     gr.Markdown("Replit Instruct", elem_classes=["center"])                        
+                        
                         with gr.Column(min_width=20):
                             camel5b = gr.Button("camel-5b", elem_id="camel-5b", elem_classes=["square"])
                             gr.Markdown("Camel", elem_classes=["center"])
@@ -392,7 +396,7 @@ def main(args):
 
                         with gr.Column(min_width=20):
                             wizard_falcon_7b = gr.Button("wizard-falcon-7b", elem_id="wizard-falcon-7b", elem_classes=["square"])
-                            gr.Markdown("Wizard Falcon", elem_classes=["center"])                            
+                            gr.Markdown("Wizard Falcon", elem_classes=["center"])
 
                     gr.Markdown("## ~ 20B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
@@ -459,6 +463,10 @@ def main(args):
                         with gr.Column(min_width=20):
                             falcon_40b = gr.Button("falcon-40b", elem_id="falcon-40b", elem_classes=["square"])
                             gr.Markdown("Falcon", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            wizard_falcon_40b = gr.Button("wizard-falcon-40b", elem_id="wizard-falcon-40b", elem_classes=["square"])
+                            gr.Markdown("Wizard Falcon", elem_classes=["center"])
 
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
@@ -657,7 +665,7 @@ def main(args):
                 starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, baize_13b, guanaco_13b,
                 nous_hermes_13b,
                 camel20b,
-                guanaco_33b, falcon_40b,
+                guanaco_33b, falcon_40b, wizard_falcon_40b,
             ]
             for btn in btns:
                 btn.click(

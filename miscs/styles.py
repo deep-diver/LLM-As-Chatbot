@@ -600,7 +600,7 @@ MODEL_SELECTION_CSS = """
   margin: auto;
 }
 
-#wizard-falcon-7b {
+#wizard-falcon-7b, #wizard-falcon-40b {
   background: url(https://i.ibb.co/415s0D4/wizard-falcon.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
@@ -612,6 +612,16 @@ MODEL_SELECTION_CSS = """
 
 #nous-hermes-13b {
   background: url(https://i.ibb.co/sm8VgtL/nous-hermes.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+#replit-3b {
+  background: url(https://i.ibb.co/BrKCKYq/replit.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
   color: transparent;  
