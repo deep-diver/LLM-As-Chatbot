@@ -257,6 +257,14 @@
         "hub(base)": "ehartford/WizardLM-Uncensored-Falcon-7b",
         "hub(ckpt)": "N/A"        
     },
+    "nous-hermes-13b": {
+        "category": "<20B",
+        "display_name": "Nous Hermes",
+        "thumb": "https://i.ibb.co/sm8VgtL/nous-hermes.png",
+        "parameters": "13 Billion",
+        "hub(base)": "NousResearch/Nous-Hermes-13b",
+        "hub(ckpt)": "N/A"         
+    },
     "20b-placeholder1": {
         "category": "<20B",
         "display_name": "Flan-XXL",

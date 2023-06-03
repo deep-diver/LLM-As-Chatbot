@@ -610,6 +610,16 @@ MODEL_SELECTION_CSS = """
   margin: auto;
 }
 
+#nous-hermes-13b {
+  background: url(https://i.ibb.co/sm8VgtL/nous-hermes.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
 #byom {
   background: url(https://i.ibb.co/YhM4B2X/byom.png);
   background-repeat: no-repeat;

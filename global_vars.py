@@ -46,6 +46,8 @@ def initialize_globals(args):
     model_type_tmp = "alpaca"
     if "kullm" in args.base_url.lower():
         model_type_tmp = "kullm-polyglot"
+    elif "nous-hermes" in args.base_url.lower():
+        model_type_tmp = "nous-hermes"
     elif "guanaco" in args.base_url.lower():
         model_type_tmp = "guanaco"
     elif "wizardlm-uncensored-falcon" in args.base_url.lower():
@@ -124,7 +126,8 @@ def initialize_globals(args):
 def get_load_model(model_type):
     if model_type == "alpaca" or \
         model_type == "alpaca-gpt4" or \
-        model_type == "llama-deus":
+        model_type == "llama-deus" or \
+        model_type == "nous-hermes":
         return alpaca.load_model
     elif model_type == "stablelm" or model_type == "os-stablelm":
         return stablelm.load_model
