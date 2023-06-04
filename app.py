@@ -200,6 +200,7 @@ def move_to_second_view(btn):
         info['example1'],
         info['example2'],
         info['example3'],
+        info['example4'],
         "",
     )
 
@@ -566,6 +567,10 @@ def main(args):
                             example_showcase3 = gr.Chatbot(
                                 [("hello", "world"), ("damn", "good")]
                             )
+                        with gr.Tab("Ex4"):
+                            example_showcase4 = gr.Chatbot(
+                                [("hello", "world"), ("damn", "good")]
+                            )                            
                 
                 with gr.Row():
                     back_to_model_choose_btn = gr.Button("Back")
@@ -697,7 +702,7 @@ def main(args):
                     [
                         model_choice_view, model_review_view,
                         model_image, model_name, model_params, model_base, model_ckpt,
-                        model_desc, gen_config_path, example_showcase1, example_showcase2, example_showcase3,
+                        model_desc, gen_config_path, example_showcase1, example_showcase2, example_showcase3, example_showcase4,
                         progress_view
                     ]
                 )
