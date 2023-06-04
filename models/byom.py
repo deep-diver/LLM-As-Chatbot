@@ -40,7 +40,7 @@ def load_model(
         model = PeftModel.from_pretrained(
             model, 
             finetuned, 
-            force_download=force_download_ckpt,
+            # force_download=force_download_ckpt,
             device_map={'': 0}
         )
     

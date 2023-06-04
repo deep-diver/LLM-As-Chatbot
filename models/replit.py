@@ -22,7 +22,7 @@ def load_model(base, finetuned, multi_gpu, force_download_ckpt):
         model = PeftModel.from_pretrained(
             model, 
             finetuned, 
-            force_download=force_download_ckpt,
+            # force_download=force_download_ckpt,
             trust_remote_code=True
         )
 

@@ -197,6 +197,9 @@ def move_to_second_view(btn):
         f"**🤗 Hub(ckpt)**\n: {info['hub(ckpt)']}",
         f"**Description**\n: {info['desc']}",
         info['default_gen_config'],
+        info['example1'],
+        info['example2'],
+        info['example3'],
         "",
     )
 
@@ -519,6 +522,8 @@ def main(args):
         
         with gr.Column(visible=False) as model_review_view:
             gr.Markdown("# Confirm the chosen model", elem_classes=["center"])
+            gr.Markdown("Please expect loading time to be longer than expected")
+                        
             with gr.Column(elem_id="container2"):
                 with gr.Row():
                     model_image = gr.Image(None, interactive=False, show_label=False)
@@ -545,8 +550,22 @@ def main(args):
                     )
                     with gr.Row():
                         multi_gpu = gr.Checkbox(label="Multi GPU / (Non 8Bit mode)")
-                        force_redownload = gr.Checkbox(label="Force Re-download")
-    
+                        force_redownload = gr.Checkbox(label="Force Re-download", interactive=False)
+
+                    with gr.Accordion("Example showcases", open=False):
+                        with gr.Tab("Ex1"):
+                            example_showcase1 = gr.Chatbot(
+                                [("hello", "world"), ("damn", "good")]
+                            )
+                        with gr.Tab("Ex2"):
+                            example_showcase2 = gr.Chatbot(
+                                [("hello", "world"), ("damn", "good")]
+                            )
+                        with gr.Tab("Ex3"):
+                            example_showcase3 = gr.Chatbot(
+                                [("hello", "world"), ("damn", "good")]
+                            )
+                
                 with gr.Row():
                     back_to_model_choose_btn = gr.Button("Back")
                     confirm_btn = gr.Button("Confirm")
@@ -677,7 +696,7 @@ def main(args):
                     [
                         model_choice_view, model_review_view,
                         model_image, model_name, model_params, model_base, model_ckpt,
-                        model_desc, gen_config_path, 
+                        model_desc, gen_config_path, example_showcase1, example_showcase2, example_showcase3,
                         progress_view
                     ]
                 )
