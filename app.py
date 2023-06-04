@@ -195,6 +195,8 @@ def move_to_second_view(btn):
         f"**Parameters**\n: {info['parameters']}",
         f"**🤗 Hub(base)**\n: {info['hub(base)']}",
         f"**🤗 Hub(ckpt)**\n: {info['hub(ckpt)']}",
+        f"**Description**\n: {info['desc']}",
+        info['default_gen_config'],
         "",
     )
 
@@ -525,6 +527,7 @@ def main(args):
                         model_params = gr.Markdown("Parameters\n: ...")
                         model_base = gr.Markdown("🤗 Hub(base)\n: ...")
                         model_ckpt = gr.Markdown("🤗 Hub(ckpt)\n: ...")
+                        model_desc = gr.Markdown("...")
     
                 with gr.Column():
                     gen_config_path = gr.Dropdown(
@@ -674,6 +677,7 @@ def main(args):
                     [
                         model_choice_view, model_review_view,
                         model_image, model_name, model_params, model_base, model_ckpt,
+                        model_desc, gen_config_path, 
                         progress_view
                     ]
                 )
