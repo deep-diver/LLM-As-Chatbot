@@ -59,6 +59,8 @@ def initialize_globals(args):
         model_type_tmp = "falcon"
     elif "baize" in args.base_url.lower():
         model_type_tmp = "baize"
+    elif "stable-vicuna" in args.base_url.lower():
+        model_type_tmp = "stable-vicuna"        
     elif "vicuna" in args.base_url.lower():
         model_type_tmp = "vicuna"
     elif "mpt" in args.base_url.lower():
@@ -79,9 +81,8 @@ def initialize_globals(args):
         model_type_tmp = "t5-vicuna"
     elif "koalpaca-polyglot" in args.base_url.lower():
         model_type_tmp = "koalpaca-polyglot"
-    elif "stable-vicuna" in args.base_url.lower():
-        model_type_tmp = "stable-vicuna"
-    elif "alpacagpt4" in args.ft_ckpt_url.lower():
+    
+    if "alpacagpt4" in args.ft_ckpt_url.lower():
         model_type_tmp = "alpaca-gpt4"
     elif "alpaca" in args.ft_ckpt_url.lower():
         model_type_tmp = "alpaca"
