@@ -22,7 +22,7 @@ def build_prompts(ppmanager, user_message, global_context, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
     lws = CtxLastWindowStrategy(win_size)
 
-    dummp_ppm.ctx = global_context
+    dummy_ppm.ctx = global_context
     
     prompt = lws(dummy_ppm)  
     return prompt
