@@ -18,6 +18,10 @@ PARENT_BLOCK_CSS = """
 
 MODEL_SELECTION_CSS = """
 
+code {
+    white-space: break-spaces !important;
+}
+
 .progress-view {
     background: transparent !important;
     border-radius: 25px !important;

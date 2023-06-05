@@ -336,7 +336,7 @@ def main(args):
                             t5_vicuna_3b = gr.Button("t5-vicuna-3b", elem_id="t5-vicuna-3b", elem_classes=["square"])
                             gr.Markdown("T5 Vicuna", elem_classes=["center"])
     
-                        with gr.Column(min_width=20):
+                        with gr.Column(min_width=20, visible=False):
                             flan3b = gr.Button("flan-3b", elem_id="flan-3b", elem_classes=["square"])
                             gr.Markdown("Flan-XL", elem_classes=["center"])
 
@@ -384,7 +384,7 @@ def main(args):
                             evolinstruct_vicuna_7b = gr.Button("evolinstruct-vicuna-7b", elem_id="evolinstruct-vicuna-7b", elem_classes=["square"])
                             gr.Markdown("EvolInstruct Vicuna", elem_classes=["center"])
     
-                        with gr.Column(min_width=20):
+                        with gr.Column(min_width=20, visible=False):
                             alpacoom_7b = gr.Button("alpacoom-7b", elem_id="alpacoom-7b", elem_classes=["square"])
                             gr.Markdown("Alpacoom", elem_classes=["center"])
     
@@ -406,7 +406,7 @@ def main(args):
 
                     gr.Markdown("## ~ 20B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
-                        with gr.Column(min_width=20):
+                        with gr.Column(min_width=20, visible=False):
                             flan11b = gr.Button("flan-11b", elem_id="flan-11b", elem_classes=["square"])
                             gr.Markdown("Flan-XXL", elem_classes=["center"])
     
@@ -454,8 +454,8 @@ def main(args):
                             nous_hermes_13b = gr.Button("nous-hermes-13b", elem_id="nous-hermes-13b", elem_classes=["square"])
                             gr.Markdown("Nous Hermes", elem_classes=["center"])                            
     
-                    gr.Markdown("## ~ 30B Parameters")
-                    with gr.Row(elem_classes=["sub-container"]):
+                    gr.Markdown("## ~ 30B Parameters", visible=False)
+                    with gr.Row(elem_classes=["sub-container"], visible=False):
                         with gr.Column(min_width=20):
                             camel20b = gr.Button("camel-20b", elem_id="camel-20b", elem_classes=["square"])
                             gr.Markdown("Camel", elem_classes=["center"])
