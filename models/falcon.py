@@ -13,7 +13,7 @@ def load_model(base, finetuned, multi_gpu, force_download_ckpt):
         torch_dtype=torch.bfloat16,
         device_map="auto",
         trust_remote_code=True
-    )    
+    )
 
     # model = BetterTransformer.transform(model)
     return model, tokenizer

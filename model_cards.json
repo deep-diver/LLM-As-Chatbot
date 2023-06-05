@@ -189,10 +189,18 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/baize.yaml",
         "desc": "This model is a 7B Baize-v2, trained with supervised fine-tuning (SFT) and self-distillation with feedback (SDF). This checkpoint has been merged with LLaMA 7B so it's ready for use.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", "As I stood on the white sand beach of Waikiki, surrounded by crystal clear waters and swaying palm trees, I couldn't help but feel like I was in paradise. My recent trip to Hawaii had been nothing short of spectacular, filled with breathtaking landscapes, vibrant cultures, and once-in-a-lifetime experiences.\n\nOne of my favorite cultural experiences during my trip was visiting the Kilauea Volcano National Park on the island of Hawaii. As we drove through the lush rainforest, I could see steam rising from the ground and felt like I was in a scene straight out of Jurassic Park. We arrived at Halema'uma'u Crater, where we watched lava flow into the ocean below. It was an incredible sight to see, and it really made me appreciate the power of nature.\n\nAnother must-see attraction on Oahu was the USS Arizona Memorial at Pearl Harbor. Visiting this site was both emotional and educational, as it commemorates the attack on Pearl Harbor during World War II. Standing on top of the memorial, overlooking the water, you can imagine what it must have been like for those who died that day.\n\nBut there were also plenty of fun activities to be found while in Hawaii. In Honolulu, I enjoyed exploring Chinatown, sampling local foods such as poke (raw fish salad) and shave ice, and shopping for souvenirs. Another great place to spend time was the Hilton Lagoon in Maui, where visitors can swim with stingrays and enjoy other marine life encounters.\n\nOverall, my trip to Hawaii was one that I will never forget. From the breathtaking scenery to the rich culture and unique experiences, it left a lasting impression on me. If you ever get the chance to go, don't miss out on these amazing sites and attractions - they are sure to leave you feeling inspired and refreshed."]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", "Of course, I can certainly help you with that! Here's an example of how your resignation letter might look:\n\nDear [Employer],\n\nAfter careful consideration, I have decided to leave my position at [Company Name] effective [Date]. It has been a pleasure working with all of you over the past [X years/months/days], and I am grateful for the opportunities you have given me to grow both professionally and personally.\n\nI want to take this opportunity to thank you for your support, guidance, and mentorship throughout my tenure here. Your confidence in my abilities has helped me achieve many milestones, and I will carry those memories with me for years to come.\n\nAs I move onto the next chapter of my career, I wish you continued success and prosperity. Please do not hesitate to reach out if there are any ways I can be of assistance in the future.\n\nThank you again for everything.\n\nBest regards,\n\n[Your Name]\n\nPlease note that this is just a sample and it may need some adjustments depending on your specific situation. Also, please make sure to proofread and edit the final draft before sending it to your employer."]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", "When designing an inclusive and accessible public transportation system, several factors should be considered:\n\n1.Accessibility for all users: The system should cater to people of different abilities, ages, gender identities, cultural backgrounds, and religious beliefs. This includes features such as low floors, wide doors, ramps, elevators, and wheelchair lifts on buses and trains.\n2.Transportation options: Users should have access to various modes of transportation including buses, railways, subway systems, and shuttles. These options should be integrated and interconnected to provide seamless travel experiences.\n3.Communication: The system should include clear signage, audio announcements, and real-time information about schedule changes and delays. Additionally, language translation services can be provided to ensure everyone understands directions and other relevant information.\n4.Safety and security: Features like CCTV cameras, lighting, emergency exits, and security personnel should be implemented to ensure user safety during their journey.\n5.Integrated technology: Advanced technologies such as contactless payment systems, mobile apps, and GPS tracking can improve efficiency and convenience for passengers.\n6.User feedback: Regular surveys and focus groups can help identify areas for improvement and ensure that the system meets the needs of its users.\n7.Collaborations and partnerships: Partnership with disability organizations, community leaders, and advocates can result in more effective designs and better understanding of the diverse needs of users.\n8.Sustainable practices: Public transportation should prioritize environmentally sustainable practices such as energy conservation, waste management, and greenhouse gas emissions reduction.\n9.Maintenance and repair: The system must be maintained regularly to avoid accidents and keep it running smoothly for passengers.\nBy considering these factors, we can create an inclusive and accessible public transportation system that benefits everyone."]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", "```python\ndef fib_generator(n):\n   if n == 0:\n       return 0\n   else:\n       return fib_generator(n - 1) + fib_generator(n - 2)\nprint(list(fib_generator(10)))\n```\n\nThis Python function takes an integer argument n which represents the current index of the Fibonacci sequence we want to generate. It returns the value of the Fibonacci number at this index using recursion. We then use the built-in list() function to convert our generator function into a list, and finally print out the first ten elements of this list. This will give us the first 10 Fibonacci numbers."]
+        ]
     },
     "gpt4-alpaca-7b": {
         "category": "<10B",
@@ -203,10 +211,18 @@
         "hub(ckpt)": "LLMs/AlpacaGPT4-LoRA-7B-elina",
         "default_gen_config": "configs/response_configs/gpt4_alpaca.yaml",
         "desc": "GPT4 Alpaca LoRA is LLaMA 7B model fine-tuned on GPT4 generated instruction dataset.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "vicuna-7b": {
         "category": "<10B",
@@ -217,10 +233,18 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/default.yaml",
         "desc": "Vicuna 7B is an open-source chatbot trained by fine-tuning LLaMA 7B on user-shared conversations collected from ShareGPT. It is an auto-regressive language model, based on the transformer architecture.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "baize-13b": {
         "category": "<20B",
@@ -231,10 +255,18 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/baize.yaml",
         "desc": "This model is a 13B Baize-v2, trained with supervised fine-tuning (SFT) and self-distillation with feedback (SDF). This checkpoint has been merged with LLaMA 7B so it's ready for use.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },    
     "vicuna-13b": {
         "category": "<20B",
@@ -258,11 +290,18 @@
         "hub(base)": "elinas/llama-13b-hf-transformers-4.29",
         "hub(ckpt)": "LLMs/AlpacaGPT4-LoRA-13B-elina",
         "default_gen_config": "configs/response_configs/gpt4_alpaca.yaml",
-        "desc": "GPT4 Alpaca LoRA is LLaMA 13B model fine-tuned on GPT4 generated instruction dataset.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },    
     "flan-11b": {
         "category": "<20B",
@@ -273,10 +312,18 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/flan.yaml",
         "desc": "flan-alpaca-xxl is [Flan-T5-XXL](https://huggingface.co/google/flan-t5-xl) 11B fine-tuned on [Flan](https://github.com/google-research/FLAN) and [Alpaca](https://github.com/tatsu-lab/stanford_alpaca) datasets.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "stable-vicuna-13b": {
         "category": "<20B",
@@ -300,11 +347,19 @@
         "hub(base)": "Writer/camel-20b",
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/camel.yaml",
-        "desc": "Derived from the foundational architecture of [Palmyra-Base](https://huggingface.co/Writer/palmyra-base), Camel-20b is fine-tuned on an extensive dataset of approximately 70,000 instruction-response records. These records are generated by our dedicated [Writer](https://writer.com/) Linguist team, who possess considerable expertise in language modeling and fine-tuning techniques.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "desc": "Derived from the foundational architecture of [Palmyra-Base](https://huggingface.co/Writer/palmyra-base), Camel-20b is fine-tuned on an extensive dataset of approximately 70,000 instruction-response records. These records are generated by our dedicated [Writer](https://writer.com/) Linguist",
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "starchat-15b": {
         "category": "<20B",
@@ -315,10 +370,18 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/starchat.yaml",
         "desc": "StarChat is a series of language models that are fine-tuned from StarCoder to act as helpful coding assistants. StarChat Alpha is the first of these models, and as an alpha release is only intended for educational or research purpopses.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "llama-deus-7b": {
         "category": "<10B",
@@ -395,10 +458,18 @@
         "hub(ckpt)": "mrm8488/Alpacoom",
         "default_gen_config": "configs/response_configs/default.yaml",
         "desc": "This adapter was created with the PEFT library and allowed the base model [BigScience/BLOOM 7B1](https://huggingface.co/bigscience/bloom-7b1) to be fine-tuned on the Stanford's Alpaca Dataset by using the method LoRA.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "guanaco-7b": {
         "category": "<10B",
@@ -409,10 +480,18 @@
         "hub(ckpt)": "timdettmers/guanaco-7b",
         "default_gen_config": "configs/response_configs/guanaco.yaml",
         "desc": "LLaMA 7B based Guanaco which is fine-tuned on OASST1 dataset with QLoRA techniques introduced in [QLoRA: Efficient Finetuning of Quantized LLMs](https://github.com/artidoro/qlora) paper.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "guanaco-13b": {
         "category": "<20B",
@@ -423,10 +502,18 @@
         "hub(ckpt)": "timdettmers/guanaco-13b",
         "default_gen_config": "configs/response_configs/guanaco.yaml",
         "desc": "LLaMA 13B based Guanaco which is fine-tuned on OASST1 dataset with QLoRA techniques introduced in [QLoRA: Efficient Finetuning of Quantized LLMs](https://github.com/artidoro/qlora) paper.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "guanaco-33b": {
         "category": "<40B",
@@ -437,10 +524,18 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/guanaco.yaml",
         "desc": "LLaMA 30B based Guanaco which is fine-tuned on OASST1 dataset with QLoRA techniques introduced in [QLoRA: Efficient Finetuning of Quantized LLMs](https://github.com/artidoro/qlora) paper.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "falcon-7b": {
         "category": "<10B",
@@ -473,10 +568,18 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/falcon.yaml",
         "desc": "Falcon-7B-Instruct is a 40B parameters causal decoder-only model built by [TII](https://www.tii.ae/) based on [Falcon-40B](https://huggingface.co/tiiuae/falcon-40b) and finetuned on a mixture of chat/instruct datasets including [Baize](https://github.com/project-baize/baize-chatbot), [GPT4All](https://github.com/nomic-ai/gpt4all), [GPTeacher](https://github.com/teknium1/GPTeacher), and [RefinedWeb-English](https://huggingface.co/datasets/tiiuae/falcon-refinedweb)",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },
     "wizard-falcon-7b": {
         "category": "<10B",
@@ -487,10 +590,18 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/falcon.yaml",
         "desc": "This is WizardLM trained on top of tiiuae/falcon-7b, with a subset of the dataset - responses that contained alignment / moralizing were removed. The intent is to train a WizardLM that doesn't have alignment built-in, so that alignment (of any sort) can be added separately with for example with a RLHF LoRA. An uncensored model has no guardrails.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", "\"Aloha from the beautiful islands of Hawaii! If you're looking for adventure, tropical weather, crystal clear waters, and some of the best food in the world, look no further than Hawaii. In this travel blog post, I will share my experience exploring the island of Oahu and give you tips on how to make the most out of your visit.\n\nFirst things first, let me introduce myself. My name is Sarah, and I am a travel enthusiast who loves nothing more than discovering new places and experiencing different cultures. After spending several years traveling the globe, I can confidently say that Hawaii has been one of my favorite destinations so far. And if you're considering visiting too, keep reading because I have lots of exciting information to share with you.\n\nOne of the highlights of our trip was attending a traditional Hawaiian Luau. We went to the Old Lahaina Luau in Maui, where we were treated to an authentic Polynesian feast complete with poi (made from taro root), roasted pig, and fresh fish cooked right before our eyes. It was such a fun and interactive way to learn about Hawaiian culture, and I highly recommend it if you're interested in trying something truly unique.\n\nAnother must-see attraction on Oahu is the iconic Diamond Head State Monument. This volcanic crater offers stunning views of Waikiki Beach and Honolulu Harbor. You can hike up to the top of the crater or take a guided tour for even better vantage points. Plus, there are plenty of photo opportunities along the way.\n\nFor those craving some adrenaline rush, check out the Shark Attack Adventure Tour in Kaanapali. Here, you'll get the chance to snorkel with giant sea turtles and humpback whales while also learning about the local marine life and its importance to the ecosystem. Just be sure to follow all safety guidelines, as these animals can be dangerous when provoked.\n\nAnd finally, don't forget to try some of the amazing cuisine available in Hawaii. Poke bowls are a popular dish made with raw tuna, seaweed, cucumber, onions, and sesame seeds, served over rice. Another delicious option is plate lunches, which consist of rice, macaroni salad, grilled chicken or pork, and veggies. Be sure to sample both during your stay!\n\nOverall, my time in Hawaii was unforgettable. The people, the scenery, the food...everything was perfect. I hope this travel guide inspires you to plan your own getaway to this incredible destination.\""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", "[Your Name]\n[Your Address]\n[City, State ZIP Code]\n[Today's Date]\nDear [Manager's Name],\n\nI am writing this letter to inform you that I will be resigning from my position as [Your Position] at [Company Name]. My last day of work will be [Date Two Weeks From Today], which gives us enough time to prepare for my departure.\nFirst and foremost, let me express my sincere thanks for the incredible opportunities you have given me over the past few years. Working with such an amazing team has been one of the greatest privileges of my career, and I am grateful for all the knowledge and skills I have acquired under your mentorship. Your trust in me and belief in my abilities have been truly inspiring.\nAs I move on to new challenges, I want to assure you that I am taking away only positive memories and experiences from our time together. The relationships I have built here are invaluable, and I look forward to keeping them even after I leave.\nAgain, thank you for everything. Please do not hesitate to reach out if there is anything else I can assist you with during my transition period.\n[Your Signature]"]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", "- Accessibility – Designating specific vehicles or routes that cater to individuals with disabilities, including wheelchair accessibility, low floor buses, and lifts for those in wheelchairs.\n- Affordability – Offering discounted fares for senior citizens, students, and low-income individuals to encourage more people to use public transportation.\n- Safety – Implementing measures such as CCTV cameras, security personnel, and emergency call systems to ensure the safety of passengers.\n- Convenience – Providing real-time information about bus schedules, routes, and estimated arrival times through mobile apps or online platforms.\n- Integration – Collaborating with local businesses and organizations to provide shuttle services, bike racks, and pedestrian walkways to enhance mobility options and reduce traffic congestion.\n- Interoperability – Ensuring that different modes of public transportation work seamlessly together, allowing passengers to easily transfer between buses, trains, and subways without having to switch terminals."]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", "```python\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    else:\n        return (fibonacci(n-1) + fibonacci(n-2))\nn = int(input(\"Enter number of terms in sequence: \"))\nfor i in range(1, n+1):\n    print(fibonacci(i), end=\"\\t\")\n```\nThis program uses recursion to generate the first 10 Fibonacci numbers. The input is taken from the user and the function fibonacci() returns the value of the nth Fibonacci number. The output format is determined by adding tabs between each element using an empty string \"\\t\"."]
+        ]
     },
     "wizard-falcon-40b": {
         "category": "<40B",
@@ -501,10 +612,18 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/falcon.yaml",
         "desc": "This is WizardLM trained on top of tiiuae/falcon-40b, with a subset of the dataset - responses that contained alignment / moralizing were removed. The intent is to train a WizardLM that doesn't have alignment built-in, so that alignment (of any sort) can be added separately with for example with a RLHF LoRA. An uncensored model has no guardrails.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     },    
     "nous-hermes-13b": {
         "category": "<20B",
@@ -515,9 +634,17 @@
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/default.yaml",
         "desc": "The model is LLaMA 13B that was fine-tuned almost entirely on synthetic GPT-4 outputs. This includes data from diverse sources such as GPTeacher, the general, roleplay v1&2, code instruct datasets, Nous Instruct & PDACTL (unpublished), CodeAlpaca, Evol_Instruct Uncensored, GPT4-LLM, and Unnatural Instructions. Additional data inputs came from Camel-AI's Biology/Physics/Chemistry and Math Datasets, Airoboros' GPT-4 Dataset, and more from CodeAlpaca. The total volume of data encompassed over 300,000 instructions.",
-        "example1": [["hello #1", "world #1"], ["hello #2", "world #2"], ["hello #3", "world #3"]],
-        "example2": [["hello #4", "world #4"], ["hello #5", "world #5"], ["hello #6", "world #6"]],
-        "example3": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]],
-        "example4": [["hello #7", "world #7"], ["hello #8", "world #8"], ["hello #9", "world #9"]]
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", "Title: My Hawaiian Adventure - Cultural Experiences & Must-See Attractionsn\n\nAs I sit down to write this blog post, I am still reeling from my incredible trip to Hawaii last month. From stunning natural beauty to rich cultural history, there was so much to see and experience on this tropical paradise. In this post, I'll share some of my favorite cultural experiences and must-see attractions that made my trip to Hawaii truly unforgettable.\n\nOne of the most memorable moments of our trip was visiting Pearl Harbor. This historic site honors those who lost their lives during the attack on December 7, 1941, and offers visitors a glimpse into World War II history. The USS Arizona Memorial, which floats above the sunken battleship, is particularly poignant. It's hard not to feel moved by the stories of bravery and sacrifice that resonate throughout the exhibits. If you plan to visit Pearl Harbor, make sure to book your tickets well in advance, as they often sell out quickly.\n\nAnother unmissable attraction is Haleakala National Park on Maui. Here, you can hike through lush rainforests, trek up volcanic peaks for breathtaking panoramas, and even bike along winding trails through dense greenery. Make sure to bring warm clothes, though – the higher elevation can be chilly! For those interested in learning more about local flora and fauna, there are guided walks available where knowledgeable park rangers provide insightful commentary on the unique plants and animals found within the park.\n\nCulture vultures won't want to miss out on the opportunity to attend a traditional luau. These festivals celebrating native Hawaiian customs feature live music, dancing, storytelling, and – of course – delicious food like roasted pig cooked in an underground oven called an imu. Many hotels offer luaus for guests, but if you prefer something more authentic, check out one of the many standalone venues scattered across the islands. Whichever option you choose, you're guaranteed to have an unforgettable evening immersed in Polynesian culture.\n\nNo trip to Hawaii would be complete without exploring the beautiful beaches. However, don't just head to the nearest stretch of sand; seek out spots that showcase the island's unique character. On Oahu, Waimea Bay is known for its huge waves and dramatic cliffs, while on Kauai, Poipu Beach boasts powdery white sand and clear blue waters perfect for snorkeling. And wherever you go, don't forget to stop by a beachside shave ice vendor for a refreshing treat on a hot day.\n\nLastly, no list of must-see attractions would be complete without mentioning the stunning natural wonders found throughout the islands. Whether it's hiking through bamboo forests in Kokee State Park on Kauai or taking a drive around the famous \"curl\" at Wailea Point on Maui, there's always somewhere new to explore and discover. Don't worry if you feel overwhelmed by all the choices – simply ask a local for recommendations and they'll be delighted to point you towards hidden gems off the tourist trail.\n\nIn conclusion, my trip to Hawaii offered me a wealth of unforgettable cultural experiences and picturesque landscapes to marvel at. By embracing the diverse traditions and natural splendor found throughout the islands, we were able to craft a truly once-in-a-lifetime adventure. Mahalo (thank you) Hawaii for providing us with memories that will last a lifetime!"]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", "Of course! I would be happy to assist you in writing your resignation letter. Here's some sample content that might work well for you:\n\nDear [Employer],\n\nAfter careful consideration, I have decided to resign from my position at the company, effective [date]. This was not an easy decision for me to make, but I feel that it is time for me to move on to new challenges.\n\nThroughout my tenure here, I have been grateful for the many opportunities afforded to me by this organization. I appreciate the support and mentorship that I received during my time here, and I am proud of the contributions I made to our team.\n\nThank you sincerely for everything - your guidance, encouragement, and faith in me. The skills and experiences I gained working alongside such dedicated professionals has truly prepared me for future endeavors. Please know that I hold fond memories of my time spent within these walls and hope for continued success for all those associated with this fine establishment.\n\nWith warm regards,\n\n[Your Name]"]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", "In considering an inclusive and accessible public transportation system, some important factors that need consideration include: 1) Physical accessibility - ensuring all facilities such as stations, buses/trains, and amenities like restrooms are easily navigable for people using wheelchairs or other mobility devices; 2) Service availability – making sure services operate at regular intervals throughout the day, weekends and holidays to accommodate varying schedules and needs; 3) Information dissemination – providing accurate and timely route updates, delays or changes through various communication channels including digital platforms catering to visually impaired individuals, and 4) User safety and security - deploying measures aimed at protecting passengers from harassment or violence while on transit."]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", "Sure! Here's one possible solution using Python:\n\n```python\ndef fibonacci(n):\n   if n <= 1:\n       return n\n   else:\n       return (fibonacci(n - 1) + fibonacci(n - 2))\n\nfor i in range(10):\n   print(fibonacci(i))\n```\nThis function uses recursion to calculate the next number in the sequence by adding together two previous ones. It starts at n=2 because the first two numbers in the sequence, 0 and 1, are trivial cases that don't require recursion. The for loop then iterates through each number from 1 to 9, calling the function with increasing arguments until we reach the tenth number, which is beyond the range defined by our condition statement."]
+        ]
     }
 }

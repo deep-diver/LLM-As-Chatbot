@@ -24,5 +24,6 @@ def load_model(base, finetuned, multi_gpu, force_download_ckpt):
             # force_download=force_download_ckpt,
             device_map={'': 0}
         )
+            
     # model = BetterTransformer.transform(model)
     return model, tokenizer

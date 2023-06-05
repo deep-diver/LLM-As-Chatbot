@@ -26,6 +26,8 @@ def load_model(base, finetuned, multi_gpu, force_download_ckpt):
             trust_remote_code=True
         )
 
+        model = model.merge_and_unload()
+
     # model = BetterTransformer.transform(model)
     model.to('cuda')
     return model, tokenizer
