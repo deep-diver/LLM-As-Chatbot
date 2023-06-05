@@ -81,8 +81,7 @@ def initialize_globals(args):
         model_type_tmp = "t5-vicuna"
     elif "koalpaca-polyglot" in args.base_url.lower():
         model_type_tmp = "koalpaca-polyglot"
-    
-    if "alpacagpt4" in args.ft_ckpt_url.lower():
+    elif "alpacagpt4" in args.ft_ckpt_url.lower():
         model_type_tmp = "alpaca-gpt4"
     elif "alpaca" in args.ft_ckpt_url.lower():
         model_type_tmp = "alpaca"
