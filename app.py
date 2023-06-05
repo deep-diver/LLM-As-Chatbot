@@ -356,7 +356,7 @@ def main(args):
                             stablelm7b = gr.Button("stablelm-7b", elem_id="stablelm-7b", elem_classes=["square"])
                             gr.Markdown("StableLM", elem_classes=["center"])
     
-                        with gr.Column(min_width=20):
+                        with gr.Column(min_width=20, visible=False):
                             os_stablelm7b = gr.Button("os-stablelm-7b", elem_id="os-stablelm-7b", elem_classes=["square"])
                             gr.Markdown("OA+StableLM", elem_classes=["center"])
     
