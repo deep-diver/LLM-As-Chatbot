@@ -1,3 +1,4 @@
+import gc
 import yaml
 import torch
 from transformers import GenerationConfig
@@ -108,6 +109,7 @@ def initialize_globals(args):
         if tokenizer is not None:
             del tokenizer
 
+        gc.collect()
         torch.cuda.empty_cache()  
     except NameError:
         pass
