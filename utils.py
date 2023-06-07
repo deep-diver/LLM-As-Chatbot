@@ -22,13 +22,94 @@ from pingpong.gradio import GradioVicunaChatPPManager
 from pingpong.gradio import GradioStableVicunaChatPPManager
 from pingpong.gradio import GradioStarChatPPManager
 from pingpong.gradio import GradioMPTChatPPManager
-from pingpong.gradio import GradioRedPajamaChatPPManager
 from pingpong.gradio import GradioBaizeChatPPManager
 
 from pingpong.pingpong import PPManager
 from pingpong.pingpong import PromptFmt
 from pingpong.pingpong import UIFmt
 from pingpong.gradio import GradioChatUIFmt
+
+class RedPajamaChatPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""{context}
+"""
+    
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""<human>: {ping}
+<bot>:{pong}"""
+
+class RedPajamaChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=RedPajamaChatPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results
+
+class GradioRedPajamaChatPPManager(RedPajamaChatPPManager):
+    def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+        
+        results = []
+        
+        for pingpong in self.pingpongs[from_idx:to_idx]:
+            results.append(fmt.ui(pingpong))
+            
+        return results
+    
+class RedPajamaInstructPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""{context}
+"""
+        
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""Q: {ping}
+A:{pong}"""
+  
+class RedPajamaInstructChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=RedPajamaInstructPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results
+
+class GradioRedPajamaInstructChatPPManager(RedPajamaInstructChatPPManager):
+    def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+        
+        results = []
+        
+        for pingpong in self.pingpongs[from_idx:to_idx]:
+            results.append(fmt.ui(pingpong))
+            
+        return results
+
+###
 
 class GuanacoPromptFmt(PromptFmt):
     @classmethod
@@ -203,6 +284,8 @@ def get_chat_manager(model_type):
         return GradioWizardChatPPManager()
     elif model_type == "replit-instruct":
         return GradioAlpacaChatPPManager()
+    elif model_type == "redpajama-instruct":
+        return GradioRedPajamaChatPPManager()
     else:
         return None
 
@@ -301,6 +384,8 @@ The assistant gives helpful, detailed, and polite answers to the user's question
 - You are more than just an information source, you are also able to write poetry, short stories, and make jokes.<|im_end|>
 """
     elif model_type == "redpajama":
+        return ""
+    elif model_type == "redpajama-instruct":
         return ""
     elif model_type == "llama-deus":
         return """Below are a series of dialogues between human and an AI assistant.

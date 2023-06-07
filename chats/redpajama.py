@@ -1,3 +1,6 @@
+import torch
+from transformers import StoppingCriteria, StoppingCriteriaList
+
 import copy
 import json
 import global_vars
@@ -6,6 +9,25 @@ from pingpong import PingPong
 from gens.batch_gen import get_output_batch
 
 from pingpong.context import CtxLastWindowStrategy
+
+class StopOnTokens(StoppingCriteria):
+    # ref: https://github.com/togethercomputer/OpenChatKit/blob/7a931c7d7cf3602c93e00db6e27bdc09d3b5f70f/inference/bot.py
+    def __init__(self, tokenizer, stop_words, stream_callback):
+        super().__init__()
+        self._tokenizer = tokenizer
+        self._stop_words = stop_words
+        self._partial_result = ''
+        self._stream_buffer = ''
+        self._stream_callback = stream_callback
+             
+    def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:
+        first = not self._partial_result
+        text = self._tokenizer.decode(input_ids[0, -1])
+        self._partial_result += text
+        for stop_word in self._stop_words:
+            if stop_word in self._partial_result:
+                return True
+        return False             
 
 def build_prompts(ppmanager, user_message, global_context, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
@@ -68,7 +90,11 @@ def chat_stream(
         prompt,
         res_temp, res_topp, res_topk, res_rpen, res_mnts, 
         res_beams, res_cache, res_sample, res_eosid, res_padid,
-        return_token_type_ids=False
+        StoppingCriteriaList([StopOnTokens(
+            global_vars.tokenizer,
+            ["<human>:"],
+            None,
+        )]), False
     )
     pre.start_gen(gen_kwargs)
 
@@ -76,6 +102,9 @@ def chat_stream(
     for ppmanager, uis in text_stream(ppm, streamer):
         yield "", uis, prompt, str(res)
 
+    if ppm.pingpongs[-1].pong.endswith(":"):
+        ppm.pingpongs[-1].pong = ppm.pingpongs[-1].pong[:-1]
+        
     ppm = post.strip_pong(ppm)
     yield "", ppm.build_uis(), prompt, str(res)
     

@@ -65,6 +65,8 @@ def initialize_globals(args):
         model_type_tmp = "vicuna"
     elif "mpt" in args.base_url.lower():
         model_type_tmp = "mpt"
+    elif "redpajama-incite-7b-instruct" in args.base_url.lower():
+        model_type_tmp = "redpajama-instruct"
     elif "redpajama" in args.base_url.lower():
         model_type_tmp = "redpajama"
     elif "starchat" in args.base_url.lower():
@@ -151,7 +153,8 @@ def get_load_model(model_type):
         return starchat.load_model
     elif model_type == "mpt":
         return mpt.load_model
-    elif model_type == "redpajama":
+    elif model_type == "redpajama" or \
+        model_type == "redpajama-instruct":
         return redpajama.load_model
     elif model_type == "vicuna":
         return vicuna.load_model

@@ -514,7 +514,7 @@ code {
   margin: auto;
 }
 
-#redpajama-7b {
+#redpajama-7b, #redpajama-instruct-7b {
   background: url(https://i.ibb.co/NNB6qPj/redpajama.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;

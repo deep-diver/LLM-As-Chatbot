@@ -370,7 +370,11 @@ def main(args):
     
                         with gr.Column(min_width=20):
                             redpajama_7b = gr.Button("redpajama-7b", elem_id="redpajama-7b", elem_classes=["square"])
-                            gr.Markdown("RedPajama(7B)", elem_classes=["center"])
+                            gr.Markdown("RedPajama", elem_classes=["center"])
+                    
+                        with gr.Column(min_width=20, visible=False):
+                            redpajama_instruct_7b = gr.Button("redpajama-instruct-7b", elem_id="redpajama-instruct-7b", elem_classes=["square"])
+                            gr.Markdown("RedPajama Instruct", elem_classes=["center"])
     
                         with gr.Column(min_width=20):
                             vicuna_7b = gr.Button("vicuna-7b", elem_id="vicuna-7b", elem_classes=["square"])
@@ -686,7 +690,7 @@ def main(args):
     
             btns = [
                 t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
-                gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, llama_deus_7b, 
+                gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, redpajama_instruct_7b, llama_deus_7b, 
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b,
                 falcon_7b, wizard_falcon_7b,
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
