@@ -496,7 +496,11 @@ def main(args):
                             
                         with gr.Column(min_width=20):
                             samantha_33b = gr.Button("samantha-33b", elem_id="samantha-33b", elem_classes=["square"])
-                            gr.Markdown("Samantha", elem_classes=["center"])                
+                            gr.Markdown("Samantha", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            lazarus_30b = gr.Button("lazarus-30b", elem_id="lazarus-30b", elem_classes=["square"])
+                            gr.Markdown("Lazarus", elem_classes=["center"])                            
 
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
@@ -717,7 +721,7 @@ def main(args):
                 starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, baize_13b, guanaco_13b,
                 nous_hermes_13b, airoboros_13b, samantha_13b,
                 camel20b,
-                guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b
+                guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b,
             ]
             for btn in btns:
                 btn.click(
