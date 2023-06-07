@@ -407,6 +407,14 @@ def main(args):
                         with gr.Column(min_width=20):
                             wizard_falcon_7b = gr.Button("wizard-falcon-7b", elem_id="wizard-falcon-7b", elem_classes=["square"])
                             gr.Markdown("Wizard Falcon", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            airoboros_7b = gr.Button("airoboros-7b", elem_id="airoboros-7b", elem_classes=["square"])
+                            gr.Markdown("Airoboros", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            samantha_7b = gr.Button("samantha-7b", elem_id="samantha-7b", elem_classes=["square"])
+                            gr.Markdown("Samantha", elem_classes=["center"])
 
                     gr.Markdown("## ~ 20B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
@@ -456,7 +464,15 @@ def main(args):
 
                         with gr.Column(min_width=20):
                             nous_hermes_13b = gr.Button("nous-hermes-13b", elem_id="nous-hermes-13b", elem_classes=["square"])
-                            gr.Markdown("Nous Hermes", elem_classes=["center"])                            
+                            gr.Markdown("Nous Hermes", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            airoboros_13b = gr.Button("airoboros-13b", elem_id="airoboros-13b", elem_classes=["square"])
+                            gr.Markdown("Airoboros", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            samantha_13b = gr.Button("samantha-13b", elem_id="samantha-13b", elem_classes=["square"])
+                            gr.Markdown("Samantha", elem_classes=["center"])               
     
                     gr.Markdown("## ~ 30B Parameters", visible=False)
                     with gr.Row(elem_classes=["sub-container"], visible=False):
@@ -477,6 +493,10 @@ def main(args):
                         with gr.Column(min_width=20):
                             wizard_falcon_40b = gr.Button("wizard-falcon-40b", elem_id="wizard-falcon-40b", elem_classes=["square"])
                             gr.Markdown("Wizard Falcon", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            samantha_33b = gr.Button("samantha-33b", elem_id="samantha-33b", elem_classes=["square"])
+                            gr.Markdown("Samantha", elem_classes=["center"])                
 
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
@@ -692,12 +712,12 @@ def main(args):
                 t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, redpajama_instruct_7b, llama_deus_7b, 
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b,
-                falcon_7b, wizard_falcon_7b,
+                falcon_7b, wizard_falcon_7b, airoboros_7b, samantha_7b,
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, baize_13b, guanaco_13b,
-                nous_hermes_13b,
+                nous_hermes_13b, airoboros_13b, samantha_13b,
                 camel20b,
-                guanaco_33b, falcon_40b, wizard_falcon_40b,
+                guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b
             ]
             for btn in btns:
                 btn.click(

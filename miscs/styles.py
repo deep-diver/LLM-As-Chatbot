@@ -624,6 +624,26 @@ code {
   margin: auto;
 }
 
+#airoboros-7b, #airoboros-13b {
+  background: url(https://i.ibb.co/NLchBkB/airoboros.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+#samantha-7b, #samantha-13b, #samantha-33b {
+  background: url(https://i.ibb.co/72t5pyP/samantha.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
 #replit-3b {
   background: url(https://i.ibb.co/BrKCKYq/replit.png);
   background-repeat: no-repeat;

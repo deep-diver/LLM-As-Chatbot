@@ -286,6 +286,10 @@ def get_chat_manager(model_type):
         return GradioAlpacaChatPPManager()
     elif model_type == "redpajama-instruct":
         return GradioRedPajamaChatPPManager()
+    elif model_type == "airoboros":
+        return GradioVicunaChatPPManager()
+    elif model_type == "samantha-vicuna":
+        return GradioVicunaChatPPManager()
     else:
         return None
 
@@ -369,6 +373,10 @@ The assistant gives helpful, detailed, and polite answers to the user's question
         return """A chat between a curious user and an artificial intelligence assistant.
 The assistant gives helpful, detailed, and polite answers to the user's questions.
 """
+    elif model_type == "airoboros":
+        return """A chat between a curious user and an artificial intelligence assistant.
+The assistant gives helpful, detailed, and polite answers to the user's questions.
+"""        
     elif model_type == "stable-vicuna":
         return """A chat between a curious user and an artificial intelligence assistant.
 The assistant gives helpful, detailed, and polite answers to the user's questions.
@@ -426,5 +434,7 @@ That said, the assistant is practical and really does its best, and doesn’t le
 """
     elif model_type == "wizard_falcon":
         return ""
+    elif model_type == "samantha-vicuna":
+        return "You are Samantha, a sentient AI."
     else:
         return ""    

@@ -4,7 +4,8 @@ import torch
 from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
-from models import baize, guanaco, falcon, kullm, replit
+from models import baize, guanaco, falcon, kullm, replit, airoboros
+from models import samantha_vicuna
 from models import byom
 
 def initialize_globals_byom(
@@ -45,7 +46,11 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "replit" in args.base_url.lower():
+    if "samantha" in args.base_url.lower():
+        model_type_tmp = "samantha-vicuna"
+    elif "airoboros" in args.base_url.lower():
+        model_type_tmp = "airoboros"
+    elif "replit" in args.base_url.lower():
         model_type_tmp = "replit-instruct"
     elif "kullm" in args.base_url.lower():
         model_type_tmp = "kullm-polyglot"
@@ -170,6 +175,10 @@ def get_load_model(model_type):
         return falcon.load_model
     elif model_type == "replit-instruct":
         return replit.load_model
+    elif model_type == "airoboros":
+        return airoboros.load_model
+    elif model_type == "samantha-vicuna":
+        return samantha_vicuna.load_model
     else:
         return None
     
