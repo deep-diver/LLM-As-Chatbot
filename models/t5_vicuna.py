@@ -14,13 +14,34 @@ def load_model(
 ):
     tokenizer = T5Tokenizer.from_pretrained(base, use_fast=False)
     tokenizer.padding_side = "left"
+    
+    if mode_cpu:
+        print("cpu mode")
+        model = AutoModelForSeq2SeqLM.from_pretrained(
+            base, 
+            device_map={"": "cpu"}, 
+        )
+            
+    elif mode_mps:
+        print("mps mode")
+        model = AutoModelForSeq2SeqLM.from_pretrained(
+            base,
+            device_map={"": "mps"},
+            torch_dtype=torch.float16,
+        )
+            
+    else:
+        print("gpu mode")
+        print(f"8bit = {mode_8bit}, 4bit = {mode_4bit}")
+        model = AutoModelForSeq2SeqLM.from_pretrained(
+            base,
+            load_in_8bit=mode_8bit,
+            load_in_4bit=mode_4bit,
+            device_map="auto",
+        )
 
-    model = AutoModelForSeq2SeqLM.from_pretrained(
-        base, 
-        torch_dtype=torch.float16,
-        load_in_8bit=mode_8bit, 
-        load_in_4bit=mode_4bit,
-        device_map="auto")
+        if not mode_8bit and not mode_4bit:
+            model.half()
 
     model = BetterTransformer.transform(model)
     return model, tokenizer

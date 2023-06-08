@@ -13,15 +13,35 @@ def load_model(
     force_download_ckpt
 ):
     tokenizer = AutoTokenizer.from_pretrained(base)
-    model = AutoModelForCausalLM.from_pretrained(
-        base,
-        torch_dtype=torch.float16,
-        load_in_8bit=mode_8bit, 
-        load_in_4bit=mode_4bit,
-        device_map="auto")
+    tokenizer.padding_side = "left"
+    
+    if mode_cpu:
+        print("cpu mode")
+        model = AutoModelForCausalLM.from_pretrained(
+            base, 
+            device_map={"": "cpu"}, 
+        )
+            
+    elif mode_mps:
+        print("mps mode")
+        model = AutoModelForCausalLM.from_pretrained(
+            base,
+            device_map={"": "mps"},
+            torch_dtype=torch.float16,
+        )
+            
+    else:
+        print("gpu mode")
+        print(f"8bit = {mode_8bit}, 4bit = {mode_4bit}")
+        model = AutoModelForCausalLM.from_pretrained(
+            base,
+            load_in_8bit=mode_8bit,
+            load_in_4bit=mode_4bit,
+            device_map="auto",
+        )
 
-    if not mode_8bit and not mode_4bit:
-        model.half()
+        if not mode_8bit and not mode_4bit:
+            model.half()
 
     model = BetterTransformer.transform(model)
     return model, tokenizer

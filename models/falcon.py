@@ -22,7 +22,7 @@ def load_model(
             base, 
             device_map={"": "cpu"},
             torch_dtype=torch.bfloat16,
-            low_cpu_mem_usage=True
+            trust_remote_code=True
         )
             
     elif mode_mps:
@@ -43,6 +43,7 @@ def load_model(
             load_in_4bit=mode_4bit,
             torch_dtype=torch.bfloat16,
             device_map="auto",
+            trust_remote_code=True
         )
 
         if not mode_8bit and not mode_4bit:

@@ -21,8 +21,7 @@ def load_model(
         print("cpu mode")
         model = LlamaForCausalLM.from_pretrained(
             base, 
-            device_map={"": "cpu"}, 
-            low_cpu_mem_usage=True
+            device_map={"": "cpu"},
         )
         
         if finetuned is not None and \

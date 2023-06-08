@@ -1,4 +1,5 @@
 import torch
+import global_vars
 from transformers import AutoModelForCausalLM, AutoTokenizer, AutoConfig
 from optimum.bettertransformer import BetterTransformer
 
@@ -15,23 +16,36 @@ def load_model(
     tokenizer = AutoTokenizer.from_pretrained(base, trust_remote_code=True)
     tokenizer.padding_side = "left"
 
-    config = AutoConfig.from_pretrained(
-        base,
-        trust_remote_code=True
-    )
-    # config.attn_config['attn_impl'] = 'triton'
-    model = AutoModelForCausalLM.from_pretrained(
-        base, 
-        # config=config,
-        load_in_8bit=mode_8bit,
-        load_in_4bit=mode_4bit,
-        # device_map="auto",
-        torch_dtype=torch.bfloat16,
-        trust_remote_code=True
-    ).cuda()
+    if mode_cpu:
+        print("cpu mode")
+        model = AutoModelForCausalLM.from_pretrained(
+            base, 
+            device_map={"": "cpu"}, 
+            trust_remote_code=True
+        )
+            
+    elif mode_mps:
+        print("mps mode")
+        model = AutoModelForCausalLM.from_pretrained(
+            base,
+            device_map={"": "mps"},
+            torch_dtype=torch.float16,
+            trust_remote_code=True
+        )
+            
+    else:
+        print("gpu mode")
+        print(f"8bit = {mode_8bit}, 4bit = {mode_4bit}")
+        model = AutoModelForCausalLM.from_pretrained(
+            base,
+            load_in_8bit=mode_8bit,
+            load_in_4bit=mode_4bit,
+            device_map="auto",
+            trust_remote_code=True
+        )#.to(global_vars.device)
 
-    if not mode_8bit and not mode_4bit:
-        model.half()
+        if not mode_8bit and not mode_4bit:
+            model.half()
 
     # model = BetterTransformer.transform(model)
     return model, tokenizer

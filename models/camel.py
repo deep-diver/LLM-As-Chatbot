@@ -21,7 +21,6 @@ def load_model(
         model = AutoModelForCausalLM.from_pretrained(
             base, 
             device_map={"": "cpu"}, 
-            low_cpu_mem_usage=True
         )
             
     elif mode_mps:
