@@ -9,7 +9,7 @@ def build_model_inputs(prompt, return_token_type_ids):
         [prompt], 
         return_tensors="pt",
         return_token_type_ids=return_token_type_ids
-    ).to("cuda")
+    ).to(global_vars.device)
     return model_inputs
 
 def build_streamer(
@@ -17,6 +17,11 @@ def build_streamer(
     skip_prompt=True,
     skip_special_tokens=True
 ):
+    if global_vars.device == "cpu" or \
+        global_vars.device == "mps":
+        timeout=100000.
+        print("timeout set to {timeout}")
+    
     streamer = TextIteratorStreamer(
         global_vars.tokenizer, 
         timeout=timeout, 

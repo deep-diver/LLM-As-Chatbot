@@ -11,7 +11,7 @@ from models import byom
 def initialize_globals_byom(
     base, ckpt, model_cls, tokenizer_cls, 
     bos_token_id, eos_token_id, pad_token_id, 
-    multi_gpu, force_redownload,    
+    mode_8bit, mode_4bit,    
 ):
     global model, model_type, stream_model, tokenizer
     global gen_config, gen_config_raw
@@ -22,8 +22,8 @@ def initialize_globals_byom(
     model, tokenizer = byom.load_model(
         base=base,
         finetuned=ckpt,
-        multi_gpu=multi_gpu,
-        force_download_ckpt=force_redownload,
+        mode_8bit=mode_8bit,
+        mode_4bit=mode_4bit,
         model_cls=model_cls if model_cls != "" else None,
         tokenizer_cls=tokenizer_cls if tokenizer_cls != "" else None
     )
@@ -41,6 +41,7 @@ def initialize_globals_byom(
         gen_config.pad_token_id = int(pad_token_id)       
 
 def initialize_globals(args):
+    global device
     global model, model_type, stream_model, tokenizer
     global gen_config, gen_config_raw    
     global gen_config_summarization
@@ -123,13 +124,25 @@ def initialize_globals(args):
     except NameError:
         pass
 
+    device = "cpu"
+    if args.mode_cpu:
+        device = "cpu"
+    if args.mode_mps:
+        device = "mps"
+    else:
+        device = "cuda"
+        
     load_model = get_load_model(model_type_tmp)
     model, tokenizer = load_model(
         base=args.base_url,
         finetuned=args.ft_ckpt_url,
-        multi_gpu=args.multi_gpu,
+        mode_cpu=args.mode_cpu,
+        mode_mps=args.mode_mps,
+        mode_full_gpu=args.mode_full_gpu,
+        mode_8bit=args.mode_8bit,
+        mode_4bit=args.mode_4bit,
         force_download_ckpt=args.force_download_ckpt
-    )        
+    )
         
     gen_config, gen_config_raw = get_generation_config(args.gen_config_path)
     gen_config_summarization, _ = get_generation_config(args.gen_config_summarization_path)

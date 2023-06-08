@@ -147,12 +147,13 @@ def prompt_style_change(key):
 def byom_load(
     base, ckpt, model_cls, tokenizer_cls,
     bos_token_id, eos_token_id, pad_token_id, 
-    multi_gpu, force_redownload,
+    load_mode,
 ):
     global_vars.initialize_globals_byom(
         base, ckpt, model_cls, tokenizer_cls,
         bos_token_id, eos_token_id, pad_token_id, 
-        multi_gpu, force_redownload,
+        True if load_mode == "8bit" else False,
+        True if load_mode == "4bit" else False, 
     )
 
     return (
@@ -213,7 +214,7 @@ def download_completed(
     model_ckpt,
     gen_config_path,
     gen_config_sum_path,
-    multi_gpu,
+    load_mode,
     force_download,
 ):
     tmp_args = types.SimpleNamespace()
@@ -221,9 +222,14 @@ def download_completed(
     tmp_args.ft_ckpt_url = model_ckpt.split(":")[-1].split("</p")[0].strip()
     tmp_args.gen_config_path = gen_config_path
     tmp_args.gen_config_summarization_path = gen_config_sum_path
-    tmp_args.multi_gpu = multi_gpu
     tmp_args.force_download_ckpt = force_download
-
+    
+    tmp_args.mode_cpu = True if load_mode == "cpu" else False
+    tmp_args.mode_mps = True if load_mode == "apple silicon" else False
+    tmp_args.mode_8bit = True if load_mode == "gpu(load_in_8bit)" else False
+    tmp_args.mode_4bit = True if load_mode == "gpu(load_in_4bit)" else False
+    tmp_args.mode_full_gpu = True if load_mode == "gpu(full)" else False
+    
     global_vars.initialize_globals(tmp_args)
     return "Download completed!"
 
@@ -525,8 +531,11 @@ def main(args):
                             byom_pad_token_id = gr.Textbox(label="pad_token_id", placeholder="for GenConfig")
                     
                     with gr.Row():
-                        byom_multi_gpu = gr.Checkbox(label="Multi GPU / (Non 8Bit mode)")  
-                        byom_force_redownload = gr.Checkbox(label="Force Re-download")
+                        byom_load_mode = gr.Radio(
+                            ["gpu(full)", "gpu(load_in_8bit)", "gpu(load_in_4bit)", "apple silicon", "cpu"],
+                            value="gpu(full)",
+                            label="load mode"
+                        )
                 
                 gr.Markdown("### Prompt configuration")
                 prompt_style_selector = gr.Dropdown(
@@ -579,8 +588,13 @@ def main(args):
                         visible=False,
                     )
                     with gr.Row():
-                        multi_gpu = gr.Checkbox(label="Multi GPU / (Non 8Bit mode)")
-                        force_redownload = gr.Checkbox(label="Force Re-download", interactive=False)
+                        load_mode = gr.Radio(
+                            ["gpu(full)", "gpu(load_in_8bit)", "gpu(load_in_4bit)", "apple silicon", "cpu"],
+                            value="gpu(full)",
+                            label="load mode",
+                            elem_id="load-mode-selector"
+                        )
+                        force_redownload = gr.Checkbox(label="Force Re-download", interactive=False, visible=False)
 
                     with gr.Accordion("Example showcases", open=False):
                         with gr.Tab("Ex1"):
@@ -767,7 +781,7 @@ def main(args):
                 byom_load,
                 [byom_base, byom_ckpt, byom_model_cls, byom_tokenizer_cls,
                 byom_bos_token_id, byom_eos_token_id, byom_pad_token_id, 
-                byom_multi_gpu, byom_force_redownload],
+                byom_load_mode],
                 [progress_view3]
             ).then(
                 lambda: "Model is fully loaded...", None, txt_view3
@@ -795,7 +809,7 @@ def main(args):
                 lambda: "Start downloading/loading the model...", None, txt_view
             ).then(
                 download_completed,
-                [model_name, model_base, model_ckpt, gen_config_path, gen_config_sum_path, multi_gpu, force_redownload],
+                [model_name, model_base, model_ckpt, gen_config_path, gen_config_sum_path, load_mode, force_redownload],
                 [progress_view2]
             ).then(
                 lambda: "Model is fully loaded...", None, txt_view
