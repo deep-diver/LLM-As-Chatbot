@@ -556,14 +556,14 @@
             ["Write a python program to print the first 10 Fibonacci numbers", "Sure, here's an example Python program that calculates the first ten Fibonacci numbers:\n\n```python\n def fib(n):\n    if n <= 2:\n       return 1\n    else:\n        return (fib(n-1) + fib(n-2))\n\n for i in range(10):\n     print(fib(i), end=\" \")\n```\nThis program uses recursion to calculate each number in the sequence, using the formula F_n = F_(n-1) + F_(n-2). The function starts by checking if the input value of n is less than or equal to two, since these values are already known. If not, it calls itself recursively with smaller values of n, until it reaches the base case where n=1. At this point, it returns the result of adding the previous two results together. Finally, we loop through all possible inputs from zero up to but not including ten, printing out each calculated number along the way."]
         ]
     },
-    "starchat-15b-beta": {
+    "starchat-beta-15b": {
         "category": "<20B",
         "display_name": "StarChat",
         "thumb": "https://i.ibb.co/QjPP0Vv/starcoder.png",
         "parameters": "15.5 Billion",
-        "vram(full)": "",
-        "vram(8bit)": "",
-        "vram(4bit)": "",
+        "vram(full)": "30548",
+        "vram(8bit)": "17462",
+        "vram(4bit)": "10126",
         "hub(base)": "HuggingFaceH4/starchat-beta",
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/starchat.yaml",

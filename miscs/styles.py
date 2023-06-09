@@ -510,7 +510,7 @@ code {
   height: 100px;  
 }
 
-#starchat-15b { 
+#starchat-15b, #starchat-beta-15b { 
   background: url(https://i.ibb.co/QjPP0Vv/starcoder.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
