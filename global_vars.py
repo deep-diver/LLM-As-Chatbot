@@ -14,20 +14,20 @@ mps_availability = False
 
 if torch.cuda.is_available():
     cuda_availability = True
-    available_vrams_gb = sum(
+    available_vrams_mb = sum(
         [
             torch.cuda.get_device_properties(i).total_memory 
             for i in range(torch.cuda.device_count())
         ]
-    ) / 1024. / 1024 / 1024
+    ) / 1024. / 1024
     
 if torch.backends.mps.is_available():
     mps_availability = True
-
+ 
 def initialize_globals_byom(
     base, ckpt, model_cls, tokenizer_cls, 
-    bos_token_id, eos_token_id, pad_token_id, 
-    mode_8bit, mode_4bit,
+    bos_token_id, eos_token_id, pad_token_id,
+    mode_cpu, model_mps, mode_8bit, mode_4bit, mode_full_gpu
 ):
     global model, model_type, stream_model, tokenizer
     global gen_config, gen_config_raw

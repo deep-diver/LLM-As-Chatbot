@@ -29,15 +29,7 @@ from pingpong.gradio import GradioBaizeChatPPManager
 # no cpu for 
 # - falcon families (too slow)
 
-load_mode_list = []
-
-if global_vars.cuda_availability:
-    load_mode_list.extend(["gpu(full)", "gpu(load_in_8bit)", "gpu(load_in_4bit)"])
-
-if global_vars.mps_availability:
-    load_mode_list.extend(["apple silicon"])
-
-load_mode_list.extend(["cpu"])
+load_mode_list = ["cpu"]
 
 ex_file = open("examples.txt", "r")
 examples = ex_file.read().split("\n")
@@ -138,10 +130,20 @@ def use_chosen_model():
     )
     
 def move_to_byom_view():
+    load_mode_list = []
+    if global_vars.cuda_availability:
+        load_mode_list.extend(["gpu(half)", "gpu(load_in_8bit)", "gpu(load_in_4bit)"])
+
+    if global_vars.mps_availability:
+        load_mode_list.append("apple silicon")
+        
+    load_mode_list.append("cpu")
+    
     return (
         "move to the byom view",
         gr.update(visible=False),
         gr.update(visible=True),
+        gr.update(choices=load_mode_list, value=load_mode_list[0])
     )
 
 def prompt_style_change(key):
@@ -162,14 +164,20 @@ def byom_load(
     bos_token_id, eos_token_id, pad_token_id, 
     load_mode,
 ):
+    
+    # mode_cpu, model_mps, mode_8bit, mode_4bit, mode_full_gpu
     global_vars.initialize_globals_byom(
         base, ckpt, model_cls, tokenizer_cls,
         bos_token_id, eos_token_id, pad_token_id, 
+        True if load_mode == "cpu" else False,
+        True if load_mode == "apple silicon" else False,
         True if load_mode == "8bit" else False,
-        True if load_mode == "4bit" else False, 
+        True if load_mode == "4bit" else False,
+        True if load_mode == "gpu(half)" else False
     )
-
+    
     return (
+        ""
     )
     
 def channel_num(btn_title):
@@ -201,21 +209,51 @@ def set_popup_visibility(ld, example_block):
 def move_to_second_view(btn):
     info = model_info[btn]
 
+    guard_vram = 5 * 1024.
+    vram_req_full = int(info["vram(full)"]) + guard_vram
+    vram_req_8bit = int(info["vram(8bit)"]) + guard_vram
+    vram_req_4bit = int(info["vram(4bit)"]) + guard_vram
+    
+    load_mode_list = []
+    
+    if global_vars.cuda_availability:
+        print(f"total vram = {global_vars.available_vrams_mb}")
+        print(f"required vram(full={info['vram(full)']}, 8bit={info['vram(8bit)']}, 4bit={info['vram(4bit)']})")
+        
+        if global_vars.available_vrams_mb >= vram_req_full:
+            load_mode_list.append("gpu(half)")
+            
+        if global_vars.available_vrams_mb >= vram_req_8bit:
+            load_mode_list.append("gpu(load_in_8bit)")
+            
+        if global_vars.available_vrams_mb >= vram_req_4bit:
+            load_mode_list.append("gpu(load_in_4bit)")
+
+    if global_vars.mps_availability:
+        load_mode_list.append("apple silicon")
+
+    load_mode_list.extend(["cpu"])
+    
     return (
         gr.update(visible=False),
         gr.update(visible=True),
         info["thumb"],
-        f"**Model name**\n: {btn}",
-        f"**Parameters**\n: {info['parameters']}",
+        f"## {btn}",
+        f"**Parameters**\n: Approx. {info['parameters']}",
         f"**🤗 Hub(base)**\n: {info['hub(base)']}",
-        f"**🤗 Hub(ckpt)**\n: {info['hub(ckpt)']}",
-        f"**Description**\n: {info['desc']}",
+        f"**🤗 Hub(LoRA)**\n: {info['hub(ckpt)']}",
+        info['desc'],
+        f"""**Mini VRAM requirements** :
+|             half precision            |             load_in_8bit           |              load_in_4bit          | 
+| ------------------------------------- | ---------------------------------- | ---------------------------------- | 
+|   {round(vram_req_full/1024., 1)}GiB  | {round(vram_req_8bit/1024., 1)}GiB | {round(vram_req_4bit/1024., 1)}GiB |
+""",
         info['default_gen_config'],
         info['example1'],
         info['example2'],
         info['example3'],
         info['example4'],
-        load_mode_list[0],
+        gr.update(choices=load_mode_list, value=load_mode_list[0]),
         "",
     )
 
@@ -242,7 +280,7 @@ def download_completed(
     tmp_args.mode_mps = True if load_mode == "apple silicon" else False
     tmp_args.mode_8bit = True if load_mode == "gpu(load_in_8bit)" else False
     tmp_args.mode_4bit = True if load_mode == "gpu(load_in_4bit)" else False
-    tmp_args.mode_full_gpu = True if load_mode == "gpu(full)" else False
+    tmp_args.mode_full_gpu = True if load_mode == "gpu(half)" else False
     
     try:
         global_vars.initialize_globals(tmp_args)
@@ -550,10 +588,11 @@ def main(args):
                     
                     with gr.Row():
                         byom_load_mode = gr.Radio(
-                            ["gpu(full)", "gpu(load_in_8bit)", "gpu(load_in_4bit)", "apple silicon", "cpu"],
-                            value="gpu(full)",
-                            label="load mode"
-                        )
+                            load_mode_list,
+                            value=load_mode_list[0],
+                            label="load mode",
+                            elem_classes=["load-mode-selector"]
+                        )                        
                 
                 gr.Markdown("### Prompt configuration")
                 prompt_style_selector = gr.Dropdown(
@@ -586,10 +625,15 @@ def main(args):
                     model_image = gr.Image(None, interactive=False, show_label=False)
                     with gr.Column():
                         model_name = gr.Markdown("**Model name**")
-                        model_params = gr.Markdown("Parameters\n: ...")
+                        model_desc = gr.Markdown("...")                        
+                        model_params = gr.Markdown("Parameters\n: ...")             
                         model_base = gr.Markdown("🤗 Hub(base)\n: ...")
-                        model_ckpt = gr.Markdown("🤗 Hub(ckpt)\n: ...")
-                        model_desc = gr.Markdown("...")
+                        model_ckpt = gr.Markdown("🤗 Hub(LoRA)\n: ...")
+                        model_vram = gr.Markdown(f"""**Minimal VRAM requirement** :
+|          half precision        |        load_in_8bit       |         load_in_4bit      | 
+| ------------------------------ | ------------------------- | ------------------------- | 
+|   {round(7830/1024., 1)}GiB    | {round(5224/1024., 1)}GiB | {round(4324/1024., 1)}GiB |
+""")                        
     
                 with gr.Column():
                     gen_config_path = gr.Dropdown(
@@ -610,7 +654,7 @@ def main(args):
                             load_mode_list,
                             value=load_mode_list[0],
                             label="load mode",
-                            elem_id="load-mode-selector"
+                            elem_classes=["load-mode-selector"]
                         )
                         force_redownload = gr.Checkbox(label="Force Re-download", interactive=False, visible=False)
 
@@ -762,7 +806,7 @@ def main(args):
                     [
                         model_choice_view, model_review_view,
                         model_image, model_name, model_params, model_base, model_ckpt,
-                        model_desc, gen_config_path, 
+                        model_desc, model_vram, gen_config_path, 
                         example_showcase1, example_showcase2, example_showcase3, example_showcase4,
                         load_mode,
                         progress_view
@@ -786,7 +830,7 @@ def main(args):
             byom.click(
                 move_to_byom_view,
                 None,
-                [progress_view0, landing_view, byom_input_view]
+                [progress_view0, landing_view, byom_input_view, byom_load_mode]
             )
 
             byom_back_btn.click(

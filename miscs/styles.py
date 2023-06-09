@@ -18,7 +18,7 @@ PARENT_BLOCK_CSS = """
 
 MODEL_SELECTION_CSS = """
 
-#load-mode-selector:nth-child(3) {
+.load-mode-selector:nth-child(3) {
     margin: auto !important;
     text-align: center !important;
     width: fit-content !important;
