@@ -41,6 +41,7 @@ def load_model(
             load_in_8bit=mode_8bit,
             load_in_4bit=mode_4bit,
             device_map="auto",
+            torch_dtype=torch.float16,
         )
 
         if not mode_8bit and not mode_4bit:

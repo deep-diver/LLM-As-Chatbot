@@ -8,10 +8,26 @@ from models import baize, guanaco, falcon, kullm, replit, airoboros
 from models import samantha_vicuna
 from models import byom
 
+cuda_availability = False
+available_vrams_gb = 0
+mps_availability = False
+
+if torch.cuda.is_available():
+    cuda_availability = True
+    available_vrams_gb = sum(
+        [
+            torch.cuda.get_device_properties(i).total_memory 
+            for i in range(torch.cuda.device_count())
+        ]
+    ) / 1024. / 1024 / 1024
+    
+if torch.backends.mps.is_available():
+    mps_availability = True
+
 def initialize_globals_byom(
     base, ckpt, model_cls, tokenizer_cls, 
     bos_token_id, eos_token_id, pad_token_id, 
-    mode_8bit, mode_4bit,    
+    mode_8bit, mode_4bit,
 ):
     global model, model_type, stream_model, tokenizer
     global gen_config, gen_config_raw
@@ -109,6 +125,14 @@ def initialize_globals(args):
 
     print(f"determined model type: {model_type_tmp}")        
 
+    device = "cpu"
+    if args.mode_cpu:
+        device = "cpu"
+    elif args.mode_mps:
+        device = "mps"
+    else:
+        device = "cuda"
+    
     try:
         if model is not None:
             del model
@@ -120,18 +144,16 @@ def initialize_globals(args):
             del tokenizer
 
         gc.collect()
-        torch.cuda.empty_cache()  
+        
+        if device == "cuda":
+            torch.cuda.empty_cache()
+        elif device == "mps":
+            torch.mps.empty_cache()
+            
     except NameError:
         pass
-
-    device = "cpu"
-    if args.mode_cpu:
-        device = "cpu"
-    if args.mode_mps:
-        device = "mps"
-    else:
-        device = "cuda"
         
+    model_type = model_type_tmp
     load_model = get_load_model(model_type_tmp)
     model, tokenizer = load_model(
         base=args.base_url,
@@ -146,7 +168,6 @@ def initialize_globals(args):
         
     gen_config, gen_config_raw = get_generation_config(args.gen_config_path)
     gen_config_summarization, _ = get_generation_config(args.gen_config_summarization_path)
-    model_type = model_type_tmp
     stream_model = model
         
 def get_load_model(model_type):

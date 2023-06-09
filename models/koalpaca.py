@@ -36,6 +36,7 @@ def load_model(
             base,
             load_in_8bit=mode_8bit,
             load_in_4bit=mode_4bit,
+            torch_dtype=torch.float16,
             device_map="auto",
         )
 

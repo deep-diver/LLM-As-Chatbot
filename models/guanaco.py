@@ -1,6 +1,7 @@
 import torch
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer, LlamaTokenizer
+from optimum.bettertransformer import BetterTransformer
 
 def load_model(
     base, 

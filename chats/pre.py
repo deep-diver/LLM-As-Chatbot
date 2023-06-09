@@ -20,7 +20,7 @@ def build_streamer(
     if global_vars.device == "cpu" or \
         global_vars.device == "mps":
         timeout=100000.
-        print("timeout set to {timeout}")
+        print(f"timeout set to {timeout}")
     
     streamer = TextIteratorStreamer(
         global_vars.tokenizer, 

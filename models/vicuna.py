@@ -1,4 +1,6 @@
 import torch
+import global_vars
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from optimum.bettertransformer import BetterTransformer
 
@@ -12,7 +14,9 @@ def load_model(
     mode_4bit,
     force_download_ckpt
 ):
-    tokenizer = AutoTokenizer.from_pretrained(base)
+    tokenizer = AutoTokenizer.from_pretrained(
+        base, use_fast=False if global_vars.model_type == "stable-vicuna" else True
+    )
     tokenizer.padding_side = "left"
     
     if mode_cpu:
@@ -38,6 +42,7 @@ def load_model(
             load_in_8bit=mode_8bit,
             load_in_4bit=mode_4bit,
             device_map="auto",
+            torch_dtype=torch.float16,
         )
 
         if not mode_8bit and not mode_4bit:

@@ -26,6 +26,19 @@ from pingpong.gradio import GradioMPTChatPPManager
 from pingpong.gradio import GradioRedPajamaChatPPManager
 from pingpong.gradio import GradioBaizeChatPPManager
 
+# no cpu for 
+# - falcon families (too slow)
+
+load_mode_list = []
+
+if global_vars.cuda_availability:
+    load_mode_list.extend(["gpu(full)", "gpu(load_in_8bit)", "gpu(load_in_4bit)"])
+
+if global_vars.mps_availability:
+    load_mode_list.extend(["apple silicon"])
+
+load_mode_list.extend(["cpu"])
+
 ex_file = open("examples.txt", "r")
 examples = ex_file.read().split("\n")
 ex_btns = []
@@ -202,6 +215,7 @@ def move_to_second_view(btn):
         info['example2'],
         info['example3'],
         info['example4'],
+        load_mode_list[0],
         "",
     )
 
@@ -230,7 +244,11 @@ def download_completed(
     tmp_args.mode_4bit = True if load_mode == "gpu(load_in_4bit)" else False
     tmp_args.mode_full_gpu = True if load_mode == "gpu(full)" else False
     
-    global_vars.initialize_globals(tmp_args)
+    try:
+        global_vars.initialize_globals(tmp_args)
+    except RuntimeError as e:
+        raise gr.Error("GPU memory is not enough to load this model.")
+        
     return "Download completed!"
 
 def move_to_third_view():  
@@ -589,8 +607,8 @@ def main(args):
                     )
                     with gr.Row():
                         load_mode = gr.Radio(
-                            ["gpu(full)", "gpu(load_in_8bit)", "gpu(load_in_4bit)", "apple silicon", "cpu"],
-                            value="gpu(full)",
+                            load_mode_list,
+                            value=load_mode_list[0],
                             label="load mode",
                             elem_id="load-mode-selector"
                         )
@@ -744,7 +762,9 @@ def main(args):
                     [
                         model_choice_view, model_review_view,
                         model_image, model_name, model_params, model_base, model_ckpt,
-                        model_desc, gen_config_path, example_showcase1, example_showcase2, example_showcase3, example_showcase4,
+                        model_desc, gen_config_path, 
+                        example_showcase1, example_showcase2, example_showcase3, example_showcase4,
+                        load_mode,
                         progress_view
                     ]
                 )
