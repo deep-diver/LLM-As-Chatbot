@@ -243,7 +243,7 @@ def move_to_second_view(btn):
         f"**🤗 Hub(base)**\n: {info['hub(base)']}",
         f"**🤗 Hub(LoRA)**\n: {info['hub(ckpt)']}",
         info['desc'],
-        f"""**Mini VRAM requirements** :
+        f"""**Min VRAM requirements** :
 |             half precision            |             load_in_8bit           |              load_in_4bit          | 
 | ------------------------------------- | ---------------------------------- | ---------------------------------- | 
 |   {round(vram_req_full/1024., 1)}GiB  | {round(vram_req_8bit/1024., 1)}GiB | {round(vram_req_4bit/1024., 1)}GiB |
