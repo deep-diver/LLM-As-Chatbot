@@ -1,17 +1,52 @@
 import torch
+import global_vars
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from optimum.bettertransformer import BetterTransformer
 
-def load_model(base, finetuned, multi_gpu, force_download_ckpt):
-    tokenizer = AutoTokenizer.from_pretrained(base)
-    model = AutoModelForCausalLM.from_pretrained(
-        base,
-        torch_dtype=torch.float16,
-        load_in_8bit=False if multi_gpu else True, 
-        device_map="auto")
+def load_model(
+    base, 
+    finetuned, 
+    mode_cpu,
+    mode_mps,
+    mode_full_gpu,
+    mode_8bit,
+    mode_4bit,
+    force_download_ckpt
+):
+    tokenizer = AutoTokenizer.from_pretrained(
+        base, use_fast=False if global_vars.model_type == "stable-vicuna" else True
+    )
+    tokenizer.padding_side = "left"
+    
+    if mode_cpu:
+        print("cpu mode")
+        model = AutoModelForCausalLM.from_pretrained(
+            base, 
+            device_map={"": "cpu"}, 
+        )
+            
+    elif mode_mps:
+        print("mps mode")
+        model = AutoModelForCausalLM.from_pretrained(
+            base,
+            device_map={"": "mps"},
+            torch_dtype=torch.float16,
+        )
+            
+    else:
+        print("gpu mode")
+        print(f"8bit = {mode_8bit}, 4bit = {mode_4bit}")
+        model = AutoModelForCausalLM.from_pretrained(
+            base,
+            load_in_8bit=mode_8bit,
+            load_in_4bit=mode_4bit,
+            device_map="auto",
+            torch_dtype=torch.float16,
+        )
 
-    if multi_gpu:
-        model.half()
+        if not mode_8bit and not mode_4bit:
+            model.half()
 
-    # model = BetterTransformer.transform(model)
+    model = BetterTransformer.transform(model)
     return model, tokenizer

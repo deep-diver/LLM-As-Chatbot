@@ -6,7 +6,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 def load_model(
     base, 
     finetuned, 
-    multi_gpu, 
+    mode_8bit,
+    mode_4bit, 
     force_download_ckpt,
     model_cls,
     tokenizer_cls
@@ -29,7 +30,8 @@ def load_model(
 
     model = model_cls.from_pretrained(
         base,
-        load_in_8bit=False if multi_gpu else True,
+        load_in_8bit=mode_8bit,
+        load_in_4bit=mode_4bit,
         torch_dtype=torch.float16,
         device_map="auto",
     )

@@ -8,10 +8,26 @@ from models import baize, guanaco, falcon, kullm, replit, airoboros
 from models import samantha_vicuna
 from models import byom
 
+cuda_availability = False
+available_vrams_gb = 0
+mps_availability = False
+
+if torch.cuda.is_available():
+    cuda_availability = True
+    available_vrams_mb = sum(
+        [
+            torch.cuda.get_device_properties(i).total_memory 
+            for i in range(torch.cuda.device_count())
+        ]
+    ) / 1024. / 1024
+    
+if torch.backends.mps.is_available():
+    mps_availability = True
+ 
 def initialize_globals_byom(
     base, ckpt, model_cls, tokenizer_cls, 
-    bos_token_id, eos_token_id, pad_token_id, 
-    multi_gpu, force_redownload,    
+    bos_token_id, eos_token_id, pad_token_id,
+    mode_cpu, model_mps, mode_8bit, mode_4bit, mode_full_gpu
 ):
     global model, model_type, stream_model, tokenizer
     global gen_config, gen_config_raw
@@ -22,8 +38,8 @@ def initialize_globals_byom(
     model, tokenizer = byom.load_model(
         base=base,
         finetuned=ckpt,
-        multi_gpu=multi_gpu,
-        force_download_ckpt=force_redownload,
+        mode_8bit=mode_8bit,
+        mode_4bit=mode_4bit,
         model_cls=model_cls if model_cls != "" else None,
         tokenizer_cls=tokenizer_cls if tokenizer_cls != "" else None
     )
@@ -41,6 +57,7 @@ def initialize_globals_byom(
         gen_config.pad_token_id = int(pad_token_id)       
 
 def initialize_globals(args):
+    global device
     global model, model_type, stream_model, tokenizer
     global gen_config, gen_config_raw    
     global gen_config_summarization
@@ -108,6 +125,14 @@ def initialize_globals(args):
 
     print(f"determined model type: {model_type_tmp}")        
 
+    device = "cpu"
+    if args.mode_cpu:
+        device = "cpu"
+    elif args.mode_mps:
+        device = "mps"
+    else:
+        device = "cuda"
+    
     try:
         if model is not None:
             del model
@@ -119,21 +144,30 @@ def initialize_globals(args):
             del tokenizer
 
         gc.collect()
-        torch.cuda.empty_cache()  
+        
+        if device == "cuda":
+            torch.cuda.empty_cache()
+        elif device == "mps":
+            torch.mps.empty_cache()
+            
     except NameError:
         pass
-
+        
+    model_type = model_type_tmp
     load_model = get_load_model(model_type_tmp)
     model, tokenizer = load_model(
         base=args.base_url,
         finetuned=args.ft_ckpt_url,
-        multi_gpu=args.multi_gpu,
+        mode_cpu=args.mode_cpu,
+        mode_mps=args.mode_mps,
+        mode_full_gpu=args.mode_full_gpu,
+        mode_8bit=args.mode_8bit,
+        mode_4bit=args.mode_4bit,
         force_download_ckpt=args.force_download_ckpt
-    )        
+    )
         
     gen_config, gen_config_raw = get_generation_config(args.gen_config_path)
     gen_config_summarization, _ = get_generation_config(args.gen_config_summarization_path)
-    model_type = model_type_tmp
     stream_model = model
         
 def get_load_model(model_type):
