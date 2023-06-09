@@ -507,7 +507,11 @@ def main(args):
                         with gr.Column(min_width=20):
                             starchat_15b = gr.Button("starchat-15b", elem_id="starchat-15b", elem_classes=["square"])
                             gr.Markdown("StarChat", elem_classes=["center"])
-    
+
+                        with gr.Column(min_width=20):
+                            starchat_beta_15b = gr.Button("starchat-beta-15b", elem_id="starchat-beta-15b", elem_classes=["square"])
+                            gr.Markdown("StarChat β", elem_classes=["center"])
+
                         with gr.Column(min_width=20):
                             vicuna_13b = gr.Button("vicuna-13b", elem_id="vicuna-13b", elem_classes=["square"])
                             gr.Markdown("Vicuna", elem_classes=["center"])
@@ -794,8 +798,8 @@ def main(args):
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b,
                 falcon_7b, wizard_falcon_7b, airoboros_7b, samantha_7b,
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
-                starchat_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, baize_13b, guanaco_13b,
-                nous_hermes_13b, airoboros_13b, samantha_13b,
+                starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
+                baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b,
                 camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b,
             ]
