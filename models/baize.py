@@ -22,6 +22,7 @@ def load_model(
         model = LlamaForCausalLM.from_pretrained(
             base, 
             device_map={"": "cpu"}, 
+            use_safetensors=False
         )
         
         if finetuned is not None and \
@@ -43,6 +44,7 @@ def load_model(
             base,
             device_map={"": "mps"},
             torch_dtype=torch.float16,
+            use_safetensors=False
         )
         
         if finetuned is not None and \
@@ -68,6 +70,7 @@ def load_model(
             load_in_4bit=mode_4bit,
             torch_dtype=torch.float16,
             device_map="auto",
+            use_safetensors=False
         )
 
         if not mode_8bit and not mode_4bit:

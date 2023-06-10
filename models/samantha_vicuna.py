@@ -18,7 +18,8 @@ def load_model(
         print("cpu mode")
         model = AutoModelForCausalLM.from_pretrained(
             base, 
-            device_map={"": "cpu"}, 
+            device_map={"": "cpu"},
+            use_safetensors=False
         )
             
     elif mode_mps:
@@ -27,6 +28,7 @@ def load_model(
             base,
             device_map={"": "mps"},
             torch_dtype=torch.float16,
+            use_safetensors=False
         )
             
     else:
@@ -38,6 +40,7 @@ def load_model(
             load_in_4bit=mode_4bit,
             device_map="auto",
             torch_dtype=torch.float16,
+            use_safetensors=False
         )
 
         if not mode_8bit and not mode_4bit:

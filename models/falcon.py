@@ -22,6 +22,7 @@ def load_model(
             base, 
             device_map={"": "cpu"},
             torch_dtype=torch.bfloat16,
+            use_safetensors=False,
             trust_remote_code=True
         )
             
@@ -31,6 +32,7 @@ def load_model(
             base,
             device_map={"": "mps"},
             torch_dtype=torch.bfloat16,
+            use_safetensors=False,
             trust_remote_code=True
         )
             
@@ -43,7 +45,8 @@ def load_model(
             load_in_4bit=mode_4bit,
             torch_dtype=torch.bfloat16,
             device_map="auto",
-            trust_remote_code=True
+            trust_remote_code=True,
+            use_safetensors=False
         )
 
         if not mode_8bit and not mode_4bit:
