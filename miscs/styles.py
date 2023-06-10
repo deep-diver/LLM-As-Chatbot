@@ -660,6 +660,15 @@ code {
   margin: auto;
 }
 
+#chronos-13b, #chronos-33b {
+  background: url(https://i.ibb.co/sQZ3L8j/chronos.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
 
 #replit-3b {
   background: url(https://i.ibb.co/BrKCKYq/replit.png);

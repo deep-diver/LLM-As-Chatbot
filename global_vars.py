@@ -63,7 +63,9 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "lazarus" in args.base_url.lower():
+    if "chronos" in args.base_url.lower():
+        model_type_tmp = "chronos"
+    elif "lazarus" in args.base_url.lower():
         model_type_tmp = "lazarus"
     elif "samantha" in args.base_url.lower():
         model_type_tmp = "samantha-vicuna"
@@ -175,7 +177,8 @@ def get_load_model(model_type):
         model_type == "alpaca-gpt4" or \
         model_type == "llama-deus" or \
         model_type == "nous-hermes" or \
-        model_type == "lazarus":
+        model_type == "lazarus" or \
+        model_type == "chronos":
         return alpaca.load_model
     elif model_type == "stablelm" or model_type == "os-stablelm":
         return stablelm.load_model
