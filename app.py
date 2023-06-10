@@ -538,8 +538,12 @@ def main(args):
                             
                         with gr.Column(min_width=20):
                             samantha_13b = gr.Button("samantha-13b", elem_id="samantha-13b", elem_classes=["square"])
-                            gr.Markdown("Samantha", elem_classes=["center"])               
-    
+                            gr.Markdown("Samantha", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            chronos_13b = gr.Button("chronos-13b", elem_id="chronos-13b", elem_classes=["square"])
+                            gr.Markdown("Chronos", elem_classes=["center"])
+                            
                     gr.Markdown("## ~ 30B Parameters", visible=False)
                     with gr.Row(elem_classes=["sub-container"], visible=False):
                         with gr.Column(min_width=20):
@@ -566,7 +570,11 @@ def main(args):
                             
                         with gr.Column(min_width=20):
                             lazarus_30b = gr.Button("lazarus-30b", elem_id="lazarus-30b", elem_classes=["square"])
-                            gr.Markdown("Lazarus", elem_classes=["center"])                            
+                            gr.Markdown("Lazarus", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            chronos_33b = gr.Button("chronos-33b", elem_id="chronos-33b", elem_classes=["square"])
+                            gr.Markdown("Chronos", elem_classes=["center"])                            
 
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
@@ -799,9 +807,9 @@ def main(args):
                 falcon_7b, wizard_falcon_7b, airoboros_7b, samantha_7b,
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
-                baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b,
+                baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b, chronos_13b,
                 camel20b,
-                guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b,
+                guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
             ]
             for btn in btns:
                 btn.click(
