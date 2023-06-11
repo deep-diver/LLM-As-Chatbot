@@ -39,6 +39,9 @@ def initialize_globals_byom(
     model, tokenizer = byom.load_model(
         base=base,
         finetuned=ckpt,
+        mode_cpu=mode_cpu,
+        mode_mps=mode_mps,
+        mode_full_gpu=mode_full_gpu,
         mode_8bit=mode_8bit,
         mode_4bit=mode_4bit,
         model_cls=model_cls if model_cls != "" else None,
