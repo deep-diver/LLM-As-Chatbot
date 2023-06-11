@@ -49,8 +49,8 @@ def load_model(
             use_safetensors=False
         )
 
-        if not mode_8bit and not mode_4bit:
-            model.half()
+        # if not mode_8bit and not mode_4bit:
+        #     model.half()
 
     # model = BetterTransformer.transform(model)
     return model, tokenizer
