@@ -20,15 +20,29 @@ class StopOnTokens(StoppingCriteria):
 
 def build_prompts(ppmanager, user_message, global_context, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
-    lws = CtxLastWindowStrategy(win_size)
     
     dummy_ppm.ctx = global_context
+    for pingpong in dummy_ppm.pingpongs:
+        pong = pingpong.pong
+        first_sentence = pong.split(" ")[0]
+        if first_sentence != "" and \
+            pre.contains_image_markdown(first_sentence):
+            pong = ' '.join(pong.split(" ")[1:])
+            pingpong.pong = pong
+            
+    lws = CtxLastWindowStrategy(win_size)
     
-    prompt = lws(dummy_ppm)  
+    prompt = lws(dummy_ppm)
     return prompt
 
 def text_stream(ppmanager, streamer):
+    count = 0
+    
     for new_text in streamer:
+        if count == 0:
+            ppmanager.append_pong(f"![]({global_vars.model_thumbnail_tiny})***[{global_vars.model_type}]:*** ")
+            count = count + 1
+            
         ppmanager.append_pong(new_text)
         yield ppmanager, ppmanager.build_uis()
                 
