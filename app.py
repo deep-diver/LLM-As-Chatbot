@@ -253,6 +253,7 @@ def move_to_second_view(btn):
         info['example2'],
         info['example3'],
         info['example4'],
+        info['thumb-tiny'],        
         gr.update(choices=load_mode_list, value=load_mode_list[0]),
         "",
     )
@@ -267,6 +268,7 @@ def download_completed(
     gen_config_path,
     gen_config_sum_path,
     load_mode,
+    thumbnail_tiny,
     force_download,
 ):
     tmp_args = types.SimpleNamespace()
@@ -275,6 +277,7 @@ def download_completed(
     tmp_args.gen_config_path = gen_config_path
     tmp_args.gen_config_summarization_path = gen_config_sum_path
     tmp_args.force_download_ckpt = force_download
+    tmp_args.thumbnail_tiny = thumbnail_tiny
     
     tmp_args.mode_cpu = True if load_mode == "cpu" else False
     tmp_args.mode_mps = True if load_mode == "apple silicon" else False
@@ -645,7 +648,8 @@ def main(args):
 |          half precision        |        load_in_8bit       |         load_in_4bit      | 
 | ------------------------------ | ------------------------- | ------------------------- | 
 |   {round(7830/1024., 1)}GiB    | {round(5224/1024., 1)}GiB | {round(4324/1024., 1)}GiB |
-""")                        
+""")
+                        model_thumbnail_tiny = gr.Textbox("", visible=False)
     
                 with gr.Column():
                     gen_config_path = gr.Dropdown(
@@ -686,7 +690,7 @@ def main(args):
                         with gr.Tab("Ex4"):
                             example_showcase4 = gr.Chatbot(
                                 [("hello", "world"), ("damn", "good")]
-                            )                            
+                            )
                 
                 with gr.Row():
                     back_to_model_choose_btn = gr.Button("Back")
@@ -820,7 +824,7 @@ def main(args):
                         model_image, model_name, model_params, model_base, model_ckpt,
                         model_desc, model_vram, gen_config_path, 
                         example_showcase1, example_showcase2, example_showcase3, example_showcase4,
-                        load_mode,
+                        model_thumbnail_tiny, load_mode, 
                         progress_view
                     ]
                 )
@@ -885,7 +889,7 @@ def main(args):
                 lambda: "Start downloading/loading the model...", None, txt_view
             ).then(
                 download_completed,
-                [model_name, model_base, model_ckpt, gen_config_path, gen_config_sum_path, load_mode, force_redownload],
+                [model_name, model_base, model_ckpt, gen_config_path, gen_config_sum_path, load_mode, model_thumbnail_tiny, force_redownload],
                 [progress_view2]
             ).then(
                 lambda: "Model is fully loaded...", None, txt_view

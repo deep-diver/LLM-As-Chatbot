@@ -18,6 +18,10 @@ PARENT_BLOCK_CSS = """
 
 MODEL_SELECTION_CSS = """
 
+.message {
+    margin: 0px !important;
+}
+
 .load-mode-selector:nth-child(3) {
     margin: auto !important;
     text-align: center !important;

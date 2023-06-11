@@ -1,8 +1,14 @@
+import re
 import copy
 import global_vars
 from threading import Thread
 from transformers import TextIteratorStreamer
 from transformers import GenerationConfig
+
+def contains_image_markdown(string):
+    regex = re.compile(r'!\[(.*?)\]\((.*?)\)')
+    match = regex.search(string)
+    return match
 
 def build_model_inputs(prompt, return_token_type_ids):
     model_inputs = global_vars.tokenizer(

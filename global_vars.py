@@ -30,6 +30,7 @@ def initialize_globals_byom(
     mode_cpu, model_mps, mode_8bit, mode_4bit, mode_full_gpu
 ):
     global model, model_type, stream_model, tokenizer
+    global model_thumbnail_tiny, device
     global gen_config, gen_config_raw
     global gen_config_summarization
 
@@ -57,7 +58,7 @@ def initialize_globals_byom(
         gen_config.pad_token_id = int(pad_token_id)       
 
 def initialize_globals(args):
-    global device
+    global device, model_thumbnail_tiny
     global model, model_type, stream_model, tokenizer
     global gen_config, gen_config_raw    
     global gen_config_summarization
@@ -167,7 +168,8 @@ def initialize_globals(args):
         mode_4bit=args.mode_4bit,
         force_download_ckpt=args.force_download_ckpt
     )
-        
+    
+    model_thumbnail_tiny = args.thumbnail_tiny
     gen_config, gen_config_raw = get_generation_config(args.gen_config_path)
     gen_config_summarization, _ = get_generation_config(args.gen_config_summarization_path)
     stream_model = model

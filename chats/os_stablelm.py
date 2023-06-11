@@ -28,7 +28,13 @@ def build_prompts(ppmanager, user_message, global_context, win_size=3):
     return prompt
 
 def text_stream(ppmanager, streamer):
+    count = 0
+    
     for new_text in streamer:
+        if count == 0:
+            ppmanager.append_pong(f"![]({global_vars.model_thumbnail_tiny})***[{global_vars.model_type}]:*** ")
+            count = count + 1
+            
         ppmanager.append_pong(new_text)
         yield ppmanager, ppmanager.build_uis()
                 
