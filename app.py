@@ -754,7 +754,7 @@ def main(args):
                     chatbot = gr.Chatbot(elem_id='chatbot')
                     instruction_txtbox = gr.Textbox(placeholder="Ask anything", label="", elem_id="prompt-txt")
     
-            with gr.Accordion("Constrol Panel", open=False) as control_panel:
+            with gr.Accordion("Control Panel", open=False) as control_panel:
                 with gr.Column():
                     with gr.Column():
                         gr.Markdown("#### Global context")
