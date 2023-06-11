@@ -134,6 +134,10 @@ code {
   @media (prefers-color-scheme: dark) {
     background-color: rgba(31,41,55,255) !important;
   }
+  
+  @media screen and (max-width: 1000px) {
+      margin: 0px !important;
+  }
 }
 
 #initial-popup {
