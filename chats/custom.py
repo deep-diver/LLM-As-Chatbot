@@ -13,24 +13,23 @@ def build_prompts(ppmanager, user_message, global_context, win_size=3):
     dummy_ppm.ctx = global_context
     for pingpong in dummy_ppm.pingpongs:
         pong = pingpong.pong
-        first_sentence = pong.split(" ")[0]
+        first_sentence = pong.split("\n")[0]
         if first_sentence != "" and \
             pre.contains_image_markdown(first_sentence):
-            pong = ' '.join(pong.split(" ")[1:])
+            pong = ' '.join(pong.split("\n")[1:]).strip()
             pingpong.pong = pong
             
     lws = CtxLastWindowStrategy(win_size)
     
     prompt = lws(dummy_ppm)
     return prompt
-
 def text_stream(ppmanager, streamer):
     count = 0
     thumbnail_tiny = "https://i.ibb.co/f80BpgR/byom.png"
     
     for new_text in streamer:
         if count == 0:
-            ppmanager.append_pong(f"![]({thumbnail_tiny})***[{global_vars.model_type}]:*** ")
+            ppmanager.append_pong(f"![]({global_vars.model_thumbnail_tiny})***[{global_vars.model_type}]***\n")
             count = count + 1        
         
         ppmanager.append_pong(new_text)
