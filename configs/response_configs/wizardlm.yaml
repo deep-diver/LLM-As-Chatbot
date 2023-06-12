@@ -1,0 +1,9 @@
+generation_config:
+    temperature: 1.0
+    top_p: 0.95
+    top_k: 40
+    num_beams: 1
+    use_cache: True
+    repetition_penalty: 1.2
+    max_new_tokens: 2048
+    do_sample: True

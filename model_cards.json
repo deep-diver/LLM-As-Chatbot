@@ -1176,5 +1176,59 @@
         "example4": [
             ["Write a python program to print the first 10 Fibonacci numbers", "You're welcome! Here's how you can implement this program using Python:\n\n```python\ndef fib(n):\n   if n == 0:\n       return 0\n   elif n == 1:\n       return 1\n   else:\n       return (fib(n - 2) + fib(n - 1))\n# Test cases for valid inputs\nfor x in range(-3, 5):\n   # Input value invalid; exit with error message\n   try:\n       print(fib(x), end=\" \")\n   except ValueError:\n       print(\"Invalid input! Please enter a positive integer\")\nprint(\"\\nFirst 10 Fibonacci Numbers: \", [fib(i) for i in range(11)])\n```\nThis code defines a function called fib() that accepts an argument representing which number in the sequence we want to calculate (n). It uses recursion to compute each subsequent term based on the two previous terms. For example, the fifth element in the sequence (which corresponds to fib(4)) equals the sum of the fourth and third elements in the sequence ([3+2]). You should run this script and make sure it works properly before proceeding further."]
         ]
+    },
+    "wizardlm-13b": {
+        "category": "<20B",
+        "display_name": "WizardLM",
+        "thumb": "https://i.ibb.co/SRXWKz9/WizardLM.png",
+        "thumb-mid": "https://i.ibb.co/vLFCRXL/Wizard-LM-mid.png",
+        "thumb-tiny": "https://i.ibb.co/kXgqsHv/Wizard-LM-tiny.png",
+        "parameters": "13 Billion",
+        "vram(full)": "26048",
+        "vram(8bit)": "14740",
+        "vram(4bit)": "8782",
+        "hub(base)": "LLMs/WizardLM-13B-V1.0",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/wizardlm.yaml",
+        "desc": "Empowering Large Pre-Trained Language Models to Follow Complex Instructions. [Evol-Instruct](https://github.com/nlpxucan/evol-instruct) is a novel method using LLMs instead of humans to automatically mass-produce open-domain instructions of various difficulty levels and skills range, to improve the performance of LLMs.",
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
+    },
+    "wizardlm-30b": {
+        "category": "<40B",
+        "display_name": "WizardLM",
+        "thumb": "https://i.ibb.co/SRXWKz9/WizardLM.png",
+        "thumb-mid": "https://i.ibb.co/vLFCRXL/Wizard-LM-mid.png",
+        "thumb-tiny": "https://i.ibb.co/kXgqsHv/Wizard-LM-tiny.png",
+        "parameters": "30 Billion",
+        "vram(full)": "65154",
+        "vram(8bit)": "36896",
+        "vram(4bit)": "21738",
+        "hub(base)": "LLMs/WizardLM-30B-V1.0",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/wizardlm.yaml",
+        "desc": "Empowering Large Pre-Trained Language Models to Follow Complex Instructions. [Evol-Instruct](https://github.com/nlpxucan/evol-instruct) is a novel method using LLMs instead of humans to automatically mass-produce open-domain instructions of various difficulty levels and skills range, to improve the performance of LLMs.",
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
     }
 }
