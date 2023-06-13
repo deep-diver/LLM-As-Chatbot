@@ -296,6 +296,8 @@ def get_chat_manager(model_type):
         return GradioAlpacaChatPPManager()
     elif model_type == "wizardlm":
         return GradioVicunaChatPPManager()
+    elif model_type == "wizard-vicuna":
+        return GradioVicunaChatPPManager()
     else:
         return None
 
@@ -407,6 +409,10 @@ The assistant gives helpful, detailed, and polite answers to the user's question
 The assistant gives helpful, detailed, and polite answers to the user's questions.
 """
     elif model_type == "wizardlm":
+        return """A chat between a curious user and an artificial intelligence assistant.
+The assistant gives helpful, detailed, and polite answers to the user's questions.
+"""
+    elif model_type == "wizard-vicuna":
         return """A chat between a curious user and an artificial intelligence assistant.
 The assistant gives helpful, detailed, and polite answers to the user's questions.
 """

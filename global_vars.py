@@ -67,7 +67,9 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "llms/wizardlm" in args.base_url.lower():
+    if "wizard-vicuna" in args.base_url.lower():
+        model_type_tmp = "wizard-vicuna"
+    elif "llms/wizardlm" in args.base_url.lower():
         model_type_tmp = "wizardlm"
     elif "chronos" in args.base_url.lower():
         model_type_tmp = "chronos"
@@ -211,7 +213,8 @@ def get_load_model(model_type):
         return redpajama.load_model
     elif model_type == "vicuna":
         return vicuna.load_model
-    elif model_type == "evolinstruct-vicuna":
+    elif model_type == "evolinstruct-vicuna" or \
+        model_type == "wizard-vicuna":
         return alpaca.load_model
     elif model_type == "alpacoom":
         return bloom.load_model

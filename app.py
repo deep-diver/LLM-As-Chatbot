@@ -551,6 +551,10 @@ def main(args):
                             wizardlm_13b = gr.Button("wizardlm-13b", elem_id="wizardlm-13b", elem_classes=["square"])
                             gr.Markdown("WizardLM", elem_classes=["center"])
                             
+                        with gr.Column(min_width=20):
+                            wizard_vicuna_13b = gr.Button("wizard-vicuna-13b", elem_id="wizard-vicuna-13b", elem_classes=["square"])
+                            gr.Markdown("Wizard Vicuna (Uncensored)", elem_classes=["center"])
+                            
                     gr.Markdown("## ~ 30B Parameters", visible=False)
                     with gr.Row(elem_classes=["sub-container"], visible=False):
                         with gr.Column(min_width=20):
@@ -585,8 +589,12 @@ def main(args):
                             
                         with gr.Column(min_width=20):
                             wizardlm_30b = gr.Button("wizardlm-30b", elem_id="wizardlm-30b", elem_classes=["square"])
-                            gr.Markdown("WizardLM", elem_classes=["center"])                            
+                            gr.Markdown("WizardLM", elem_classes=["center"])
 
+                        with gr.Column(min_width=20):
+                            wizard_vicuna_30b = gr.Button("wizard-vicuna-30b", elem_id="wizard-vicuna-30b", elem_classes=["square"])
+                            gr.Markdown("Wizard Vicuna (Uncensored)", elem_classes=["center"])
+                            
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
         with gr.Column(visible=False) as byom_input_view:
@@ -820,10 +828,10 @@ def main(args):
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
                 baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b, chronos_13b,
-                wizardlm_13b,
+                wizardlm_13b, wizard_vicuna_13b,
                 camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
-                wizardlm_30b,
+                wizardlm_30b, wizard_vicuna_30b,
             ]
             for btn in btns:
                 btn.click(
