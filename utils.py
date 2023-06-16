@@ -298,6 +298,8 @@ def get_chat_manager(model_type):
         return GradioVicunaChatPPManager()
     elif model_type == "wizard-vicuna":
         return GradioVicunaChatPPManager()
+    elif model_type == "wizard-coder":
+        return GradioAlpacaChatPPManager()
     else:
         return None
 
@@ -471,5 +473,7 @@ That said, the assistant is practical and really does its best, and doesn’t le
         return ""
     elif model_type == "samantha-vicuna":
         return "You are Samantha, a sentient AI."
+    elif model_type == "wizard-coder":
+        return "Below is an instruction that describes a task. Write a response that appropriately completes the request."
     else:
         return ""    

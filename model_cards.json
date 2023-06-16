@@ -1284,5 +1284,32 @@
         "example4": [
             ["Write a python program to print the first 10 Fibonacci numbers. Put codes in markdown code block", "Here is a Python code snippet that prints the first 10 Fibonacci numbers using recursion:\n```python\ndef fib(n):\nif n <= 2:\nreturn n\nelse:\nreturn (fib(n-1) + fib(n-2))\n\nfor i in range(10):\nprint(fib(i))\n```\nOutput:\n```\n0\n1\n1\n2\n3\n5\n8\n13\n21\n34"]
         ]
+    },
+    "wizard-coder-15b": {
+        "category": "<20B",
+        "display_name": "Wizard Coder",
+        "thumb": "https://i.ibb.co/PDcTNGC/wizard-coder.png",
+        "thumb-mid": "https://i.ibb.co/NC883qm/wizard-coder-mid.png",
+        "thumb-tiny": "https://i.ibb.co/dMFtVP9/wizard-coder-tiny.png",
+        "parameters": "15.5 Billion",
+        "vram(full)": "30548",
+        "vram(8bit)": "17462",
+        "vram(4bit)": "10126",
+        "hub(base)": "WizardLM/WizardCoder-15B-V1.0",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/wizard-coder.yaml",
+        "desc": "WizardCoder: Empowering Code Large Language Models with Evol-Instruct. To develop our WizardCoder model, we begin by adapting the Evol-Instruct method specifically for coding tasks. This involves tailoring the prompt to the domain of code-related instructions. Subsequently, we fine-tune the Code LLM, StarCoder, utilizing the newly created instruction-following training set. WizardCoder attains the third position in the [HumanEval+ benchmark](https://github.com/my-other-github-account/llm-humaneval-benchmarks), surpassing Claude-Plus (59.8 vs. 53.0) and Bard (59.8 vs. 44.5). Notably, our model exhibits a substantially smaller size compared to these models.",
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers. Put codes in markdown code block", ""]
+        ]
     }    
 }

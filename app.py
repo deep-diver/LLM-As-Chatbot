@@ -555,6 +555,10 @@ def main(args):
                             wizard_vicuna_13b = gr.Button("wizard-vicuna-13b", elem_id="wizard-vicuna-13b", elem_classes=["square"])
                             gr.Markdown("Wizard Vicuna (Uncensored)", elem_classes=["center"])
                             
+                        with gr.Column(min_width=20):
+                            wizard_coder_15b = gr.Button("wizard-coder-15b", elem_id="wizard-coder-15b", elem_classes=["square"])
+                            gr.Markdown("Wizard Coder", elem_classes=["center"])
+                            
                     gr.Markdown("## ~ 30B Parameters", visible=False)
                     with gr.Row(elem_classes=["sub-container"], visible=False):
                         with gr.Column(min_width=20):
@@ -828,7 +832,7 @@ def main(args):
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
                 baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b, chronos_13b,
-                wizardlm_13b, wizard_vicuna_13b,
+                wizardlm_13b, wizard_vicuna_13b, wizard_coder_15b,
                 camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
                 wizardlm_30b, wizard_vicuna_30b,

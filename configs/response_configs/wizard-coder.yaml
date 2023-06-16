@@ -1,0 +1,12 @@
+generation_config:
+    temperature: 1.0
+    top_p: 0.9
+    top_k: 40
+    num_beams: 1
+    use_cache: True
+    repetition_penalty: 1.2
+    max_new_tokens: 512
+    do_sample: True
+    eos_token_id: 0
+    bos_token_id: 0
+    pad_token_id: 49152

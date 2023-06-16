@@ -6,6 +6,7 @@ from chats import os_stablelm
 from chats import vicuna
 from chats import stable_vicuna
 from chats import starchat
+from chats import wizard_coder
 from chats import redpajama
 from chats import mpt
 from chats import alpacoom
@@ -222,7 +223,15 @@ def chat_stream(
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
             sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
         )
-
+        
+    elif model_type == "wizard-coder":
+        cs = wizard_coder.chat_stream(
+            idx, local_data, user_message, state,
+            global_context, ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+        )
+        
     elif model_type == "mpt":
         cs = mpt.chat_stream(
             idx, local_data, user_message, state,

@@ -5,7 +5,7 @@ from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
 from models import baize, guanaco, falcon, kullm, replit, airoboros
-from models import samantha_vicuna
+from models import samantha_vicuna, wizard_coder
 from models import byom
 
 cuda_availability = False
@@ -67,7 +67,9 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "wizard-vicuna" in args.base_url.lower():
+    if "wizardcoder" in args.base_url.lower():
+        model_type_tmp = "wizard-coder"
+    elif "wizard-vicuna" in args.base_url.lower():
         model_type_tmp = "wizard-vicuna"
     elif "llms/wizardlm" in args.base_url.lower():
         model_type_tmp = "wizardlm"
@@ -175,6 +177,7 @@ def initialize_globals(args):
         mode_4bit=args.mode_4bit,
         force_download_ckpt=args.force_download_ckpt
     )
+    model.eval()
     
     model_thumbnail_tiny = args.thumbnail_tiny
     gen_config, gen_config_raw = get_generation_config(args.gen_config_path)
@@ -206,6 +209,8 @@ def get_load_model(model_type):
         return vicuna.load_model
     elif model_type == "starchat":
         return starchat.load_model
+    elif model_type == "wizard-coder":
+        return wizard_coder.load_model
     elif model_type == "mpt":
         return mpt.load_model
     elif model_type == "redpajama" or \
