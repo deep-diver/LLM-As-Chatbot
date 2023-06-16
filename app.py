@@ -654,7 +654,7 @@ def main(args):
             gr.Markdown("# Confirm the chosen model", elem_classes=["center"])
 
             with gr.Column(elem_id="container2"):
-                gr.Markdown("Please expect loading time to be longer than expected. Depending on the size of models, it will probably take from 100 to 300 seconds or so. Especially, expect the longest loading time with MPT model.")
+                gr.Markdown("Please expect loading time to be longer than expected. Depending on the size of models, it will probably take from 100 to 1000 seconds or so. Please be patient.")
 
                 with gr.Row():
                     model_image = gr.Image(None, interactive=False, show_label=False)
