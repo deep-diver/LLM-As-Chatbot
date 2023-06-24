@@ -444,6 +444,10 @@ def main(args):
                         with gr.Column(min_width=20):
                             vicuna_7b = gr.Button("vicuna-7b", elem_id="vicuna-7b", elem_classes=["square"])
                             gr.Markdown("Vicuna", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            vicuna_7b_1_3 = gr.Button("vicuna-7b-1-3", elem_id="vicuna-7b-1-3", elem_classes=["square"])
+                            gr.Markdown("Vicuna 1.3", elem_classes=["center"])
     
                         with gr.Column(min_width=20):
                             llama_deus_7b = gr.Button("llama-deus-7b", elem_id="llama-deus-7b",elem_classes=["square"])
@@ -518,6 +522,10 @@ def main(args):
                         with gr.Column(min_width=20):
                             vicuna_13b = gr.Button("vicuna-13b", elem_id="vicuna-13b", elem_classes=["square"])
                             gr.Markdown("Vicuna", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            vicuna_13b_1_3 = gr.Button("vicuna-13b-1-3", elem_id="vicuna-13b-1-3", elem_classes=["square"])
+                            gr.Markdown("Vicuna 1.3", elem_classes=["center"])                            
     
                         with gr.Column(min_width=20):
                             evolinstruct_vicuna_13b = gr.Button("evolinstruct-vicuna-13b", elem_id="evolinstruct-vicuna-13b", elem_classes=["square"])
@@ -598,6 +606,14 @@ def main(args):
                         with gr.Column(min_width=20):
                             wizard_vicuna_30b = gr.Button("wizard-vicuna-30b", elem_id="wizard-vicuna-30b", elem_classes=["square"])
                             gr.Markdown("Wizard Vicuna (Uncensored)", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            vicuna_33b_1_3 = gr.Button("vicuna-33b-1-3", elem_id="vicuna-33b-1-3", elem_classes=["square"])
+                            gr.Markdown("Vicuna 1.3", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            mpt_30b = gr.Button("mpt-30b", elem_id="mpt-30b", elem_classes=["square"])
+                            gr.Markdown("MPT", elem_classes=["center"])                            
                             
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
@@ -827,15 +843,15 @@ def main(args):
             btns = [
                 t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, redpajama_instruct_7b, llama_deus_7b, 
-                evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b,
+                evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b, vicuna_7b_1_3,
                 falcon_7b, wizard_falcon_7b, airoboros_7b, samantha_7b,
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
                 baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b, chronos_13b,
-                wizardlm_13b, wizard_vicuna_13b, wizard_coder_15b,
+                wizardlm_13b, wizard_vicuna_13b, wizard_coder_15b, vicuna_13b_1_3,
                 camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
-                wizardlm_30b, wizard_vicuna_30b,
+                wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b
             ]
             for btn in btns:
                 btn.click(

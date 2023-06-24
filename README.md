@@ -4,6 +4,11 @@
 
 The purpose of this repository is to let people to use lots of open sourced instruction-following fine-tuned LLM models as a Chatbot service. Because different models behave differently, and different models require differently formmated prompts, I made a very simple library [`Ping Pong`](https://github.com/deep-diver/PingPong) for model agnostic conversation and context managements. Also, I made [`GradioChat`](https://github.com/deep-diver/gradio-chat) UI looking similar to [HuggingChat](https://huggingface.co/chat/) but entirely built in Gradio. Those two projects are fully integrated to power this project. 
 
+### Easiest way to try out
+
+This project has become the one of the default framework at [jarvislabs.ai](https://jarvislabs.ai/). Jarvislabs.ai is one of the cloud GPU VM provider with the cheapest GPU prices. Furthermore, all the weights of the supported popular open source LLMs are pre-downloaded. You don't need to waste of your money and time to wait until download hundreds of GBs to try out a collection of LLMs. In less than 10 minutes, you can try out any model. 
+- for further instruction, please follow the [official documentation](https://jarvislabs.ai/docs/llmchat)
+
 ### Context management
 
 Different model might have different strategies to manage context, so if you want to know the exact strategies applied to each model, take a look at the [`chats`](https://github.com/deep-diver/LLM-As-Chatbot/tree/main/chats) directory. However, here are the basic ideas that I have come up with initially. I have found long prompts will slow down the generation process a lot eventually, so I thought the prompts should be kept as short as possible while as concise as possible at the same time. In the previous version, I have accumulated all the past conversations, and that didn't go well.
@@ -31,11 +36,16 @@ Different model might have different strategies to manage context, so if you wan
   - [lmsys/fastchat-t5-3b-v1.0](https://huggingface.co/lmsys/fastchat-t5-3b-v1.0): T5(3B) based Vicuna style instruction fine-tuned model on SharedGPT by [lm-sys](https://github.com/lm-sys/FastChat) 
   - [LLMs/Stable-Vicuna-13B](https://huggingface.co/LLMs/Stable-Vicuna-13B): Stable Vicuna(13B) from Carpel AI and Stability AI. This is not a delta weight, so use it at your own risk. I will make this repo as private soon and add Hugging Face token field.
   - [LLMs/Vicuna-7b-v1.1](https://huggingface.co/LLMs/Vicuna-7b-v1.1): Vicuna(7B) from FastChat. This is not a delta weight, so use it at your own risk. I will make this repo as private soon and add Hugging Face token field.
+  - [LLMs/Vicuna-7b-v1.3](https://huggingface.co/lmsys/vicuna-7b-v1.3)
   - [LLMs/Vicuna-13b-v1.1](https://huggingface.co/LLMs/Vicuna-13b-v1.1): Vicuna(13B) from FastChat. This is not a delta weight, so use it at your own risk. I will make this repo as private soon and add Hugging Face token field.
+  - [LLMs/Vicuna-13b-v1.3](https://huggingface.co/lmsys/vicuna-13b-v1.3)
+  - [LLMs/Vicuna-33b-v1.3](https://huggingface.co/lmsys/vicuna-33b-v1.3)
   - [togethercomputer/RedPajama-INCITE-Chat-7B-v0.1](https://huggingface.co/togethercomputer/RedPajama-INCITE-Chat-7B-v0.1): RedPajama INCITE Chat(7B) from Together.
   - [mosaicml/mpt-7b-chat](https://huggingface.co/mosaicml/mpt-7b-chat): MPT-7B from MOSAIC ML.
+  - [mosaicml/mpt-30b-chat](https://huggingface.co/mosaicml/mpt-30b-chat): MPT-30B from MOSAIC ML.
   - [teknium/llama-deus-7b-v3-lora](https://huggingface.co/teknium/llama-deus-7b-v3-lora): LLaMA 7B based Alpaca style instruction fine-tuned model. The only difference between Alpaca is that this model is fine-tuned on more data including Alpaca dataset, GPTeacher, General Instruct, Code Instruct, Roleplay Instruct, Roleplay V2 Instruct, GPT4-LLM Uncensored, Unnatural Instructions, WizardLM Uncensored, CamelAI's 20k Biology, 20k Physics, 20k Chemistry, 50k Math GPT4 Datasets, and CodeAlpaca
   - [HuggingFaceH4/starchat-alpha](https://huggingface.co/HuggingFaceH4/starchat-alpha): Starcoder 15.5B based instruction fine-tuned model. This model is particularly good at answering questions about coding. 
+  - [HuggingFaceH4/starchat-beta](https://huggingface.co/HuggingFaceH4/starchat-beta): Starcoder 15.5B based instruction fine-tuned model. This model is particularly good at answering questions about coding.
   - [LLMs/Vicuna-LoRA-EvolInstruct-7B](https://huggingface.co/LLMs/Vicuna-LoRA-EvolInstruct-7B): LLaMA 7B based Vicuna style instruction fine-tuned model. The dataset to fine-tune this model is from WizardLM's Evol Instruction dataset.
   - [LLMs/Vicuna-LoRA-EvolInstruct-13B](https://huggingface.co/LLMs/Vicuna-LoRA-EvolInstruct-13B): LLaMA 13B based Vicuna style instruction fine-tuned model. The dataset to fine-tune this model is from WizardLM's Evol Instruction dataset.
   - [project-baize/baize-v2-7b](https://huggingface.co/project-baize/baize-v2-7b): LLaMA 7B based Baize
@@ -45,6 +55,19 @@ Different model might have different strategies to manage context, so if you wan
   - [timdettmers/guanaco-33b-merged](https://huggingface.co/timdettmers/guanaco-33b-merged): LLaMA 30B based Guanaco which is fine-tuned on OASST1 dataset with QLoRA techniques introduced in "QLoRA: Efficient Finetuning of Quantized LLMs" paper.
   - [tiiuae/falcon-7b-instruct](https://huggingface.co/tiiuae/falcon-7b-instruct): Falcon 7B based instruction fine-tuned model on Baize, GPT4All, GPTeacher, and RefinedWeb-English datasets.
   - [tiiuae/falcon-40b-instruct](https://huggingface.co/tiiuae/falcon-40b-instruct): Falcon 40B based instruction fine-tuned model on Baize and RefinedWeb-English datasets.
+  - [LLMs/WizardLM-13B-V1.0](https://huggingface.co/LLMs/WizardLM-13B-V1.0)
+  - [LLMs/WizardLM-30B-V1.0](https://huggingface.co/LLMs/WizardLM-30B-V1.0)
+  - [ehartford/Wizard-Vicuna-13B-Uncensored](https://huggingface.co/ehartford/Wizard-Vicuna-13B-Uncensored)
+  - [ehartford/Wizard-Vicuna-30B-Uncensored](https://huggingface.co/ehartford/Wizard-Vicuna-30B-Uncensored)
+  - [ehartford/samantha-7b](https://huggingface.co/ehartford/samantha-7b)
+  - [ehartford/samantha-13b](https://huggingface.co/ehartford/samantha-13b)
+  - [ehartford/samantha-33b](https://huggingface.co/ehartford/samantha-33b)
+  - [CalderaAI/30B-Lazarus](https://huggingface.co/CalderaAI/30B-Lazarus)
+  - [elinas/chronos-13b](https://huggingface.co/elinas/chronos-13b)
+  - [elinas/chronos-33b](https://huggingface.co/elinas/chronos-33b)
+  - [WizardLM/WizardCoder-15B-V1.0](https://huggingface.co/WizardLM/WizardCoder-15B-V1.0)
+  - [ehartford/WizardLM-Uncensored-Falcon-7b](https://huggingface.co/ehartford/WizardLM-Uncensored-Falcon-7b)
+  - [ehartford/WizardLM-Uncensored-Falcon-40b](https://huggingface.co/ehartford/WizardLM-Uncensored-Falcon-40b)
 
 </details>
   
@@ -92,4 +115,4 @@ You need to follow the following steps to bring your own models in this project.
 ## Acknowledgements
 
 - I am thankful to [Jarvislabs.ai](https://jarvislabs.ai/) who generously provided free GPU resources to experiment with Alpaca-LoRA deployment and share it to communities to try out.
-- I am thankful to [Common Computer](https://comcom.ai/ko/) who generously provided A100(40G) x 8 DGX workstation for fine-tuning the models.
+- I am thankful to [AI Network](https://www.ainetwork.ai) who generously provided A100(40G) x 8 DGX workstation for fine-tuning and serving the models.

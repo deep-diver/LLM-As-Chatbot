@@ -538,7 +538,7 @@ code {
   margin: auto;
 }
 
-#mpt-7b {
+#mpt-7b, #mpt-30b {
   background: url(https://i.ibb.co/DwN44Z9/mpt.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
@@ -548,7 +548,7 @@ code {
   margin: auto;
 }
 
-#vicuna-7b, #vicuna-13b {
+#vicuna-7b, #vicuna-13b, #vicuna-7b-1-3, #vicuna-13b-1-3, #vicuna-33b-1-3 {
   background: url(https://i.ibb.co/vqPDrPQ/vicuna.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
