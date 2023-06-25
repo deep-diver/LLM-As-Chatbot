@@ -240,6 +240,8 @@ class GradioKULLMChatPPManager(KULLMChatPPManager):
 def get_chat_manager(model_type):
     if model_type == "alpaca":
         return GradioAlpacaChatPPManager()
+    elif model_type == "openllama":
+        return GradioAlpacaChatPPManager()
     elif model_type == "alpaca-gpt4":
         return GradioAlpacaChatPPManager()
     elif model_type == "nous-hermes":
@@ -305,6 +307,15 @@ def get_chat_manager(model_type):
 
 def get_global_context(model_type):
     if model_type == "alpaca":
+        return """Below are a series of dialogues between human and an AI assistant.
+The AI tries to answer the given instruction as in response.
+The AI MUST not generate any text containing `### Response` or `### Instruction`.
+The AI MUST be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable.
+The assistant MUST be happy to help with almost anything, and will do its best to understand exactly what is needed.
+It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
+That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
+"""
+    elif model_type == "openllama":
         return """Below are a series of dialogues between human and an AI assistant.
 The AI tries to answer the given instruction as in response.
 The AI MUST not generate any text containing `### Response` or `### Instruction`.

@@ -1419,5 +1419,59 @@
         "example4": [
             ["write a server side socket program in Python", "Here's one possible implementation of a simple echo-server using sockets and threading in Python 3 (it should also work with earlier versions):\n```python\nimport socket, select, sys\n\n\ndef handle_client(connfd):\n    while True:\n        rlist = [connfd]\n\n        # Wait for data to be ready on any or all file descriptors \n        try:\n            readable, _, _ = select.select(rlist, [], [])\n\n            if connfd in readable:\n                recvdata = connfd.recv(1024)\n\n                if not recvdata:\n                    break\n\n                print(\"Received:\", repr(recvdata))\n\n                senddata = b\"Echo: \" + bytes(repr(recvdata), 'utf8') \n                connfd.sendall(senddata)  \n\n        except Exception as e: \n            raise\n\n    print(\"Closing connection\") \n    connfd.close() \n\n\nif __name__ == \"__main__\":\n    host = \"\"     # listen on all interfaces\n    port = int(sys.argv[1])\n\n    sock = None\n\n    try:   \n        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) \n        # Set REUSEADDR flag so we can restart without waiting for timeout \n        print('Socket created') \n         # Bind socket to local address \n        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  \n        sock.bind((host,port)) \n\n        # Start listening on socket \n        sock.listen(5) \n\n        while True: \n            # wait until someone tries to connect\n            client, addr = sock.accept(); \n\n            thread = threading.Thread(target=handle_client, args=(client,)) \n            thread.start()\n```\n"]
         ]
-    }    
+    },
+    "openllama-7b": {
+        "category": "<10B",
+        "display_name": "OpenLLaMA",
+        "thumb": "https://i.ibb.co/HGL16CQ/openllama.png",
+        "thumb-mid": "https://i.ibb.co/Wsq1SQ8/openllama-mid.png",
+        "thumb-tiny": "https://i.ibb.co/NyWPd67/openllama-tiny.png",
+        "parameters": "7 Billion",
+        "vram(full)": "13858",
+        "vram(8bit)": "8254",
+        "vram(4bit)": "5140",
+        "hub(base)": "VMware/open-llama-7b-open-instruct",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/default.yaml",
+        "desc": "Instruction-tuned on the [open-instruct-v1-oasst-dolly-hhrlhf](https://huggingface.co/datasets/VMware/open-instruct-v1-oasst-dolly-hhrlhf) dataset of the fully trained [Open LLama 7B](https://huggingface.co/openlm-research/open_llama_7b) model. The model is open for COMMERCIAL USE.",
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
+    },
+    "openllama-13b": {
+        "category": "<20B",
+        "display_name": "OpenLLaMA",
+        "thumb": "https://i.ibb.co/HGL16CQ/openllama.png",
+        "thumb-mid": "https://i.ibb.co/Wsq1SQ8/openllama-mid.png",
+        "thumb-tiny": "https://i.ibb.co/NyWPd67/openllama-tiny.png",
+        "parameters": "13 Billion",
+        "vram(full)": "26048",
+        "vram(8bit)": "14740",
+        "vram(4bit)": "8782",
+        "hub(base)": "VMware/open-llama-13b-open-instruct",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/default.yaml",
+        "desc": "Instruction-tuned on the [open-instruct-v1-oasst-dolly-hhrlhf](https://huggingface.co/datasets/VMware/open-instruct-v1-oasst-dolly-hhrlhf) dataset of the fully trained [Open LLama 13B](https://huggingface.co/openlm-research/open_llama_13b) model. The model is open for COMMERCIAL USE.",
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
+    }
 }
