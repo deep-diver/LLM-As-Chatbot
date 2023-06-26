@@ -29,6 +29,49 @@ from pingpong.pingpong import PromptFmt
 from pingpong.pingpong import UIFmt
 from pingpong.gradio import GradioChatUIFmt
 
+class OrcaMiniChatPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""### System:
+{context}
+"""
+    
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""### User:
+{ping}
+### Response:
+{pong}"""
+
+class OrcaMiniChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=OrcaMiniChatPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results    
+
+class GradioOrcaMiniChatPPManager(OrcaMiniChatPPManager):
+    def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+        
+        results = []
+        
+        for pingpong in self.pingpongs[from_idx:to_idx]:
+            results.append(fmt.ui(pingpong))
+            
+        return results
+
 class RedPajamaChatPromptFmt(PromptFmt):
     @classmethod
     def ctx(cls, context):
@@ -302,10 +345,15 @@ def get_chat_manager(model_type):
         return GradioVicunaChatPPManager()
     elif model_type == "wizard-coder":
         return GradioAlpacaChatPPManager()
+    elif model_type == "orcamini":
+        return GradioOrcaMiniChatPPManager()
     else:
         return None
 
 def get_global_context(model_type):
+    if model_type == "orcamini":
+        return """You are an AI assistant that follows instruction extremely well. Help as much as you can.
+"""
     if model_type == "alpaca":
         return """Below are a series of dialogues between human and an AI assistant.
 The AI tries to answer the given instruction as in response.
