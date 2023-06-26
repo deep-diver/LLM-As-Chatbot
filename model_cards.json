@@ -1487,7 +1487,7 @@
         "hub(base)": "psmathur/orca_mini_7b",
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/default.yaml",
-        "desc": "",
+        "desc": "An OpenLLaMa-7B model model trained on explain tuned datasets, created using Instructions and Input from WizardLM, Alpaca & Dolly-V2 datasets and applying Orca Research Paper dataset construction approaches. We build explain tuned [WizardLM dataset ~70K](https://github.com/nlpxucan/WizardLM), [Alpaca dataset ~52K](https://crfm.stanford.edu/2023/03/13/alpaca.html) & [Dolly-V2 dataset ~15K](https://github.com/databrickslabs/dolly) created using approaches from [Orca Research Paper](https://arxiv.org/abs/2306.02707). We leverage all of the 15 system instructions provided in Orca Research Paper. to generate custom datasets, in contrast to vanilla instruction tuning approaches used by original datasets.",
         "example1": [
             ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
         ],
@@ -1514,7 +1514,7 @@
         "hub(base)": "psmathur/orca_mini_13b",
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/default.yaml",
-        "desc": "",
+        "desc": "An OpenLLaMa-13B model model trained on explain tuned datasets, created using Instructions and Input from WizardLM, Alpaca & Dolly-V2 datasets and applying Orca Research Paper dataset construction approaches. We build explain tuned [WizardLM dataset ~70K](https://github.com/nlpxucan/WizardLM), [Alpaca dataset ~52K](https://crfm.stanford.edu/2023/03/13/alpaca.html) & [Dolly-V2 dataset ~15K](https://github.com/databrickslabs/dolly) created using approaches from [Orca Research Paper](https://arxiv.org/abs/2306.02707). We leverage all of the 15 system instructions provided in Orca Research Paper. to generate custom datasets, in contrast to vanilla instruction tuning approaches used by original datasets.",
         "example1": [
             ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
         ],
