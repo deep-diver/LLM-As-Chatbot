@@ -5,7 +5,7 @@ from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
 from models import baize, guanaco, falcon, kullm, replit, airoboros
-from models import samantha_vicuna, wizard_coder
+from models import samantha_vicuna, wizard_coder, xgen
 from models import byom
 
 cuda_availability = False
@@ -67,7 +67,9 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "orca_mini" in args.base_url.lower():
+    if "xgen" in args.base_url.lower():
+        model_type_tmp = "xgen"
+    elif "orca_mini" in args.base_url.lower():
         model_type_tmp = "orcamini"
     elif "open-llama" in args.base_url.lower():
         model_type_tmp = "openllama"
@@ -241,6 +243,8 @@ def get_load_model(model_type):
         return airoboros.load_model
     elif model_type == "samantha-vicuna":
         return samantha_vicuna.load_model
+    elif model_type == "xgen":
+        return xgen.load_model
     else:
         return None
     

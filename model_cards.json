@@ -1480,14 +1480,14 @@
         "thumb": "https://i.ibb.co/GxH1nnd/orca-mini.png",
         "thumb-mid": "https://i.ibb.co/fMMD92f/orca-mini-mid.png",
         "thumb-tiny": "https://i.ibb.co/C9vHqBq/orca-mini-tiny.png",
-        "parameters": "13 Billion",
+        "parameters": "7 Billion",
         "vram(full)": "13858",
         "vram(8bit)": "8254",
         "vram(4bit)": "5140",
         "hub(base)": "psmathur/orca_mini_7b",
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/default.yaml",
-        "desc": "An OpenLLaMa-7B model model trained on explain tuned datasets, created using Instructions and Input from WizardLM, Alpaca & Dolly-V2 datasets and applying Orca Research Paper dataset construction approaches. We build explain tuned [WizardLM dataset ~70K](https://github.com/nlpxucan/WizardLM), [Alpaca dataset ~52K](https://crfm.stanford.edu/2023/03/13/alpaca.html) & [Dolly-V2 dataset ~15K](https://github.com/databrickslabs/dolly) created using approaches from [Orca Research Paper](https://arxiv.org/abs/2306.02707). We leverage all of the 15 system instructions provided in Orca Research Paper. to generate custom datasets, in contrast to vanilla instruction tuning approaches used by original datasets.",
+        "desc": "An OpenLLaMa-7B model trained on explain tuned datasets, created using Instructions and Input from WizardLM, Alpaca & Dolly-V2 datasets and applying Orca Research Paper dataset construction approaches. We build explain tuned [WizardLM dataset ~70K](https://github.com/nlpxucan/WizardLM), [Alpaca dataset ~52K](https://crfm.stanford.edu/2023/03/13/alpaca.html) & [Dolly-V2 dataset ~15K](https://github.com/databrickslabs/dolly) created using approaches from [Orca Research Paper](https://arxiv.org/abs/2306.02707). We leverage all of the 15 system instructions provided in Orca Research Paper. to generate custom datasets, in contrast to vanilla instruction tuning approaches used by original datasets.",
         "example1": [
             ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
         ],
@@ -1514,7 +1514,7 @@
         "hub(base)": "psmathur/orca_mini_13b",
         "hub(ckpt)": "N/A",
         "default_gen_config": "configs/response_configs/default.yaml",
-        "desc": "An OpenLLaMa-13B model model trained on explain tuned datasets, created using Instructions and Input from WizardLM, Alpaca & Dolly-V2 datasets and applying Orca Research Paper dataset construction approaches. We build explain tuned [WizardLM dataset ~70K](https://github.com/nlpxucan/WizardLM), [Alpaca dataset ~52K](https://crfm.stanford.edu/2023/03/13/alpaca.html) & [Dolly-V2 dataset ~15K](https://github.com/databrickslabs/dolly) created using approaches from [Orca Research Paper](https://arxiv.org/abs/2306.02707). We leverage all of the 15 system instructions provided in Orca Research Paper. to generate custom datasets, in contrast to vanilla instruction tuning approaches used by original datasets.",
+        "desc": "An OpenLLaMa-13B model trained on explain tuned datasets, created using Instructions and Input from WizardLM, Alpaca & Dolly-V2 datasets and applying Orca Research Paper dataset construction approaches. We build explain tuned [WizardLM dataset ~70K](https://github.com/nlpxucan/WizardLM), [Alpaca dataset ~52K](https://crfm.stanford.edu/2023/03/13/alpaca.html) & [Dolly-V2 dataset ~15K](https://github.com/databrickslabs/dolly) created using approaches from [Orca Research Paper](https://arxiv.org/abs/2306.02707). We leverage all of the 15 system instructions provided in Orca Research Paper. to generate custom datasets, in contrast to vanilla instruction tuning approaches used by original datasets.",
         "example1": [
             ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
         ],
@@ -1527,5 +1527,32 @@
         "example4": [
             ["Write a python program to print the first 10 Fibonacci numbers", ""]
         ]
-    }    
+    },
+    "xgen-7b": {
+        "category": "<10B",
+        "display_name": "XGen",
+        "thumb": "https://i.ibb.co/djbSDmG/xgen.png",
+        "thumb-mid": "https://i.ibb.co/qFRbJGD/xgen-mid.png",
+        "thumb-tiny": "https://i.ibb.co/sm0GpHz/xgen-tiny.png",
+        "parameters": "7 Billion",
+        "vram(full)": "13858",
+        "vram(8bit)": "8254",
+        "vram(4bit)": "5140",
+        "hub(base)": "Salesforce/xgen-7b-8k-inst",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/default.yaml",
+        "desc": "Supervised fine tuned version of [XGen-7B-8K-base](https://huggingface.co/Salesforce/xgen-7b-8k-base) on public domain instructional data including [databricks-dolly-15k](https://huggingface.co/datasets/databricks/databricks-dolly-15k?ref=blog.salesforceairesearch.com), [oasst1](https://huggingface.co/datasets/OpenAssistant/oasst1?ref=blog.salesforceairesearch.com), [Baize](https://github.com/project-baize/baize-chatbot?ref=blog.salesforceairesearch.com) and GPT-related datasets. Released for research purpose only.",
+        "example1": [
+            ["Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.", ""]
+        ],
+        "example2": [
+            ["Can you help me write a resignation letter to my current employer, while leaving on good terms and expressing gratitude for the opportunities provided?", ""]
+        ],
+        "example3": [
+            ["What factors would you consider when designing an inclusive and accessible public transportation system?", ""]
+        ],
+        "example4": [
+            ["Write a python program to print the first 10 Fibonacci numbers", ""]
+        ]
+    } 
 }

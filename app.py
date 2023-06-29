@@ -493,6 +493,10 @@ def main(args):
                             orcamini_7b = gr.Button("orcamini-7b", elem_id="orcamini-7b", elem_classes=["square"])
                             gr.Markdown("Orca Mini", elem_classes=["center"])
 
+                        with gr.Column(min_width=20):
+                            xgen_7b = gr.Button("xgen-7b", elem_id="xgen-7b", elem_classes=["square"])
+                            gr.Markdown("XGen", elem_classes=["center"])
+
                     gr.Markdown("## ~ 20B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20, visible=False):
@@ -861,6 +865,7 @@ def main(args):
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, redpajama_instruct_7b, llama_deus_7b, 
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b, vicuna_7b_1_3,
                 falcon_7b, wizard_falcon_7b, airoboros_7b, samantha_7b, openllama_7b, orcamini_7b,
+                xgen_7b,
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
                 baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b, chronos_13b,

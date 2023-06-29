@@ -13,3 +13,4 @@ tokenizers==0.13.3
 einops
 scipy
 protobuf==3.20.*
+tiktoken
