@@ -10,9 +10,12 @@ def load_model(
     mode_full_gpu,
     mode_8bit,
     mode_4bit,
-    force_download_ckpt
+    force_download_ckpt,
+    local_files_only
 ):
-    tokenizer = LlamaTokenizer.from_pretrained(base)
+    tokenizer = LlamaTokenizer.from_pretrained(
+        base,local_files_only=local_files_only
+    )
     tokenizer.pad_token_id = 0
     tokenizer.padding_side = "left"
 
@@ -22,6 +25,7 @@ def load_model(
             load_in_8bit=mode_8bit,
             load_in_4bit=mode_4bit,
             device_map="auto",
+            local_files_only=local_files_only
         )
         
         model = PeftModel.from_pretrained(
@@ -38,6 +42,7 @@ def load_model(
             load_in_4bit=mode_4bit,            
             torch_dtype=torch.float16,
             device_map="auto",
+            local_files_only=local_files_only
         )
         
         model = PeftModel.from_pretrained(

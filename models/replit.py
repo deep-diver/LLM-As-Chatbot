@@ -11,10 +11,12 @@ def load_model(
     mode_full_gpu,
     mode_8bit,
     mode_4bit,
-    force_download_ckpt
+    force_download_ckpt,
+    local_files_only
 ):
     tokenizer = AutoTokenizer.from_pretrained(
-        base, trust_remote_code=True)
+        base, trust_remote_code=True, local_files_only=local_files_only
+    )
     tokenizer.padding_side = "left"
 
     model = AutoModelForCausalLM.from_pretrained(
@@ -23,6 +25,7 @@ def load_model(
         load_in_4bit=mode_4bit,
         torch_dtype=torch.bfloat16,
         trust_remote_code=True,
+        local_files_only=local_files_only
     )
 
     if finetuned is not None and \

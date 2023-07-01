@@ -11,9 +11,12 @@ def load_model(
     mode_full_gpu,
     mode_8bit,
     mode_4bit,
-    force_download_ckpt
+    force_download_ckpt,
+    local_files_only
 ):
-    tokenizer = LlamaTokenizer.from_pretrained(base)
+    tokenizer = LlamaTokenizer.from_pretrained(
+        base, local_files_only=local_files_only
+    )
     tokenizer.pad_token_id = 0
     tokenizer.padding_side = "left"
 
@@ -22,7 +25,8 @@ def load_model(
         model = LlamaForCausalLM.from_pretrained(
             base, 
             device_map={"": "cpu"}, 
-            use_safetensors=False
+            use_safetensors=False,
+            local_files_only=local_files_only
         )
         
         if finetuned is not None and \
@@ -32,7 +36,7 @@ def load_model(
             model = PeftModel.from_pretrained(
                 model, 
                 finetuned,
-                device_map={"": "cpu"}
+                device_map={"": "cpu"},
                 # force_download=force_download_ckpt,
             )
         else:
@@ -44,7 +48,8 @@ def load_model(
             base,
             device_map={"": "mps"},
             torch_dtype=torch.float16,
-            use_safetensors=False
+            use_safetensors=False,
+            local_files_only=local_files_only
         )
         
         if finetuned is not None and \
@@ -70,7 +75,8 @@ def load_model(
             load_in_4bit=mode_4bit,
             torch_dtype=torch.float16,
             device_map="auto",
-            use_safetensors=False
+            use_safetensors=False,
+            local_files_only=local_files_only
         )
 
         if not mode_8bit and not mode_4bit:
@@ -82,7 +88,7 @@ def load_model(
 
             model = PeftModel.from_pretrained(
                 model, 
-                finetuned, 
+                finetuned,
                 # force_download=force_download_ckpt,
         )
         else:

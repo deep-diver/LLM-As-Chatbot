@@ -163,8 +163,7 @@ def byom_load(
     base, ckpt, model_cls, tokenizer_cls,
     bos_token_id, eos_token_id, pad_token_id, 
     load_mode,
-):
-    
+):  
     # mode_cpu, model_mps, mode_8bit, mode_4bit, mode_full_gpu
     global_vars.initialize_globals_byom(
         base, ckpt, model_cls, tokenizer_cls,
@@ -173,7 +172,7 @@ def byom_load(
         True if load_mode == "apple silicon" else False,
         True if load_mode == "8bit" else False,
         True if load_mode == "4bit" else False,
-        True if load_mode == "gpu(half)" else False
+        True if load_mode == "gpu(half)" else False,
     )
     
     return (
@@ -271,6 +270,8 @@ def download_completed(
     thumbnail_tiny,
     force_download,
 ):
+    global local_files_only
+    
     tmp_args = types.SimpleNamespace()
     tmp_args.base_url = model_base.split(":")[-1].split("</p")[0].strip()
     tmp_args.ft_ckpt_url = model_ckpt.split(":")[-1].split("</p")[0].strip()
@@ -284,6 +285,7 @@ def download_completed(
     tmp_args.mode_8bit = True if load_mode == "gpu(load_in_8bit)" else False
     tmp_args.mode_4bit = True if load_mode == "gpu(load_in_4bit)" else False
     tmp_args.mode_full_gpu = True if load_mode == "gpu(half)" else False
+    tmp_args.local_files_only = local_files_only
     
     try:
         global_vars.initialize_globals(tmp_args)
@@ -366,6 +368,9 @@ def rollback_last(idx, ld, state):
     )
 
 def main(args):
+    global local_files_only
+    local_files_only = args.local_files_only
+    
     with gr.Blocks(css=MODEL_SELECTION_CSS, theme='gradio/soft') as demo:
         with gr.Column(visible=True, elem_id="landing-container") as landing_view:
             gr.Markdown("# Chat with LLM", elem_classes=["center"])
@@ -1060,6 +1065,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--root-path', default="")
+    parser.add_argument('--local_files_only', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--share', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--debug', default=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()

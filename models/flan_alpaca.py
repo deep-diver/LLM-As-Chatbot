@@ -10,9 +10,12 @@ def load_model(
     mode_full_gpu,
     mode_8bit,
     mode_4bit,
-    force_download_ckpt
+    force_download_ckpt,
+    local_files_only
 ):  
-    tokenizer = AutoTokenizer.from_pretrained(base)
+    tokenizer = AutoTokenizer.from_pretrained(
+        base, local_files_only=local_files_only
+    )
     tokenizer.pad_token_id = 0
     tokenizer.padding_side = "left"
     
@@ -21,7 +24,8 @@ def load_model(
         model = AutoModelForSeq2SeqLM.from_pretrained(
             base, 
             device_map={"": "cpu"}, 
-            low_cpu_mem_usage=True
+            low_cpu_mem_usage=True,
+            local_files_only=local_files_only
         )
             
     elif mode_mps:
@@ -30,6 +34,7 @@ def load_model(
             base,
             device_map={"": "mps"},
             torch_dtype=torch.float16,
+            local_files_only=local_files_only
         )
             
     else:
@@ -40,6 +45,7 @@ def load_model(
             load_in_8bit=mode_8bit,
             load_in_4bit=mode_4bit,
             device_map="auto",
+            local_files_only=local_files_only
         )
 
         if not mode_8bit and not mode_4bit:

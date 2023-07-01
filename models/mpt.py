@@ -11,9 +11,12 @@ def load_model(
     mode_full_gpu,
     mode_8bit,
     mode_4bit,
-    force_download_ckpt
+    force_download_ckpt,
+    local_files_only
 ):
-    tokenizer = AutoTokenizer.from_pretrained(base, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(
+        base, trust_remote_code=True, local_files_only=local_files_only
+    )
     tokenizer.padding_side = "left"
 
     if mode_cpu:
@@ -23,6 +26,7 @@ def load_model(
             device_map={"": "cpu"},
             use_safetensors=False,
             trust_remote_code=True,
+            local_files_only=local_files_only
         )
             
     elif mode_mps:
@@ -32,7 +36,8 @@ def load_model(
             device_map={"": "mps"},
             torch_dtype=torch.float16,
             use_safetensors=False,
-            trust_remote_code=True
+            trust_remote_code=True,
+            local_files_only=local_files_only
         )
             
     else:
@@ -46,6 +51,7 @@ def load_model(
             trust_remote_code=True,
             torch_dtype=torch.float16,
             use_safetensors=False,
+            local_files_only=local_files_only,
         )#.to(global_vars.device)
 
         if not mode_8bit and not mode_4bit:

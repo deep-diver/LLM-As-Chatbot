@@ -181,7 +181,8 @@ def initialize_globals(args):
         mode_full_gpu=args.mode_full_gpu,
         mode_8bit=args.mode_8bit,
         mode_4bit=args.mode_4bit,
-        force_download_ckpt=args.force_download_ckpt
+        force_download_ckpt=args.force_download_ckpt,
+        local_files_only=args.local_files_only
     )
     model.eval()
     
