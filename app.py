@@ -1065,7 +1065,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--root-path', default="")
-    parser.add_argument('--local_files_only', default=False, action=argparse.BooleanOptionalAction)
+    parser.add_argument('--local-files-only', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--share', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--debug', default=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
