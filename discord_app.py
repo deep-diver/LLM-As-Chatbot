@@ -189,7 +189,7 @@ if __name__ == "__main__":
     parser.add_argument('--mode-8bit', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--mode-4bit', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--mode-full-gpu', default=True, action=argparse.BooleanOptionalAction)
-    parser.add_argument('--local_files_only', default=False, action=argparse.BooleanOptionalAction)
+    parser.add_argument('--local-files-only', default=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
     
     main(args)

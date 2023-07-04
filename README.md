@@ -1,13 +1,98 @@
+## UPDATE
+- **Discord Bot support**: you can serve any model from the model zoo as Discord Bot. Find how to do this in the instruction section below.
+
 # 💬🚀 LLM as a Chatbot Service
+
+The purpose of this repository is to let people to use lots of open sourced instruction-following fine-tuned LLM models as a Chatbot service. Because different models behave differently, and different models require differently formmated prompts, I made a very simple library [`Ping Pong`](https://github.com/deep-diver/PingPong) for model agnostic conversation and context managements. 
+
+Also, I made [`GradioChat`](https://github.com/deep-diver/gradio-chat) UI that has a similar shape to [HuggingChat](https://huggingface.co/chat/) but entirely built in Gradio. Those two projects are fully integrated to power this project. 
+
+## Easiest way to try out ( ✅ Gradio, 🚧 Discord Bot )
+
+This project has become the one of the default framework at [jarvislabs.ai](https://jarvislabs.ai/). Jarvislabs.ai is one of the cloud GPU VM provider with the cheapest GPU prices. Furthermore, all the weights of the supported popular open source LLMs are pre-downloaded. You don't need to waste of your money and time to wait until download hundreds of GBs to try out a collection of LLMs. In less than 10 minutes, you can try out any model. 
+- for further instruction how to run Gradio application, please follow the [official documentation](https://jarvislabs.ai/docs/llmchat) on the `llmchat` framework.
+
+## Instructions
+
+### Standalone Gradio app
 
 ![](https://i.ibb.co/gW7yKj9/2023-05-26-3-31-06.png)
 
-The purpose of this repository is to let people to use lots of open sourced instruction-following fine-tuned LLM models as a Chatbot service. Because different models behave differently, and different models require differently formmated prompts, I made a very simple library [`Ping Pong`](https://github.com/deep-diver/PingPong) for model agnostic conversation and context managements. Also, I made [`GradioChat`](https://github.com/deep-diver/gradio-chat) UI looking similar to [HuggingChat](https://huggingface.co/chat/) but entirely built in Gradio. Those two projects are fully integrated to power this project. 
+0. Prerequisites
 
-### Easiest way to try out
+    Note that the code only works `Python >= 3.9` and `gradio >= 3.32.0`
 
-This project has become the one of the default framework at [jarvislabs.ai](https://jarvislabs.ai/). Jarvislabs.ai is one of the cloud GPU VM provider with the cheapest GPU prices. Furthermore, all the weights of the supported popular open source LLMs are pre-downloaded. You don't need to waste of your money and time to wait until download hundreds of GBs to try out a collection of LLMs. In less than 10 minutes, you can try out any model. 
-- for further instruction, please follow the [official documentation](https://jarvislabs.ai/docs/llmchat)
+    ```console
+    $ conda create -n llm-serve python=3.9
+    $ conda activate llm-serve
+    ```
+
+1. Install dependencies. 
+    ```console
+    $ cd LLM-As-Chatbot
+    $ pip install -r requirements.txt
+    ```
+
+2. Run Gradio application
+
+    There is no required parameter to run the Gradio application. However, there are some small details worth being noted. When `--local-files-only` is set, application won't try to look up the Hugging Face Hub(remote). Instead, it will only use the files already downloaded and cached.
+
+    Hugging Face libraries stores downloaded contents under `~/.cache` by default, and this application assumes so. However, if you downloaded weights in different location for some reasons, you can set `HF_HOME` environment variable. Find more about the [environment variables here](https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables)
+
+    ```console
+    $ python app.py --root-path "" \
+                    --local-files-only \
+                    --share \
+                    --debug
+    ```
+
+### Discord Bot
+
+![](https://i.ibb.co/vzB4ftQ/Screenshot-2023-07-04-at-11-20-06-PM-1.png)
+
+0. Prerequisites
+
+    Note that the code only works `Python >= 3.9` 
+
+    ```console
+    $ conda create -n llm-serve python=3.9
+    $ conda activate llm-serve
+    ```
+
+1. Install dependencies. 
+    ```console
+    $ cd LLM-As-Chatbot
+    $ pip install -r requirements.txt
+    ```
+
+2. Run Discord Bot application. Choose one of the modes in `--mode-[cpu|mps|8bit|4bit|full-gpu]`. `full-gpu` will be choseon by default(`full` means `half` - consider this as a typo to be fixed later).
+
+    The `--token` is a required parameter, and you can get it from [Discord Developer Portal](https://discord.com/developers/docs/intro). If you have not setup Discord Bot from the Discord Developer Portal yet, please follow [How to Create a Discord Bot Account](https://www.freecodecamp.org/news/create-a-discord-bot-with-python/) section of the tutorial from [freeCodeCamp](https://www.freecodecamp.org/) to get the token.
+
+    The `--model-name` is a required parameter, and you can look around the list of supported models from [`model_cards.json`](https://github.com/deep-diver/LLM-As-Chatbot/blob/main/model_cards.json).
+
+    `--max-workers` is a parameter to determine how many requests to be handled concurrently. This simply defines the value of the `ThreadPoolExecutor`.
+
+    When `--local-files-only` is set, application won't try to look up the Hugging Face Hub(remote). Instead, it will only use the files already downloaded and cached.
+
+    - Hugging Face libraries stores downloaded contents under `~/.cache` by default, and this application assumes so. However, if you downloaded weights in different location for some reasons, you can set `HF_HOME` environment variable. Find more about the [environment variables here](https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables)    
+
+    ```console
+    $ python discord_app.py --token "DISCORD BOT TOKEN" \
+                            --model-name "alpaca-lora-7b" \
+                            --max-workers 1 \
+                            --mode-[cpu|mps|8bit|4bit|full-gpu] \
+                            --local_files_only
+    ```
+
+3. Supported Discord Bot commands
+
+    There is no slash commands. The only way to interact with the deployed discord bot is to mention the bot. However, you can pass some special strings while mentioning the bot.
+
+    - **`@bot_name help`**: it will display a simple help message
+    - **`@bot_name model-info`**: it will display the information of the currently selected(deployed) model from the [`model_cards.json`](https://github.com/deep-diver/LLM-As-Chatbot/blob/main/model_cards.json).
+    - **`@bot_name default-params`**: it will display the default parameters to be used in model's `generate` method. That is `GenerationConfig`, and it holds parameters such as `temperature`, `top_p`, and so on.
+    - **`@bot_name user message --max-new-tokens 512 --temperature 0.9 --top-p 0.75 --do_sample --max-windows 5`**: all parameters are used to dynamically determine the text geneartion behaviour as in `GenerationConfig` except `max-windows`. The `max-windows` determines how many past conversations to look up as a reference. The default value is set to `3`, but as the conversation goes long, you can increase this value.
 
 ### Context management
 
@@ -70,45 +155,13 @@ Different model might have different strategies to manage context, so if you wan
   - [ehartford/WizardLM-Uncensored-Falcon-40b](https://huggingface.co/ehartford/WizardLM-Uncensored-Falcon-40b)
 
 </details>
-  
-## Instructions
-
-0. Prerequisites
-
-Note that the code only works `Python >= 3.9` and `gradio >= 3.32.0`
-
-```console
-$ conda create -n llm-serve python=3.9
-$ conda activate llm-serve
-```
-
-1. Install dependencies. `flash-attn` and `triton` are included to support `MPT` models, If you don't want to use `MPT`, comment them out, otherwise you will face two `module not found errors`, then you will have to install `packaging` and `torch` packages while facing the errors.
-```console
-$ cd LLM-As-Chatbot
-$ pip install -r requirements.txt
-```
-
-2. Run Gradio application
-
-```console
-$ python app.py
-```
-
-## How to plugin your own model
-
-You need to follow the following steps to bring your own models in this project.
-
-1. Add your model spec in [`model_cards.json`](https://github.com/deep-diver/LLM-As-Chatbot/blob/main/model_cards.json). If you don't have thumnail image, just leave it as blank string(`""`).
-2. Add the button for your model in [`app.py`](https://github.com/deep-diver/LLM-As-Chatbot/blob/2efbb004a1989483cbdbd57a6d2b808f966f516a/app.py#L405). Don't forget to give it a name in the `gr.Button` and `gr.Markdown`. For placeholders, their names are omitted. Assign the `gr.Button` to a variable with the name of your choice.
-3. Add the button variable to the [button list](https://github.com/deep-diver/LLM-As-Chatbot/blob/2efbb004a1989483cbdbd57a6d2b808f966f516a/app.py#L559) in the `app.py`
-4. Determine the model type in [`global_vars.py`](https://github.com/deep-diver/LLM-As-Chatbot/blob/2efbb004a1989483cbdbd57a6d2b808f966f516a/global_vars.py#L12). If you think your model is similar to one of the existings, just add a filtering rules(`if-else`) and give it the same name. 
-5. (Optional) if your model is totally new one, you need to give a new `model_type` in `global_vars.py`, and make changes accordingly in `utils.py`, and `chats/central.py`. 
 
 ## Todos
 
 - [X] Gradio components to control the configurations of the generation
 - [X] `Flan based Alpaca` models
 - [X] Multiple conversation management
+- [ ] Vector Database Integration (ChromaDB, `intfloat/e5-large-v2`)
 - [ ] Implement server only option w/ FastAPI
 - [ ] ChatGPT's plugin like features
 
