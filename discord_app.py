@@ -120,7 +120,7 @@ def discord_main(args):
         args.token = os.getenv('DISCORD_BOT_TOKEN')
         
     if args.model_name is None:
-        args.model_name = os.genenv('DISCORD_BOT_MODEL_NAME')
+        args.model_name = os.getenv('DISCORD_BOT_MODEL_NAME')
         
     if args.token is None or args.model_name is None:
         print('Either or both of token and model-name is not provided')
