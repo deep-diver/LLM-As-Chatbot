@@ -1,5 +1,5 @@
 generation_config:
-    temperature: 1.0
+    temperature: 0.2
     top_p: 0.9
     top_k: 40
     num_beams: 1
