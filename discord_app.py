@@ -28,6 +28,7 @@ special_words = [
     "model-info",
     "default-params",
 ]
+max_response_length = 2000
 
 async def build_prompt_and_reply(executor, user_name, user_id):
     loop = asyncio.get_running_loop()
@@ -73,6 +74,8 @@ async def build_prompt_and_reply(executor, user_name, user_id):
                 response = response[:-len("<|endoftext|>")]
                 
             response = f"**{model_name}** 💬\n{response.strip()}"
+            if len(response) >= max_response_length:
+                response = response[:max_response_length]
             await msg.reply(response, mention_author=False)
         else:
             await msg.channel.send(err_msg)
