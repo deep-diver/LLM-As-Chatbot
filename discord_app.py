@@ -115,7 +115,7 @@ def off_modes(args):
     args.mode_full_gpu = False
     return args
         
-def main(args):
+def discord_main(args):
     if args.token is None:
         args.token = os.getenv('DISCORD_BOT_TOKEN')
         
@@ -195,4 +195,4 @@ if __name__ == "__main__":
     parser.add_argument('--local-files-only', default=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
     
-    main(args)
+    discord_main(args)

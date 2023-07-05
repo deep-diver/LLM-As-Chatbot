@@ -367,7 +367,7 @@ def rollback_last(idx, ld, state):
         gr.update(interactive=False)
     )
 
-def main(args):
+def gradio_main(args):
     global local_files_only
     local_files_only = args.local_files_only
     
@@ -1070,4 +1070,4 @@ if __name__ == "__main__":
     parser.add_argument('--debug', default=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
     
-    main(args)
+    gradio_main(args)
