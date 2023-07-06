@@ -16,6 +16,28 @@ from discordbot.req import (
 )
 from discordbot.flags import parse_req
 
+#######
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import sys
+
+class S(BaseHTTPRequestHandler):
+    def _set_headers(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+    def do_GET(self):
+        self._set_headers()
+        self.wfile.write(b"")
+
+def run_dummy_server(server_class=HTTPServer, handler_class=S, port=7860):
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+    print(    'Starting httpd...')
+    httpd.serve_forever()
+
+#######
+
 model_info = json.load(open("model_cards.json"))
     
 intents = discord.Intents.default()
@@ -176,7 +198,8 @@ def discord_main(args):
     except RuntimeError as e:
         print("GPU memory is not enough to load this model.")
         quit()
-    
+
+    run_dummy_server()
     client.run(args.token)
 
 if __name__ == "__main__":
