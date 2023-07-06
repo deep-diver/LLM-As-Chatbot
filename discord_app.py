@@ -5,7 +5,7 @@ import types
 import asyncio
 import argparse
 from urllib.request import urlopen
-from threading import Thread
+import _thread as thread
 from concurrent.futures import ThreadPoolExecutor
 
 import discord
@@ -200,8 +200,7 @@ def discord_main(args):
         print("GPU memory is not enough to load this model.")
         quit()
 
-    thread = Thread(target=run_dummy_server)
-    thread.start()
+    thread.start_new_thread(run_dummy_server, ())
     client.run(args.token)
 
 if __name__ == "__main__":
