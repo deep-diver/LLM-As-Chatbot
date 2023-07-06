@@ -6,6 +6,7 @@ import asyncio
 import argparse
 from urllib.request import urlopen
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import ContextVar
 
 import discord
 
@@ -21,7 +22,7 @@ model_info = json.load(open("model_cards.json"))
 intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
-queue = asyncio.Queue()
+queue = ContextVar('queue') # asyncio.Queue()
 
 special_words = [
     "help",
@@ -33,8 +34,8 @@ max_response_length = 2000
 async def build_prompt_and_reply(executor, user_name, user_id):
     loop = asyncio.get_running_loop()
     
-    print(queue.qsize())
-    msg = await queue.get()
+    print(queue.get().qsize())
+    msg = await queue.get().get()
     user_msg, user_args, err_msg = parse_req(
         msg.content.replace(f"@{user_name} ", "").replace(f"<@{user_id}> ", ""), None
     )
@@ -89,6 +90,8 @@ async def background_task(user_name, user_id, max_workers):
 
 @client.event
 async def on_ready():
+    q = asyncio.Queue()
+    queue.set(q)
     print(f"Logged in as {client.user}")
     asyncio.get_running_loop().create_task(
         background_task(
@@ -105,7 +108,7 @@ async def on_message(message):
 
     if isinstance(message.channel, discord.channel.DMChannel) or\
         (client.user and client.user.mentioned_in(message)):
-        await queue.put(message)
+        await queue.get().put(message)
 
 def off_modes(args):
     args.mode_cpu = False
