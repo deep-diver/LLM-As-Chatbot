@@ -5,10 +5,10 @@ import types
 import asyncio
 import argparse
 from urllib.request import urlopen
-import _thread as thread
 from concurrent.futures import ThreadPoolExecutor
 
 import discord
+import discordhealthcheck
 
 import global_vars
 
@@ -18,32 +18,20 @@ from discordbot.req import (
 from discordbot.flags import parse_req
 
 #######
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import sys
+class CustomClient(discord.Client):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-class S(BaseHTTPRequestHandler):
-    def _set_headers(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
-    def do_GET(self):
-        self._set_headers()
-        self.wfile.write(b"")
-
-def run_dummy_server(server_class=HTTPServer, handler_class=S, port=7860):
-    server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
-    print(    'Starting httpd...')
-    httpd.serve_forever()
-
+    async def setup_hook(self):
+        self.healthcheck_server = await discordhealthcheck.start(self, port=7860)
+        # Later you can close or check on self.healthcheck_server
 #######
 
 model_info = json.load(open("model_cards.json"))
     
 intents = discord.Intents.default()
 intents.members = True
-client = discord.Client(intents=intents)
+client = CustomClient(intents=intents)
 queue = asyncio.Queue()
 
 special_words = [
@@ -200,7 +188,6 @@ def discord_main(args):
         print("GPU memory is not enough to load this model.")
         quit()
 
-    thread.start_new_thread(run_dummy_server, ())
     client.run(args.token)
 
 if __name__ == "__main__":
