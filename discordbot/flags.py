@@ -3,11 +3,12 @@ import sys
 
 def parse_req(message, gen_config_path):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--max-new-tokens', default=256, type=int)
-    parser.add_argument('--temperature', default=0.8, type=float)
+    parser.add_argument('--max-new-tokens', default=None, type=int)
+    parser.add_argument('--temperature', default=None, type=float)
     parser.add_argument('--max-windows', default=3, type=int)
-    parser.add_argument('--do-sample', default=True, action=argparse.BooleanOptionalAction)
-    parser.add_argument('--top-p', default=0.75, type=float)
+    parser.add_argument('--do-sample', default=None, action=argparse.BooleanOptionalAction)
+    parser.add_argument('--top-p', default=None, type=float)
+    parser.add_argument('--internet', default=False, action=argparse.BooleanOptionalAction)
     
     msg = message.strip()
     multiparts_msg = msg.split("--")

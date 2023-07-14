@@ -21,16 +21,23 @@ def chat_stream(
     idx, local_data, user_message, state, 
     global_context, ctx_num_lconv, ctx_sum_prompt,
     res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-    sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+    sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,
+    internet_option, serper_api_key
 ):
     model_type = state["model_type"]
+    
+    if internet_option == "on" and serper_api_key.strip() != "":       
+        internet_option = True
+    else:
+        internet_option = False
 
     if model_type == "custom":
         cs = custom.chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
     
     elif model_type == "xgen":
@@ -38,7 +45,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
     
     elif model_type == "stablelm":
@@ -46,7 +54,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "falcon":
@@ -54,7 +63,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "wizard-falcon":
@@ -62,7 +72,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
         
     elif model_type == "baize":
@@ -70,7 +81,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
         
     elif model_type == "alpaca":
@@ -78,7 +90,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
         
     elif model_type == "openllama":
@@ -86,7 +99,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
         
     elif model_type == "orcamini":
@@ -94,7 +108,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
 
     elif model_type == "alpaca-gpt4":
@@ -102,7 +117,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "nous-hermes":
@@ -110,7 +126,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "replit-instruct":
@@ -118,7 +135,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
 
     elif model_type == "alpacoom":
@@ -126,7 +144,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
 
     elif model_type == "llama-deus":
@@ -134,7 +153,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "camel":
@@ -142,7 +162,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "koalpaca-polyglot":
@@ -150,7 +171,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "kullm-polyglot":
@@ -158,7 +180,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
 
     elif model_type == "flan-alpaca":
@@ -166,7 +189,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
 
     elif model_type == "os-stablelm":
@@ -174,7 +198,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "t5-vicuna":
@@ -182,7 +207,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "stable-vicuna":
@@ -190,7 +216,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "vicuna":
@@ -198,7 +225,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
         
     elif model_type == "wizardlm":
@@ -206,7 +234,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
         
     elif model_type == "wizard-vicuna":
@@ -214,7 +243,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
         
     elif model_type == "airoboros":
@@ -222,7 +252,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
         
     elif model_type == "samantha-vicuna":
@@ -230,7 +261,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
 
     elif model_type == "evolinstruct-vicuna":
@@ -238,7 +270,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "starchat":
@@ -246,7 +279,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
         
     elif model_type == "wizard-coder":
@@ -254,7 +288,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
         
     elif model_type == "mpt":
@@ -262,7 +297,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "redpajama":
@@ -270,7 +306,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
         
     elif model_type == "redpajama-instruct":
@@ -278,7 +315,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
 
     elif model_type == "guanaco":
@@ -286,7 +324,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid            
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
 
     elif model_type == "lazarus":
@@ -294,7 +333,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )
     
     elif model_type == "chronos":
@@ -302,7 +342,8 @@ def chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
         )        
         
     for idx, x in enumerate(cs):

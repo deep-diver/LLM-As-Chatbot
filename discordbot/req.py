@@ -13,16 +13,30 @@ from discord import NotFound
 
 def sync_task(prompt, args):
     input_ids = global_vars.tokenizer(prompt, return_tensors="pt").input_ids.to(global_vars.device)
+    
+    gen_config = copy.deepcopy(global_vars.gen_config)
+    if args.max_new_tokens is not None:        
+        gen_config.max_new_tokens = args.max_new_tokens
+    if args.temperature is not None:        
+        gen_config.temperature = args.temperature
+    if args.do_sample is not None:        
+        gen_config.do_sample = args.do_sample
+    if args.top_p is not None:        
+        gen_config.top_p = args.top_p
+    
     generated_ids = global_vars.model.generate(
         input_ids=input_ids, 
-        generation_config=global_vars.gen_config
+        generation_config=gen_config
     )
     response = global_vars.tokenizer.decode(generated_ids[0][input_ids.shape[-1]:])
     return response
 
-async def build_prompt(ppmanager, win_size=3):
+async def build_prompt(ppmanager, ctx_include=True, win_size=3):
     dummy_ppm = copy.deepcopy(ppmanager)
-    dummy_ppm.ctx = get_global_context(global_vars.model_type)
+    if ctx_include:
+        dummy_ppm.ctx = get_global_context(global_vars.model_type)
+    else:
+        dummy_ppm.ctx = ""
     
     lws = CtxLastWindowStrategy(win_size)
     return lws(dummy_ppm)

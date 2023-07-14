@@ -1,3 +1,4 @@
+import os
 import time
 import json
 import copy
@@ -828,6 +829,15 @@ def gradio_main(args):
                                 elem_id="global-context"
                             )
                         
+                        gr.Markdown("#### Internet search")
+                        with gr.Row():
+                            internet_option = gr.Radio(choices=["on", "off"], value="off", label="mode")
+                            serper_api_key = gr.Textbox(
+                                value= "" if args.serper_api_key is None else args.serper_api_key,
+                                placeholder="Get one by visiting serper.dev", 
+                                label="Serper api key"
+                            )
+                        
                         gr.Markdown("#### GenConfig for **response** text generation")
                         with gr.Row():
                             res_temp = gr.Slider(0.0, 2.0, 0, step=0.1, label="temp", interactive=True)
@@ -998,7 +1008,8 @@ def gradio_main(args):
                 [idx, local_data, instruction_txtbox, chat_state,
                 global_context, ctx_num_lconv, ctx_sum_prompt,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-                sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid],
+                sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,
+                internet_option, serper_api_key],
                 [instruction_txtbox, chatbot, context_inspector, local_data],
             )
             
@@ -1016,8 +1027,9 @@ def gradio_main(args):
                 [idx, local_data, instruction_txtbox, chat_state,
                 global_context, ctx_num_lconv, ctx_sum_prompt,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
-                sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid],
-                [instruction_txtbox, chatbot, context_inspector, local_data],            
+                sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,
+                internet_option, serper_api_key],
+                [instruction_txtbox, chatbot, context_inspector, local_data],
             ).then(
                 lambda: gr.update(interactive=True),
                 None,
@@ -1065,9 +1077,10 @@ def gradio_main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--root-path', default="")
-    parser.add_argument('--local-files-only', default=False, action=argparse.BooleanOptionalAction)
+    parser.add_argument('--local-files-only', default=local_files_only, action=argparse.BooleanOptionalAction)
     parser.add_argument('--share', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--debug', default=False, action=argparse.BooleanOptionalAction)
+    parser.add_argument('--serper-api-key', default=None, type=str)
     args = parser.parse_args()
     
     gradio_main(args)

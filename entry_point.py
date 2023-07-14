@@ -9,6 +9,7 @@ if __name__ == "__main__":
     
     app_mode = os.getenv("LLMCHAT_APP_MODE")
     local_files_only = os.getenv("LLMCHAT_LOCAL_FILES_ONLY")
+    serper_api_key = os.getenv("LLMCHAT_SERPER_API_KEY")
     
     if app_mode is None or \
         app_mode not in ["GRADIO", "DISCORD"]:
@@ -24,6 +25,7 @@ if __name__ == "__main__":
         parser.add_argument('--local-files-only', default=False, action=argparse.BooleanOptionalAction)
         parser.add_argument('--share', default=False, action=argparse.BooleanOptionalAction)
         parser.add_argument('--debug', default=False, action=argparse.BooleanOptionalAction)
+        parser.add_argument('--serper-api-key', default=serper_api_key, type=str)
         args = parser.parse_args()
         gradio_main(args)
         
@@ -37,5 +39,6 @@ if __name__ == "__main__":
         parser.add_argument('--mode-4bit', default=False, action=argparse.BooleanOptionalAction)
         parser.add_argument('--mode-full-gpu', default=True, action=argparse.BooleanOptionalAction)
         parser.add_argument('--local-files-only', default=local_files_only, action=argparse.BooleanOptionalAction)
+        parser.add_argument('--serper-api-key', default=serper_api_key, type=str)
         args = parser.parse_args()
         discord_main(args)
