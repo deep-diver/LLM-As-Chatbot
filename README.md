@@ -52,7 +52,7 @@ This project has become the one of the default framework at [jarvislabs.ai](http
 
 ### Discord Bot
 
-![](https://i.ibb.co/vzB4ftQ/Screenshot-2023-07-04-at-11-20-06-PM-1.png)
+![](https://i.ibb.co/cJ3yDWh/2023-07-14-1-42-23.png)
 
 0. Prerequisites
 
