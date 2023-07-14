@@ -88,13 +88,13 @@ code {
     border-radius: 20px;
 }
 #chatbot {
-    height: 800px; 
+    height: 800px !important; 
     overflow: auto;
     box-shadow: none !important;
     border: none !important;
 }
 #chatbot > .wrap {
-    max-height: 780px;
+    max-height: 780px !important;
 }
 #chatbot + div {
   border-radius: 35px !important;

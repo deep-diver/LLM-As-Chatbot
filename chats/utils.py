@@ -37,8 +37,14 @@ def text_stream(ppmanager, streamer):
     yield ppmanager, ppmanager.build_uis()
     
 def internet_search(ppmanager, serper_api_key, global_context, ctx_num_lconv, device="cpu"):
+    instruction = "Based on the provided texts below, please answer to '{ping}' in your own words. Try to explain in detail as much as possible."
+    
     searcher = SimilaritySearcher.from_pretrained(device=device)
-    iss = InternetSearchStrategy(searcher, serper_api_key=serper_api_key)(ppmanager)
+    iss = InternetSearchStrategy(
+        searcher, 
+        instruction=instruction, 
+        serper_api_key=serper_api_key
+    )(ppmanager)
 
     step_ppm = None
     while True:
