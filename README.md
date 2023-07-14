@@ -1,4 +1,5 @@
 ## UPDATE
+- **Internet search support**: you can enable **internet search** capability in Gradio application and Discord bot. For gradio, there is a `internet mode` option in the control panel. For discord, you need to specify `--internet` option in your prompt. For both cases, you need a Serper API Key which you can get one from [serper.dev](https://serper.dev/). By signing up, you will get free 2,500 free google searches which is pretty much sufficient for a long-term test.
 - **Discord Bot support**: you can serve any model from the model zoo as Discord Bot. Find how to do this in the instruction section below.
 
 # 💬🚀 LLM as a Chatbot Service
@@ -39,11 +40,14 @@ This project has become the one of the default framework at [jarvislabs.ai](http
 
     Hugging Face libraries stores downloaded contents under `~/.cache` by default, and this application assumes so. However, if you downloaded weights in different location for some reasons, you can set `HF_HOME` environment variable. Find more about the [environment variables here](https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables)
 
+   In order to leverage **internet search** capability, you need Serper API Key. You can set it manually in the control panel or in CLI. When specifying the Serper API Key in CLI, it will be injected into the corresponding UI control. If you don't have it yet, please get one from [serper.dev](https://serper.dev/). By signing up, you will get free 2,500 free google searches which is pretty much sufficient for a long-term test.
+
     ```console
     $ python app.py --root-path "" \
                     --local-files-only \
                     --share \
-                    --debug
+                    --debug \
+                    --serper-api-key "YOUR SERPER API KEY"
     ```
 
 ### Discord Bot
@@ -75,6 +79,8 @@ This project has become the one of the default framework at [jarvislabs.ai](http
 
     When `--local-files-only` is set, application won't try to look up the Hugging Face Hub(remote). Instead, it will only use the files already downloaded and cached.
 
+   In order to leverage **internet search** capability, you need Serper API Key. If you don't have it yet, please get one from [serper.dev](https://serper.dev/). By signing up, you will get free 2,500 free google searches which is pretty much sufficient for a long-term test. Once you have the Serper API Key, you can specify it in `--serper-api-key` option.
+   
     - Hugging Face libraries stores downloaded contents under `~/.cache` by default, and this application assumes so. However, if you downloaded weights in different location for some reasons, you can set `HF_HOME` environment variable. Find more about the [environment variables here](https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables)    
 
     ```console
@@ -82,24 +88,24 @@ This project has become the one of the default framework at [jarvislabs.ai](http
                             --model-name "alpaca-lora-7b" \
                             --max-workers 1 \
                             --mode-[cpu|mps|8bit|4bit|full-gpu] \
-                            --local_files_only
+                            --local_files_only \
+                            --serper-api-key "YOUR SERPER API KEY"
     ```
 
-3. Supported Discord Bot commands
+4. Supported Discord Bot commands
 
     There is no slash commands. The only way to interact with the deployed discord bot is to mention the bot. However, you can pass some special strings while mentioning the bot.
 
     - **`@bot_name help`**: it will display a simple help message
     - **`@bot_name model-info`**: it will display the information of the currently selected(deployed) model from the [`model_cards.json`](https://github.com/deep-diver/LLM-As-Chatbot/blob/main/model_cards.json).
     - **`@bot_name default-params`**: it will display the default parameters to be used in model's `generate` method. That is `GenerationConfig`, and it holds parameters such as `temperature`, `top_p`, and so on.
-    - **`@bot_name user message --max-new-tokens 512 --temperature 0.9 --top-p 0.75 --do_sample --max-windows 5`**: all parameters are used to dynamically determine the text geneartion behaviour as in `GenerationConfig` except `max-windows`. The `max-windows` determines how many past conversations to look up as a reference. The default value is set to `3`, but as the conversation goes long, you can increase this value.
+    - **`@bot_name user message --max-new-tokens 512 --temperature 0.9 --top-p 0.75 --do_sample --max-windows 5 --internet`**: all parameters are used to dynamically determine the text geneartion behaviour as in `GenerationConfig` except `max-windows`. The `max-windows` determines how many past conversations to look up as a reference. The default value is set to `3`, but as the conversation goes long, you can increase this value. `--internet` will try to answer to your prompt by aggregating information scraped from google search. To use `--internet` option, you need to specify `--serper-api-key` when booting up the program.
 
 ### Context management
 
 Different model might have different strategies to manage context, so if you want to know the exact strategies applied to each model, take a look at the [`chats`](https://github.com/deep-diver/LLM-As-Chatbot/tree/main/chats) directory. However, here are the basic ideas that I have come up with initially. I have found long prompts will slow down the generation process a lot eventually, so I thought the prompts should be kept as short as possible while as concise as possible at the same time. In the previous version, I have accumulated all the past conversations, and that didn't go well.
 
 - In every turn of the conversation, the past `N` conversations will be kept. Think about the `N` as a hyper-parameter. As an experiment, currently the past 2-3 conversations are only kept for all models.
-- (TBD) In every turn of the conversation, it summarizes or extract information. The summarized information will be given in the every next turn of conversation.
 
 ### Currently supported models
 
@@ -159,11 +165,9 @@ Different model might have different strategies to manage context, so if you wan
 ## Todos
 
 - [X] Gradio components to control the configurations of the generation
-- [X] `Flan based Alpaca` models
 - [X] Multiple conversation management
-- [ ] Vector Database Integration (ChromaDB, `intfloat/e5-large-v2`)
+- [X] Internet search capability (by integrating ChromaDB, `intfloat/e5-large-v2`)
 - [ ] Implement server only option w/ FastAPI
-- [ ] ChatGPT's plugin like features
 
 ## Acknowledgements
 
