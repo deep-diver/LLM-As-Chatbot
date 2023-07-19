@@ -738,6 +738,16 @@ code {
   margin: auto;
 }
 
+#llama2-7b, #llama2-13b {
+  background: url(https://i.ibb.co/dDr1Kv7/llama2-mid.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
 #replit-3b {
   background: url(https://i.ibb.co/BrKCKYq/replit.png);
   background-repeat: no-repeat;

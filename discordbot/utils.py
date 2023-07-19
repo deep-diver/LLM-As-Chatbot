@@ -12,6 +12,41 @@ from pingpong.baize import BaizeChatPPManager
 from pingpong.pingpong import PPManager
 from pingpong.pingpong import PromptFmt
 
+class LLaMA2ChatPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""<<SYS>>
+{context}
+<</SYS>>
+
+"""
+    
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""[INST] {ping} [/INST] {pong}
+"""
+    
+
+class LLaMA2ChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=LLaMA2ChatPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results    
+
+    ##
+
+
 class XGenChatPromptFmt(PromptFmt):
     @classmethod
     def ctx(cls, context):
@@ -261,11 +296,20 @@ def get_chat_manager(model_type):
         return OrcaMiniChatPPManager()
     elif model_type == "xgen":
         return XGenChatPPManager()
+    elif model_type == "llama2":
+        return LLaMA2ChatPPManager()
     else:
         return None
 
 def get_global_context(model_type):
-    if model_type == "xgen":
+    if model_type == "llama2":
+        return """\
+You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
+
+If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
+
+In each conversation, question is placed after [INST] while your answer should be placed after [/INST]. By looking [INST] and [/INST], you must consider multi-turn conversations."""
+    elif model_type == "xgen":
         return """A chat between a curious human and an artificial intelligence assistant.
 The assistant gives helpful, detailed, and polite answers to the human's questions."""
     elif model_type == "orcamini":

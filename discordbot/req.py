@@ -1,3 +1,4 @@
+import re
 import copy
 import global_vars
 
@@ -5,24 +6,30 @@ from discordbot.utils import (
     get_chat_manager,
     get_global_context
 )
+from discordbot.flags import (
+    parse_known_flags,
+    known_flags_def
+)
 
 from pingpong import PingPong
 from pingpong.context import CtxLastWindowStrategy
 
 from discord import NotFound
 
+from transformers import GenerationConfig
+
 def sync_task(prompt, args):
     input_ids = global_vars.tokenizer(prompt, return_tensors="pt").input_ids.to(global_vars.device)
     
     gen_config = copy.deepcopy(global_vars.gen_config)
-    if args.max_new_tokens is not None:        
-        gen_config.max_new_tokens = args.max_new_tokens
-    if args.temperature is not None:        
-        gen_config.temperature = args.temperature
-    if args.do_sample is not None:        
-        gen_config.do_sample = args.do_sample
-    if args.top_p is not None:        
-        gen_config.top_p = args.top_p
+    if args["max-new-tokens"] is not None:        
+        gen_config.max_new_tokens = args["max-new-tokens"]
+    if args["temperature"] is not None:        
+        gen_config.temperature = args["temperature"]
+    if args["do-sample"] is not None:        
+        gen_config.do_sample = args["do-sample"]
+    if args["top-p"] is not None:        
+        gen_config.top_p = args["top-p"]
     
     generated_ids = global_vars.model.generate(
         input_ids=input_ids, 
@@ -62,6 +69,12 @@ async def build_ppm(msg, msg_content, username, user_id):
                     msg_content = msg_content[idx+1:].strip()
                 except:
                     msg_content = msg_content.strip()
+                
+                msg_content, _ = parse_known_flags(
+                    msg_content, 
+                    known_flags_def,
+                    global_vars.gen_config
+                )
                 print(msg_content)
                 
                 packs.insert(
@@ -85,5 +98,6 @@ async def build_ppm(msg, msg_content, username, user_id):
     ppm.add_pingpong(
         PingPong(user_msg, "")
     )
+    print(ppm.pingpongs)
     
     return ppm

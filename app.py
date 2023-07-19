@@ -502,6 +502,10 @@ def gradio_main(args):
                         with gr.Column(min_width=20):
                             xgen_7b = gr.Button("xgen-7b", elem_id="xgen-7b", elem_classes=["square"])
                             gr.Markdown("XGen", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            llama2_7b = gr.Button("llama2-7b", elem_id="llama2-7b", elem_classes=["square"])
+                            gr.Markdown("LLaMA 2", elem_classes=["center"])
 
                     gr.Markdown("## ~ 20B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
@@ -592,6 +596,9 @@ def gradio_main(args):
                         with gr.Column(min_width=20):
                             orcamini_13b = gr.Button("orcamini-13b", elem_id="orcamini-13b", elem_classes=["square"])
                             gr.Markdown("Orca Mini", elem_classes=["center"])                            
+                        with gr.Column(min_width=20):
+                            llama2_13b = gr.Button("llama2-13b", elem_id="llama2-13b", elem_classes=["square"])
+                            gr.Markdown("LLaMA 2", elem_classes=["center"])                            
                             
                     gr.Markdown("## ~ 30B Parameters", visible=False)
                     with gr.Row(elem_classes=["sub-container"], visible=False):
@@ -880,12 +887,12 @@ def gradio_main(args):
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, redpajama_instruct_7b, llama_deus_7b, 
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b, vicuna_7b_1_3,
                 falcon_7b, wizard_falcon_7b, airoboros_7b, samantha_7b, openllama_7b, orcamini_7b,
-                xgen_7b,
+                xgen_7b,llama2_7b,
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
                 baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b, chronos_13b,
                 wizardlm_13b, wizard_vicuna_13b, wizard_coder_15b, vicuna_13b_1_3, openllama_13b, orcamini_13b,
-                camel20b,
+                llama2_13b, camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
                 wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b
             ]
@@ -1077,7 +1084,7 @@ def gradio_main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--root-path', default="")
-    parser.add_argument('--local-files-only', default=local_files_only, action=argparse.BooleanOptionalAction)
+    parser.add_argument('--local-files-only', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--share', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--debug', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--serper-api-key', default=None, type=str)

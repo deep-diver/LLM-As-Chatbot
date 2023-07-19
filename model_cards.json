@@ -1554,5 +1554,43 @@
         "example4": [
             ["Write a python program to print the first 10 Fibonacci numbers", ""]
         ]
-    } 
+    },
+    "llama2-7b": {
+        "category": "<10B",
+        "display_name": "LLaMA2 Chat",
+        "thumb": "https://i.ibb.co/TtK8wPb/llama2.png",
+        "thumb-mid": "https://i.ibb.co/dDr1Kv7/llama2-mid.png",
+        "thumb-tiny": "https://i.ibb.co/yy9Fn7n/llama2-tiny.png",
+        "parameters": "7 Billion",
+        "vram(full)": "13858",
+        "vram(8bit)": "8254",
+        "vram(4bit)": "5140",
+        "hub(base)": "meta-llama/Llama-2-7b-chat-hf",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/llama2.yaml",
+        "desc": "Llama 2 is a collection of pretrained and fine-tuned generative text models ranging in scale from 7 billion to 70 billion parameters. This is the repository for the 7B fine-tuned model, optimized for dialogue use cases and converted for the Hugging Face Transformers format. Links to other models can be found in the index at the bottom.",
+        "example1": [],
+        "example2": [],
+        "example3": [],
+        "example4": []
+    },
+    "llama2-13b": {
+        "category": "<20B",
+        "display_name": "LLaMA2 Chat",
+        "thumb": "https://i.ibb.co/TtK8wPb/llama2.png",
+        "thumb-mid": "https://i.ibb.co/dDr1Kv7/llama2-mid.png",
+        "thumb-tiny": "https://i.ibb.co/yy9Fn7n/llama2-tiny.png",
+        "parameters": "13 Billion",
+        "vram(full)": "26048",
+        "vram(8bit)": "14740",
+        "vram(4bit)": "8782",
+        "hub(base)": "meta-llama/Llama-2-13b-chat-hf",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/llama2.yaml",
+        "desc": "Llama 2 is a collection of pretrained and fine-tuned generative text models ranging in scale from 7 billion to 70 billion parameters. This is the repository for the 7B fine-tuned model, optimized for dialogue use cases and converted for the Hugging Face Transformers format. Links to other models can be found in the index at the bottom.",
+        "example1": [],
+        "example2": [],
+        "example3": [],
+        "example4": []
+    }    
 }

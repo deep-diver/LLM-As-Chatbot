@@ -4,6 +4,7 @@ import json
 import types
 import asyncio
 import argparse
+from urlextract import URLExtract
 from urllib.request import urlopen
 from concurrent.futures import ThreadPoolExecutor
 
@@ -17,6 +18,8 @@ from discordbot.req import (
     sync_task, build_prompt, build_ppm
 )
 from discordbot.flags import parse_req
+from discordbot import helps, post
+from dumb_utils import URLSearchStrategy
 
 model_info = json.load(open("model_cards.json"))
     
@@ -33,116 +36,106 @@ special_words = [
 max_response_length = 2000
 
 async def build_prompt_and_reply(executor, user_name, user_id):
+    other_job_on_progress = False
     loop = asyncio.get_running_loop()
     
     print(queue.qsize())
     msg = await queue.get()
-    user_msg, user_args, err_msg = parse_req(
-        msg.content.replace(f"@{user_name} ", "").replace(f"<@{user_id}> ", ""), None
+    user_msg, user_args = parse_req(
+        msg.content.replace(f"@{user_name} ", "").replace(f"<@{user_id}> ", ""), global_vars.gen_config
     )
     
     if user_msg == "help":
-        help_msg = """Type one of the following for more information about this chatbot
-- **`help`:** list of supported commands
-- **`model-info`:** get currently selected model card
-- **`default-params`:** get default parameters of the Generation Config
-
-You can start conversation by metioning the chatbot `@{chatbot name} {your prompt} {options}`, and the following options are supported.
-- **`--top-p {float}`**: determins how many tokens to pick from the top tokens based on the sum of their probabilities(<= `top-p`).
-- **`--temperature {float}`**: used to modulate the next token probabilities.
-- **`--max-new-tokens {integer}`**: maximum numbers of tokens to generate, ignoring the number of tokens in the prompt.
-- **`--do-sample`**: determines whether or not to use sampling ; use greedy decoding otherwise.
-- **`--max-windows {integer}`**: determines how many past conversations to look up as a reference.
-- **`--internet`**: determines whether or not to use internet search capabilities.
-
-If you want to continue conversation based on past conversation histories, you can simply `reply` to chatbot's message. At this time, you don't need to metion its name. However, you need to specify options in every turn. For instance, if you want to `reply` based on internet search information, then you shoul specify `--internet` in your message.
-"""
-        await msg.channel.send(help_msg)
+        await msg.channel.send(helps.get_help())
     elif user_msg == "model-info":
-        selected_model_info = model_info[model_name]
-        help_msg = f"""## {model_name}
-- **Description:** {selected_model_info['desc']}
-- **Number of parameters:** {selected_model_info['parameters']}
-- **Hugging Face Hub (base):** {selected_model_info['hub(base)']}
-- **Hugging Face Hub (ckpt):** {selected_model_info['hub(ckpt)']}
-"""        
-        await msg.channel.send(help_msg)
+        await msg.channel.send(helps.get_model_info(model_name, model_info))
     elif user_msg == "default-params":
-        help_msg = f"""{global_vars.gen_config}, max-windows = {user_args.max_windows}"""
-        await msg.channel.send(help_msg)    
+        await msg.channel.send(helps.get_default_params(global_vars.gen_config, user_args["max-windows"]))
     else:
-        if err_msg is None:
-            try:
-                ppm = await build_ppm(msg, user_msg, user_name, user_id)
+        try:
+            ppm = await build_ppm(msg, user_msg, user_name, user_id)
 
-                if user_args.internet and serper_api_key is not None:
+            if user_args["internet"] and serper_api_key is not None:
+                other_job_on_progress = True
+                progress_msg = await msg.reply("Progress 🚧", mention_author=False)
+
+                internet_search_ppm = copy.deepcopy(ppm)
+                internet_search_prompt = f"My question is '{user_msg}'. Based on the conversation history, give me an appropriate query to answer my question for google search. You should not say more than query. You should not say any words except the query."
+                internet_search_ppm.pingpongs[-1].ping = internet_search_prompt
+                internet_search_prompt = await build_prompt(
+                    internet_search_ppm, 
+                    ctx_include=False,
+                    win_size=user_args["max-windows"]
+                )
+                internet_search_prompt_response = await loop.run_in_executor(
+                    executor, sync_task, internet_search_prompt, user_args
+                )
+                internet_search_prompt_response = post.clean(internet_search_prompt_response)
+
+                ppm.pingpongs[-1].ping = internet_search_prompt_response
+
+                await progress_msg.edit(
+                    content=f"• Search query re-organized by LLM: {internet_search_prompt_response}", 
+                    suppress=True
+                )
+
+                searcher = SimilaritySearcher.from_pretrained(device=global_vars.device)
+
+                logs = ""
+                for step_ppm, step_msg in InternetSearchStrategy(
+                    searcher, serper_api_key=serper_api_key
+                )(ppm, search_query=internet_search_prompt_response, top_k=8):
+                    ppm = step_ppm
+                    logs = logs + step_msg + "\n"
+                    await progress_msg.edit(content=logs, suppress=True)
+            else:
+                url_extractor = URLExtract()
+                urls = url_extractor.find_urls(user_msg)
+                print(f"urls = {urls}")
+
+                if len(urls) > 0:
                     progress_msg = await msg.reply("Progress 🚧", mention_author=False)
 
-                    internet_search_ppm = copy.deepcopy(ppm)
-                    internet_search_prompt = f"My question is '{user_msg}'. Based on the conversation history, give me an appropriate query to answer my question for google search. You should not say more than query. You should not say any words except the query."
-                    internet_search_ppm.pingpongs[-1].ping = internet_search_prompt
-                    internet_search_prompt = await build_prompt(
-                        internet_search_ppm, 
-                        ctx_include=False,
-                        win_size=user_args.max_windows
-                    )
-                    internet_search_prompt_response = await loop.run_in_executor(
-                        executor, sync_task, internet_search_prompt, user_args
-                    )
-                    if internet_search_prompt_response.endswith("</s>"):
-                        internet_search_prompt_response = internet_search_prompt_response[:-len("</s>")]
-                    if internet_search_prompt_response.endswith("<|endoftext|>"):
-                        internet_search_prompt_response = internet_search_prompt_response[:-len("<|endoftext|>")]
-
-                    ppm.pingpongs[-1].ping = internet_search_prompt_response
-
-                    await progress_msg.edit(
-                        content=f"• Search query re-organized by LLM: {internet_search_prompt_response}", 
-                        suppress=True
-                    )
-
-                    searcher = SimilaritySearcher.from_pretrained(device="cuda")
+                    other_job_on_progress = True
+                    searcher = SimilaritySearcher.from_pretrained(device=global_vars.device)
 
                     logs = ""
-                    for step_ppm, step_msg in InternetSearchStrategy(
-                        searcher, serper_api_key=serper_api_key
-                    )(ppm, search_query=internet_search_prompt_response, top_k=8):
-                        ppm = step_ppm
-                        logs = logs + step_msg + "\n"
-                        await progress_msg.edit(content=logs, suppress=True)
+                    for step_result, step_ppm, step_msg in URLSearchStrategy(searcher)(ppm, urls, top_k=8):
+                        if step_result is True:
+                            ppm = step_ppm
+                            logs = logs + step_msg + "\n"
+                            await progress_msg.edit(content=logs, suppress=True)
+                        else:
+                            ppm = step_ppm
+                            logs = logs + step_msg + "\n"
+                            await progress_msg.edit(content=logs, suppress=True)
+                            await asyncio.sleep(2)
+                            break
 
-                prompt = await build_prompt(ppm, win_size=user_args.max_windows)
-                response = await loop.run_in_executor(
-                    executor, sync_task, 
-                    prompt, user_args
-                )
-                if response.endswith("</s>"):
-                    response = response[:-len("</s>")]
+            prompt = await build_prompt(ppm, win_size=user_args["max-windows"])
+            response = await loop.run_in_executor(
+                executor, sync_task, 
+                prompt, user_args
+            )
+            response = post.clean(response)
 
-                if response.endswith("<|endoftext|>"):
-                    response = response[:-len("<|endoftext|>")]
+            response = f"**{model_name}** 💬\n{response.strip()}"
+            if len(response) >= max_response_length:
+                response = response[:max_response_length]
 
-                response = f"**{model_name}** 💬\n{response.strip()}"
-                if len(response) >= max_response_length:
-                    response = response[:max_response_length]
+            if other_job_on_progress is True:
+                await progress_msg.delete()
 
-                if user_args.internet and serper_api_key is not None:
-                    await progress_msg.delete()
-                
-                await msg.reply(response, mention_author=False)
-            except IndexError:
-                err_msg = "Index error"
-                await msg.channel.send(err_msg)
-            except HTTPException:
-                pass
-        else:
-            await msg.channel.send(err_msg)
+            await msg.reply(response, mention_author=False)
+        except IndexError:
+            await msg.channel.send("Index error")
+        except HTTPException:
+            pass
     
 async def background_task(user_name, user_id, max_workers):
     executor = ThreadPoolExecutor(max_workers=max_workers)
     print("Task Started. Waiting for inputs.")
     while True:
-        # await asyncio.sleep(5)
         await build_prompt_and_reply(executor, user_name, user_id)
 
 @client.event
