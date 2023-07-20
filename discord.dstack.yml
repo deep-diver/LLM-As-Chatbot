@@ -1,0 +1,15 @@
+type: task
+
+env:
+  # (Required) Specify your Discord bot token.
+  - DISCORD_BOT_TOKEN=
+  # (Required) Specify the name of the model. See `README.md` for supported models.
+  - DISCORD_BOT_MODEL_NAME=alpaca-lora-7b
+  # (Optional) Specify your Hugging Face token
+  - HUGGING_FACE_HUB_TOKEN=
+  # (Optional) Specify your Serper API Key to enable Internet search support.
+  - LLMCHAT_SERPER_API_KEY=
+
+commands:
+  - pip install -r requirements.txt --progress-bar off
+  - LLMCHAT_APP_MODE=DISCORD python entry_point.py
