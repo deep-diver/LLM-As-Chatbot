@@ -438,12 +438,23 @@ def get_chat_manager(model_type):
     elif model_type == "xgen":
         return GradioXGenChatPPManager()
     elif model_type == "llama2":
-        return GradioLLaMA2ChatPPManager()    
+        return GradioLLaMA2ChatPPManager()
+    elif model_type == "upstage-llama":
+        return GradioAlpacaChatPPManager()
     else:
         return None
 
 def get_global_context(model_type):
-    if model_type == "llama2":
+    if model_type == "upstage-llama":
+        return """Below are a series of dialogues between human and an AI assistant.
+The AI tries to answer the given instruction as in response.
+The AI MUST not generate any text containing `### Response` or `### Instruction`.
+The AI MUST be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable.
+The assistant MUST be happy to help with almost anything, and will do its best to understand exactly what is needed.
+It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
+That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
+"""        
+    elif model_type == "llama2":
         return """\
 You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
 
@@ -456,6 +467,15 @@ The assistant gives helpful, detailed, and polite answers to the human's questio
     elif model_type == "orcamini":
         return """You are an AI assistant that follows instruction extremely well. Help as much as you can.
 """
+    elif model_type == "upstage-llama":
+        return """Below are a series of dialogues between human and an AI assistant.
+The AI tries to answer the given instruction as in response.
+The AI MUST not generate any text containing `### Response` or `### Instruction`.
+The AI MUST be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable.
+The assistant MUST be happy to help with almost anything, and will do its best to understand exactly what is needed.
+It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
+That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
+"""        
     elif model_type == "alpaca":
         return """Below are a series of dialogues between human and an AI assistant.
 The AI tries to answer the given instruction as in response.

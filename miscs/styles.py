@@ -748,6 +748,16 @@ code {
   margin: auto;
 }
 
+#upstage-llama-30b {
+  background: url(https://i.ibb.co/FX3Vf9K/upstage.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;  
+}
+
 #replit-3b {
   background: url(https://i.ibb.co/BrKCKYq/replit.png);
   background-repeat: no-repeat;

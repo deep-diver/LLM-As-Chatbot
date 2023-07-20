@@ -67,7 +67,9 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "llama-2" in args.base_url.lower():
+    if "upstage/llama-" in args.base_url.lower():
+        model_type_tmp = "upstage-llama"
+    elif "llama-2" in args.base_url.lower():
         model_type_tmp = "llama2"
     elif "xgen" in args.base_url.lower():
         model_type_tmp = "xgen"
@@ -203,7 +205,8 @@ def get_load_model(model_type):
         model_type == "wizardlm" or \
         model_type == "openllama" or \
         model_type == "orcamini" or \
-        model_type == "llama2":
+        model_type == "llama2" or \
+        model_type == "upstage-llama":
         return alpaca.load_model
     elif model_type == "stablelm" or model_type == "os-stablelm":
         return stablelm.load_model

@@ -1592,5 +1592,24 @@
         "example2": [],
         "example3": [],
         "example4": []
-    }    
+    },
+    "upstage-llama-30b": {
+        "category": "<40B",
+        "display_name": "Update LLaMA",
+        "thumb": "https://i.ibb.co/FX3Vf9K/upstage.png",
+        "thumb-mid": "https://i.ibb.co/FX3Vf9K/upstage.png",
+        "thumb-tiny": "https://i.ibb.co/k976x0W/upstage-tiny.png",
+        "parameters": "30 Billion",
+        "vram(full)": "65154",
+        "vram(8bit)": "36896",
+        "vram(4bit)": "21738",
+        "hub(base)": "upstage/llama-30b-instruct-2048",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/upstage_llama.yaml",
+        "desc": "[Upstage](https://en.upstage.ai/)'s 30B model size outperforms all models worldwide as of 2023.07.20, establishing itself as the leading performer. Recognizing the immense potential for private LLM adoption within companies, we invite you to effortlessly implement a private LLM and fine-tune it with your own data. For a seamless and tailored solution, please don't hesitate to reach out to us ([click here to mail](contact@upstage.ai)). This model is fine-tuned on [openbookqa](https://huggingface.co/datasets/openbookqa), [sciq](https://huggingface.co/datasets/sciq), [OpenOrca](https://huggingface.co/datasets/Open-Orca/OpenOrca), [ScienceQA Text Only](https://huggingface.co/datasets/metaeval/ScienceQA_text_only), and [LIMA](https://huggingface.co/datasets/GAIR/lima) datasets",
+        "example1": [],
+        "example2": [],
+        "example3": [],
+        "example4": []        
+    }
 }

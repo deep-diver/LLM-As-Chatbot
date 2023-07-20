@@ -646,7 +646,11 @@ def gradio_main(args):
 
                         with gr.Column(min_width=20):
                             mpt_30b = gr.Button("mpt-30b", elem_id="mpt-30b", elem_classes=["square"])
-                            gr.Markdown("MPT", elem_classes=["center"])                            
+                            gr.Markdown("MPT", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            upstage_llama_30b = gr.Button("upstage-llama-30b", elem_id="upstage-llama-30b", elem_classes=["square"])
+                            gr.Markdown("Upstage LLaMA", elem_classes=["center"])
                             
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
@@ -894,7 +898,7 @@ def gradio_main(args):
                 wizardlm_13b, wizard_vicuna_13b, wizard_coder_15b, vicuna_13b_1_3, openllama_13b, orcamini_13b,
                 llama2_13b, camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
-                wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b
+                wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b, upstage_llama_30b
             ]
             for btn in btns:
                 btn.click(
