@@ -10,8 +10,17 @@ Also, I made [`GradioChat`](https://github.com/deep-diver/gradio-chat) UI that h
 
 ## Easiest way to try out ( ✅ Gradio, 🚧 Discord Bot )
 
+### Jarvislabs.ai
+
 This project has become the one of the default framework at [jarvislabs.ai](https://jarvislabs.ai/). Jarvislabs.ai is one of the cloud GPU VM provider with the cheapest GPU prices. Furthermore, all the weights of the supported popular open source LLMs are pre-downloaded. You don't need to waste of your money and time to wait until download hundreds of GBs to try out a collection of LLMs. In less than 10 minutes, you can try out any model. 
 - for further instruction how to run Gradio application, please follow the [official documentation](https://jarvislabs.ai/docs/llmchat) on the `llmchat` framework.
+
+### dstack
+
+[`dstack`](https://dstack.ai) is an open-source tool that allows to run LLM-based apps in a a cloud of your choice via single command. `dstack` supports AWS, GCP, Azure, Lambda Cloud, etc.
+
+Use the `gradio.dstack.yml` and `discord.dstack.yml` configurations to run the Gradio app and Discord bot via `dstack`.
+- for more details on how to run this repo with `dstack`, read the [official documentation](https://dstack.ai/examples/llmchat) by `dstack`.
 
 ## Instructions
 

@@ -1,0 +1,14 @@
+type: task
+
+env:
+  # (Optional) Specify your Hugging Face token
+  - HUGGING_FACE_HUB_TOKEN=
+  # (Optional) Specify your Serper API Key
+  - LLMCHAT_SERPER_API_KEY=
+
+ports:
+  - 6006
+
+commands:
+  - pip install -r requirements.txt --progress-bar off
+  - LLMCHAT_APP_MODE=GRADIO python entry_point.py
