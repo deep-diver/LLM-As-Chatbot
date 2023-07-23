@@ -628,7 +628,7 @@ code {
   margin: auto;
 }
 
-#nous-hermes-13b {
+#nous-hermes-13b, #nous-hermes-13b-llama2 {
   background: url(https://i.ibb.co/sm8VgtL/nous-hermes.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;

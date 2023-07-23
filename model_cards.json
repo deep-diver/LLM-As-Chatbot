@@ -1047,6 +1047,25 @@
             ["Write a python program to print the first 10 Fibonacci numbers", "Sure! Here's one possible solution using Python:\n\n```python\ndef fibonacci(n):\n   if n <= 1:\n       return n\n   else:\n       return (fibonacci(n - 1) + fibonacci(n - 2))\n\nfor i in range(10):\n   print(fibonacci(i))\n```\nThis function uses recursion to calculate the next number in the sequence by adding together two previous ones. It starts at n=2 because the first two numbers in the sequence, 0 and 1, are trivial cases that don't require recursion. The for loop then iterates through each number from 1 to 9, calling the function with increasing arguments until we reach the tenth number, which is beyond the range defined by our condition statement."]
         ]
     },
+    "nous-hermes-13b-llama2": {
+        "category": "<20B",
+        "display_name": "Nous Hermes v2",
+        "thumb": "https://i.ibb.co/sm8VgtL/nous-hermes.png",
+        "thumb-mid": "https://i.ibb.co/XpDfYNK/nous-hermes-tiny.png",
+        "thumb-tiny": "https://i.ibb.co/jbLRsbq/nous-hermes-tiny.png",        
+        "parameters": "13 Billion",
+        "vram(full)": "26048",
+        "vram(8bit)": "14740",
+        "vram(4bit)": "8782",       
+        "hub(base)": "NousResearch/Nous-Hermes-Llama2-13b",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/default_4096.yaml",
+        "desc": "The model is LLaMAv2 13B that was fine-tuned almost entirely on synthetic GPT-4 outputs. This includes data from diverse sources such as GPTeacher, the general, roleplay v1&2, code instruct datasets, Nous Instruct & PDACTL (unpublished), CodeAlpaca, Evol_Instruct Uncensored, GPT4-LLM, and Unnatural Instructions. Additional data inputs came from Camel-AI's Biology/Physics/Chemistry and Math Datasets, Airoboros' GPT-4 Dataset, and more from CodeAlpaca. The total volume of data encompassed over 300,000 instructions.",
+        "example1": [],
+        "example2": [],
+        "example3": [],
+        "example4": []
+    },    
     "oa-llama-30b": {
         "category": "<40B",
         "display_name": "OA+LLaMA",
