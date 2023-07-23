@@ -755,7 +755,17 @@ code {
   color: transparent;  
   width: 100px;
   height: 100px;
-  margin: auto;  
+  margin: auto;
+}
+
+#free-willy2-70b {
+  background: url(https://i.ibb.co/m0jd3P3/freewilly-mid.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
 }
 
 #replit-3b {

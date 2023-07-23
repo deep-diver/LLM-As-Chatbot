@@ -5,7 +5,7 @@ from transformers import GenerationConfig
 from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
 from models import baize, guanaco, falcon, kullm, replit, airoboros
-from models import samantha_vicuna, wizard_coder, xgen
+from models import samantha_vicuna, wizard_coder, xgen, freewilly
 from models import byom
 
 cuda_availability = False
@@ -67,7 +67,9 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "upstage/llama-" in args.base_url.lower():
+    if "stabilityai/freewilly2" in args.base_url.lower():
+        model_type_tmp = "free-willy"
+    elif "upstage/llama-" in args.base_url.lower():
         model_type_tmp = "upstage-llama"
     elif "llama-2" in args.base_url.lower():
         model_type_tmp = "llama2"
@@ -208,6 +210,8 @@ def get_load_model(model_type):
         model_type == "llama2" or \
         model_type == "upstage-llama":
         return alpaca.load_model
+    elif model_type == "free-willy":
+        return freewilly.load_model
     elif model_type == "stablelm" or model_type == "os-stablelm":
         return stablelm.load_model
     elif model_type == "koalpaca-polyglot":

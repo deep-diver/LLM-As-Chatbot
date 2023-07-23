@@ -615,7 +615,7 @@ def gradio_main(args):
                     with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20):
                             guanaco_33b = gr.Button("guanaco-33b", elem_id="guanaco-33b", elem_classes=["square"])
-                            gr.Markdown("Guanaco", elem_classes=["center"])                           
+                            gr.Markdown("Guanaco", elem_classes=["center"])
                         
                         with gr.Column(min_width=20):
                             falcon_40b = gr.Button("falcon-40b", elem_id="falcon-40b", elem_classes=["square"])
@@ -656,6 +656,12 @@ def gradio_main(args):
                         with gr.Column(min_width=20):
                             upstage_llama_30b = gr.Button("upstage-llama-30b", elem_id="upstage-llama-30b", elem_classes=["square"])
                             gr.Markdown("Upstage LLaMA", elem_classes=["center"])
+                            
+                    gr.Markdown("## ~ 70B Parameters")
+                    with gr.Row(elem_classes=["sub-container"]):
+                        with gr.Column(min_width=20):
+                            free_willy2_70b = gr.Button("free-willy2-70b", elem_id="free-willy2-70b", elem_classes=["square"])
+                            gr.Markdown("Free Willy 2", elem_classes=["center"])
                             
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
@@ -903,7 +909,8 @@ def gradio_main(args):
                 wizardlm_13b, wizard_vicuna_13b, wizard_coder_15b, vicuna_13b_1_3, openllama_13b, orcamini_13b,
                 llama2_13b, nous_hermes_13b_v2, camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
-                wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b, upstage_llama_30b
+                wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b, upstage_llama_30b,
+                free_willy2_70b
             ]
             for btn in btns:
                 btn.click(

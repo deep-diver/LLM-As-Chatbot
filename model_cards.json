@@ -1630,5 +1630,24 @@
         "example2": [],
         "example3": [],
         "example4": []        
-    }
+    },
+    "free-willy2-70b": {
+        "category": "<60B",
+        "display_name": "FreeWilly2",
+        "thumb": "https://i.ibb.co/64wKmJL/freewilly.png",
+        "thumb-mid": "https://i.ibb.co/m0jd3P3/freewilly-mid.png",
+        "thumb-tiny": "https://i.ibb.co/HqnQM3R/freewilly-tiny.png",
+        "parameters": "70 Billion",
+        "vram(full)": "130308",
+        "vram(8bit)": "73792",
+        "vram(4bit)": "43476",
+        "hub(base)": "stabilityai/FreeWilly2",
+        "hub(ckpt)": "N/A",
+        "default_gen_config": "configs/response_configs/freewilly.yaml",
+        "desc": "FreeWilly2 is a Llama2 70B model finetuned on an Orca style Dataset. This model is developed by the joint work of [StabilityAI](https://stability.ai/) and [CarperAI](https://carper.ai/). This model is considered to be comparable to ChatGPT for the first time (some of the categories on LLM benchmarks such as HellaSwag have higher scores than ChatGPT.",
+        "example1": [],
+        "example2": [],
+        "example3": [],
+        "example4": []        
+    }    
 }
