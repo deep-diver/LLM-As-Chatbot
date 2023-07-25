@@ -17,8 +17,34 @@ from pingpong.context import CtxLastWindowStrategy
 from discord import NotFound
 
 from transformers import GenerationConfig
+from text_generation import Client
 
-def sync_task(prompt, args):
+async def tgi_gen(prompt, tgi_server_addr, tgi_server_port, args):
+    gen_config = copy.deepcopy(global_vars.gen_config)
+    if args["max-new-tokens"] is not None:        
+        gen_config.max_new_tokens = args["max-new-tokens"]
+    if args["temperature"] is not None:        
+        gen_config.temperature = args["temperature"]
+    if args["do-sample"] is not None:        
+        gen_config.do_sample = args["do-sample"]
+    if args["top-p"] is not None:        
+        gen_config.top_p = args["top-p"]    
+    
+    client = Client(f"{tgi_server_addr}:{tgi_server_port}")
+    
+    response = await client.generate(
+        prompt, 
+        do_sample=gen_config.do_sample,
+        max_new_tokens=gen_config.max_new_tokens,
+        repetition_penalty=gen_config.repetition_penalty,
+        temperature=gen_config.repetition_penalty,
+        top_k=gen_config.top_k,
+        top_p=gen_config.top_p
+    )
+    return response.generated_text
+
+
+def vanilla_gen(prompt, args):
     input_ids = global_vars.tokenizer(prompt, return_tensors="pt").input_ids.to(global_vars.device)
     
     gen_config = copy.deepcopy(global_vars.gen_config)

@@ -228,11 +228,18 @@ def move_to_second_view(btn):
             
         if global_vars.available_vrams_mb >= vram_req_4bit:
             load_mode_list.append("gpu(load_in_4bit)")
+            
+            if info["hub(gptq)"] != "N/A":
+                load_mode_list.append("gpu(gptq)")
 
     if global_vars.mps_availability:
         load_mode_list.append("apple silicon")
+        # load_mode_list.append("apple silicon(gptq)")
 
-    load_mode_list.extend(["cpu"])
+    # load_mode_list.append("cpu(gptq)")
+    load_mode_list.append("cpu")
+    
+    print(info['hub(gptq_base)'])
     
     return (
         gr.update(visible=False),
@@ -242,11 +249,13 @@ def move_to_second_view(btn):
         f"**Parameters**\n: Approx. {info['parameters']}",
         f"**🤗 Hub(base)**\n: {info['hub(base)']}",
         f"**🤗 Hub(LoRA)**\n: {info['hub(ckpt)']}",
+        f"**🤗 Hub(GPTQ)**\n: {info['hub(gptq)']}",
+        f"**🤗 Hub(GPTQ_BASE)**\n: {info['hub(gptq_base)']}",
         info['desc'],
         f"""**Min VRAM requirements** :
-|             half precision            |             load_in_8bit           |              load_in_4bit          | 
-| ------------------------------------- | ---------------------------------- | ---------------------------------- | 
-|   {round(vram_req_full/1024., 1)}GiB  | {round(vram_req_8bit/1024., 1)}GiB | {round(vram_req_4bit/1024., 1)}GiB |
+|             half precision            |             load_in_8bit           |              load_in_4bit          |                GPTQ                | 
+| ------------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+|   {round(vram_req_full/1024., 1)}GiB  | {round(vram_req_8bit/1024., 1)}GiB | {round(vram_req_4bit/1024., 1)}GiB | {round(vram_req_4bit/1024., 1)}GiB |
 """,
         info['default_gen_config'],
         info['example1'],
@@ -265,6 +274,8 @@ def download_completed(
     model_name,
     model_base,
     model_ckpt,
+    model_gptq,
+    model_gptq_base,
     gen_config_path,
     gen_config_sum_path,
     load_mode,
@@ -273,9 +284,13 @@ def download_completed(
 ):
     global local_files_only
     
+    print(model_gptq_base)
+    
     tmp_args = types.SimpleNamespace()
     tmp_args.base_url = model_base.split(":")[-1].split("</p")[0].strip()
     tmp_args.ft_ckpt_url = model_ckpt.split(":")[-1].split("</p")[0].strip()
+    tmp_args.gptq_url = model_gptq.split(":")[-1].split("</p")[0].strip()
+    tmp_args.gptq_base_url = model_gptq_base.split(":")[-1].split("</p")[0].strip().replace(' ', '')
     tmp_args.gen_config_path = gen_config_path
     tmp_args.gen_config_summarization_path = gen_config_sum_path
     tmp_args.force_download_ckpt = force_download
@@ -285,8 +300,13 @@ def download_completed(
     tmp_args.mode_mps = True if load_mode == "apple silicon" else False
     tmp_args.mode_8bit = True if load_mode == "gpu(load_in_8bit)" else False
     tmp_args.mode_4bit = True if load_mode == "gpu(load_in_4bit)" else False
+    tmp_args.mode_gptq = True if load_mode == "gpu(gptq)" else False
+    tmp_args.mode_mps_gptq = True if load_mode == "apple silicon(gptq)" else False
+    tmp_args.mode_cpu_gptq = True if load_mode == "cpu(gptq)" else False
     tmp_args.mode_full_gpu = True if load_mode == "gpu(half)" else False
     tmp_args.local_files_only = local_files_only
+    
+    print(tmp_args)
     
     try:
         global_vars.initialize_globals(tmp_args)
@@ -603,8 +623,12 @@ def gradio_main(args):
 
                         with gr.Column(min_width=20):
                             nous_hermes_13b_v2 = gr.Button("nous-hermes-13b-llama2", elem_id="nous-hermes-13b-llama2", elem_classes=["square"])
-                            gr.Markdown("Nous Hermes v2", elem_classes=["center"])
-                            
+                            gr.Markdown("Nous Hermes 2", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            nous_puffin_13b_v2 = gr.Button("nous-puffin-13b-llama2", elem_id="nous-puffin-13b-llama2", elem_classes=["square"])
+                            gr.Markdown("Nous Puffin 2", elem_classes=["center"])
+
                     gr.Markdown("## ~ 30B Parameters", visible=False)
                     with gr.Row(elem_classes=["sub-container"], visible=False):
                         with gr.Column(min_width=20):
@@ -662,6 +686,10 @@ def gradio_main(args):
                         with gr.Column(min_width=20):
                             free_willy2_70b = gr.Button("free-willy2-70b", elem_id="free-willy2-70b", elem_classes=["square"])
                             gr.Markdown("Free Willy 2", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            upstage_llama2_70b = gr.Button("upstage-llama2-70b", elem_id="upstage-llama2-70b", elem_classes=["square"])
+                            gr.Markdown("Upstage LLaMA 2", elem_classes=["center"])                            
                             
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
@@ -728,10 +756,12 @@ def gradio_main(args):
                         model_params = gr.Markdown("Parameters\n: ...")             
                         model_base = gr.Markdown("🤗 Hub(base)\n: ...")
                         model_ckpt = gr.Markdown("🤗 Hub(LoRA)\n: ...")
+                        model_gptq = gr.Markdown("🤗 Hub(GPTQ)\n: ...")
+                        model_gptq_base = gr.Markdown("🤗 Hub(GPTQ_BASE\n: ...")
                         model_vram = gr.Markdown(f"""**Minimal VRAM requirement** :
-|          half precision        |        load_in_8bit       |         load_in_4bit      | 
-| ------------------------------ | ------------------------- | ------------------------- | 
-|   {round(7830/1024., 1)}GiB    | {round(5224/1024., 1)}GiB | {round(4324/1024., 1)}GiB |
+|          half precision        |        load_in_8bit       |         load_in_4bit      |            GTPQ           |
+| ------------------------------ | ------------------------- | ------------------------- | ------------------------- |
+|   {round(7830/1024., 1)}GiB    | {round(5224/1024., 1)}GiB | {round(4324/1024., 1)}GiB | {round(4324/1024., 1)}GiB |
 """)
                         model_thumbnail_tiny = gr.Textbox("", visible=False)
     
@@ -907,10 +937,10 @@ def gradio_main(args):
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
                 baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b, chronos_13b,
                 wizardlm_13b, wizard_vicuna_13b, wizard_coder_15b, vicuna_13b_1_3, openllama_13b, orcamini_13b,
-                llama2_13b, nous_hermes_13b_v2, camel20b,
+                llama2_13b, nous_hermes_13b_v2, nous_puffin_13b_v2, camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
                 wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b, upstage_llama_30b,
-                free_willy2_70b
+                free_willy2_70b, upstage_llama2_70b
             ]
             for btn in btns:
                 btn.click(
@@ -918,7 +948,7 @@ def gradio_main(args):
                     btn,
                     [
                         model_choice_view, model_review_view,
-                        model_image, model_name, model_params, model_base, model_ckpt,
+                        model_image, model_name, model_params, model_base, model_ckpt, model_gptq, model_gptq_base,
                         model_desc, model_vram, gen_config_path, 
                         example_showcase1, example_showcase2, example_showcase3, example_showcase4,
                         model_thumbnail_tiny, load_mode, 
@@ -986,7 +1016,8 @@ def gradio_main(args):
                 lambda: "Start downloading/loading the model...", None, txt_view
             ).then(
                 download_completed,
-                [model_name, model_base, model_ckpt, gen_config_path, gen_config_sum_path, load_mode, model_thumbnail_tiny, force_redownload],
+                [model_name, model_base, model_ckpt, model_gptq, model_gptq_base,
+                 gen_config_path, gen_config_sum_path, load_mode, model_thumbnail_tiny, force_redownload],
                 [progress_view2]
             ).then(
                 lambda: "Model is fully loaded...", None, txt_view
