@@ -18,6 +18,11 @@ PARENT_BLOCK_CSS = """
 
 MODEL_SELECTION_CSS = """
 
+.template-txt {
+    text-align: center;
+    font-size: 15pt !important;
+}
+
 .message {
     margin: 0px !important;
 }
@@ -688,7 +693,7 @@ code {
   margin: auto;
 }
 
-#wizardlm-13b, #wizardlm-30b {
+#wizardlm-13b, #wizardlm-30b, #wizardlm-13b-1-2 {
   background: url(https://i.ibb.co/SRXWKz9/WizardLM.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;

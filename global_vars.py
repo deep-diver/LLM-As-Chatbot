@@ -87,7 +87,8 @@ def initialize_globals(args):
         model_type_tmp = "wizard-coder"
     elif "wizard-vicuna" in args.base_url.lower():
         model_type_tmp = "wizard-vicuna"
-    elif "llms/wizardlm" in args.base_url.lower():
+    elif "llms/wizardlm" in args.base_url.lower() or \
+        "wizardlm/wizardlm" in args.base_url.lower():
         model_type_tmp = "wizardlm"
     elif "chronos" in args.base_url.lower():
         model_type_tmp = "chronos"
@@ -236,7 +237,7 @@ def get_load_model(model_type):
     elif model_type == "t5-vicuna":
         return t5_vicuna.load_model
     elif model_type == "stable-vicuna":
-        return vicuna.load_model
+        return alpaca.load_model
     elif model_type == "starchat":
         return starchat.load_model
     elif model_type == "wizard-coder":
@@ -247,7 +248,7 @@ def get_load_model(model_type):
         model_type == "redpajama-instruct":
         return redpajama.load_model
     elif model_type == "vicuna":
-        return vicuna.load_model
+        return alpaca.load_model
     elif model_type == "evolinstruct-vicuna" or \
         model_type == "wizard-vicuna":
         return alpaca.load_model

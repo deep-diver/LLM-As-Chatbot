@@ -1,4 +1,5 @@
 import os
+import re
 import time
 import json
 import copy
@@ -11,7 +12,8 @@ import global_vars
 from chats import central
 from transformers import AutoModelForCausalLM
 from miscs.styles import MODEL_SELECTION_CSS
-from miscs.js import GET_LOCAL_STORAGE, UPDATE_LEFT_BTNS_STATE
+from miscs.js import GET_LOCAL_STORAGE, UPDATE_LEFT_BTNS_STATE, UPDATE_PLACEHOLDERS
+from miscs.templates import templates
 from utils import get_chat_manager, get_global_context
 
 from pingpong.pingpong import PingPong
@@ -75,6 +77,61 @@ summarization_configs = [
 
 model_info = json.load(open("model_cards.json"))
 
+###
+
+def get_placeholders(text):
+    """Returns all substrings in between <placeholder> and </placeholder>."""
+    pattern = r"\[([^\]]*)\]"
+    matches = re.findall(pattern, text)
+    return matches
+
+def fill_up_placeholders(txt):
+    placeholders = get_placeholders(txt)
+    highlighted_txt = txt
+
+    return (
+        gr.update(
+            visible=True,
+            value=highlighted_txt
+        ),
+        gr.update(
+            visible=True if len(placeholders) >= 1 else False,
+            placeholder=placeholders[0] if len(placeholders) >= 1 else ""
+        ),
+        gr.update(
+            visible=True if len(placeholders) >= 2 else False,
+            placeholder=placeholders[1] if len(placeholders) >= 2 else ""
+        ),
+        gr.update(
+            visible=True if len(placeholders) >= 3 else False,
+            placeholder=placeholders[2] if len(placeholders) >= 3 else ""
+        ),
+        "" if len(placeholders) >= 1 else txt
+    )
+
+def get_final_template(
+    txt, placeholder_txt1, placeholder_txt2, placeholder_txt3
+):
+    placeholders = get_placeholders(txt)
+    example_prompt = txt    
+
+    if len(placeholders) >= 1:
+        if placeholder_txt1 != "":
+            example_prompt = example_prompt.replace(f"[{placeholders[0]}]", placeholder_txt1)
+    if len(placeholders) >= 2:
+        if placeholder_txt2 != "":
+            example_prompt = example_prompt.replace(f"[{placeholders[1]}]", placeholder_txt2)
+    if len(placeholders) >= 3:
+        if placeholder_txt3 != "":
+            example_prompt = example_prompt.replace(f"[{placeholders[2]}]", placeholder_txt3)
+
+    return (
+        example_prompt,
+        "",
+        "",
+        ""
+    )
+    
 ###
 
 def move_to_model_select_view():
@@ -209,10 +266,13 @@ def set_popup_visibility(ld, example_block):
 def move_to_second_view(btn):
     info = model_info[btn]
 
-    guard_vram = 5 * 1024.
+    guard_vram = 2 * 1024.
     vram_req_full = int(info["vram(full)"]) + guard_vram
     vram_req_8bit = int(info["vram(8bit)"]) + guard_vram
     vram_req_4bit = int(info["vram(4bit)"]) + guard_vram
+    vram_req_gptq = info["vram(gptq)"]
+    if vram_req_gptq != "N/A":
+        vram_req_gptq = int(vram_req_gptq) + guard_vram
     
     load_mode_list = []
     
@@ -229,8 +289,8 @@ def move_to_second_view(btn):
         if global_vars.available_vrams_mb >= vram_req_4bit:
             load_mode_list.append("gpu(load_in_4bit)")
             
-            if info["hub(gptq)"] != "N/A":
-                load_mode_list.append("gpu(gptq)")
+        if vram_req_gptq != "N/A" and global_vars.available_vrams_mb >= vram_req_gptq:
+            load_mode_list.append("gpu(gptq)")
 
     if global_vars.mps_availability:
         load_mode_list.append("apple silicon")
@@ -240,6 +300,9 @@ def move_to_second_view(btn):
     load_mode_list.append("cpu")
     
     print(info['hub(gptq_base)'])
+    vram_req_gptq_in_gb = vram_req_gptq
+    if vram_req_gptq != "N/A":
+        vram_req_gptq_in_gb = f"{round(vram_req_gptq_in_gb/1024., 1)}GiB"
     
     return (
         gr.update(visible=False),
@@ -253,9 +316,13 @@ def move_to_second_view(btn):
         f"**🤗 Hub(GPTQ_BASE)**\n: {info['hub(gptq_base)']}",
         info['desc'],
         f"""**Min VRAM requirements** :
-|             half precision            |             load_in_8bit           |              load_in_4bit          |                GPTQ                | 
-| ------------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
-|   {round(vram_req_full/1024., 1)}GiB  | {round(vram_req_8bit/1024., 1)}GiB | {round(vram_req_4bit/1024., 1)}GiB | {round(vram_req_4bit/1024., 1)}GiB |
+|             half precision            |             load_in_8bit           |              load_in_4bit          |
+| ------------------------------------- | ---------------------------------- | ---------------------------------- |
+|   {round(vram_req_full/1024., 1)}GiB  | {round(vram_req_8bit/1024., 1)}GiB | {round(vram_req_4bit/1024., 1)}GiB |
+
+|                 GPTQ                  | 
+| ------------------------------------- |
+|         {vram_req_gptq_in_gb}         |
 """,
         info['default_gen_config'],
         info['example1'],
@@ -628,6 +695,10 @@ def gradio_main(args):
                         with gr.Column(min_width=20):
                             nous_puffin_13b_v2 = gr.Button("nous-puffin-13b-llama2", elem_id="nous-puffin-13b-llama2", elem_classes=["square"])
                             gr.Markdown("Nous Puffin 2", elem_classes=["center"])
+                            
+                        with gr.Column(min_width=20):
+                            wizardlm_13b_1_2 = gr.Button("wizardlm-13b-1-2", elem_id="wizardlm-13b-1-2", elem_classes=["square"])
+                            gr.Markdown("WizardLM 1.2", elem_classes=["center"])
 
                     gr.Markdown("## ~ 30B Parameters", visible=False)
                     with gr.Row(elem_classes=["sub-container"], visible=False):
@@ -868,6 +939,25 @@ def gradio_main(args):
                     chatbot = gr.Chatbot(elem_id='chatbot')
                     instruction_txtbox = gr.Textbox(placeholder="Ask anything", label="", elem_id="prompt-txt")
     
+            with gr.Accordion("Example Templates", open=False):
+                template_txt = gr.Textbox(visible=False)
+                template_md = gr.Markdown(label="Chosen Template", visible=False, elem_classes="template-txt")
+
+                with gr.Row():
+                    placeholder_txt1 = gr.Textbox(label="placeholder #1", visible=False, interactive=True)
+                    placeholder_txt2 = gr.Textbox(label="placeholder #2", visible=False, interactive=True)
+                    placeholder_txt3 = gr.Textbox(label="placeholder #3", visible=False, interactive=True)
+
+                for template in templates:
+                    with gr.Tab(template['title']):
+                        gr.Examples(
+                            template['template'],
+                            inputs=[template_txt],
+                            outputs=[template_md, placeholder_txt1, placeholder_txt2, placeholder_txt3, instruction_txtbox],
+                            run_on_click=True,
+                            fn=fill_up_placeholders,          
+                        )
+
             with gr.Accordion("Control Panel", open=False) as control_panel:
                 with gr.Column():
                     with gr.Column():
@@ -937,7 +1027,7 @@ def gradio_main(args):
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
                 baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b, chronos_13b,
                 wizardlm_13b, wizard_vicuna_13b, wizard_coder_15b, vicuna_13b_1_3, openllama_13b, orcamini_13b,
-                llama2_13b, nous_hermes_13b_v2, nous_puffin_13b_v2, camel20b,
+                llama2_13b, nous_hermes_13b_v2, nous_puffin_13b_v2, wizardlm_13b_1_2, camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
                 wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b, upstage_llama_30b,
                 free_willy2_70b, upstage_llama2_70b
@@ -1112,13 +1202,56 @@ def gradio_main(args):
                 None,
                 [chat_view, landing_view]
             )
+            
+
+            placeholder_txt1.change(
+                inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
+                outputs=[template_md],
+                show_progress=False,
+                _js=UPDATE_PLACEHOLDERS,
+                fn=None
+            )
+
+            placeholder_txt2.change(
+                inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
+                outputs=[template_md],
+                show_progress=False,
+                _js=UPDATE_PLACEHOLDERS,
+                fn=None
+            )
+
+            placeholder_txt3.change(
+                inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
+                outputs=[template_md],
+                show_progress=False,
+                _js=UPDATE_PLACEHOLDERS,
+                fn=None
+            )
+
+            placeholder_txt1.submit(
+                inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
+                outputs=[instruction_txtbox, placeholder_txt1, placeholder_txt2, placeholder_txt3],
+                fn=get_final_template
+            )
+
+            placeholder_txt2.submit(
+                inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
+                outputs=[instruction_txtbox, placeholder_txt1, placeholder_txt2, placeholder_txt3],
+                fn=get_final_template
+            )
+
+            placeholder_txt3.submit(
+                inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
+                outputs=[instruction_txtbox, placeholder_txt1, placeholder_txt2, placeholder_txt3],
+                fn=get_final_template
+            )            
           
             demo.load(
               None,
               inputs=None,
               outputs=[chatbot, local_data],
               _js=GET_LOCAL_STORAGE,
-            )          
+            ) 
             
     demo.queue().launch(
         server_port=6006, 

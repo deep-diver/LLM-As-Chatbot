@@ -51,7 +51,7 @@ def load_model(
     elif mode_gptq:
         print("gpu(gptq) mode")
         tokenizer = AutoTokenizer.from_pretrained(
-            gptq, local_files_only=local_files_only
+            gptq, local_files_only=local_files_only, trust_remote_code=True
         )
         tokenizer.pad_token_id = 0
         tokenizer.padding_side = "left"        
@@ -60,10 +60,10 @@ def load_model(
             gptq,
             model_basename=gptq_base,
             use_safetensors=True,
-            trust_remote_code=False,
+            trust_remote_code=True,
             device_map="auto",
             quantize_config=None,
-            local_files_only=local_files_only
+            local_files_only=local_files_only,
         )
             
     else:
