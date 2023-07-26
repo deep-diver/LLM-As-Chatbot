@@ -3,14 +3,21 @@ from peft import PeftModel
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from optimum.bettertransformer import BetterTransformer
 
+from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
+
 def load_model(
     base, 
     finetuned, 
+    gptq,
+    gptq_base,
     mode_cpu,
     mode_mps,
     mode_full_gpu,
     mode_8bit,
     mode_4bit,
+    mode_gptq,
+    mode_mps_gptq,
+    mode_cpu_gptq,
     force_download_ckpt,
     local_files_only
 ):

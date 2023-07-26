@@ -29,6 +29,99 @@ from pingpong.pingpong import PromptFmt
 from pingpong.pingpong import UIFmt
 from pingpong.gradio import GradioChatUIFmt
 
+class PuffinChatPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""{context}
+
+"""
+    
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""### human: {ping}
+
+### response: {pong}
+"""    
+
+class PuffinChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=PuffinChatPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results        
+
+class GradioPuffinChatPPManager(PuffinChatPPManager):
+    def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+        
+        results = []
+        
+        for pingpong in self.pingpongs[from_idx:to_idx]:
+            results.append(fmt.ui(pingpong))
+            
+        return results  
+
+##
+
+class UpstageLLaMAChatPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""### System:
+{context}
+
+"""
+    
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""### User:
+{ping} 
+
+### Assistant:
+{pong}
+"""    
+
+class UpstageLLaMAChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=UpstageLLaMAChatPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results        
+
+class GradioUpstageLLaMAChatPPManager(UpstageLLaMAChatPPManager):
+    def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+        
+        results = []
+        
+        for pingpong in self.pingpongs[from_idx:to_idx]:
+            results.append(fmt.ui(pingpong))
+            
+        return results  
+
+##
+
 class FreeWillyChatPromptFmt(PromptFmt):
     @classmethod
     def ctx(cls, context):
@@ -487,14 +580,22 @@ def get_chat_manager(model_type):
         return GradioLLaMA2ChatPPManager()
     elif model_type == "upstage-llama":
         return GradioAlpacaChatPPManager()
+    elif model_type == "upstage-llama2":
+        return GradioUpstageLLaMAChatPPManager()
     elif model_type =="free-willy":
         return GradioFreeWillyChatPPManager()
+    elif model_type == "puffin":
+        return GradioPuffinChatPPManager()
     else:
         return None
 
 def get_global_context(model_type):
     if model_type == "free-willy":
         return """You are Free Willy, an AI that follows instructions extremely well. Help as much as you can. Remember, be safe, and don't do anything illegal."""
+    elif model_type == "upstage-llama2":
+        return """A chat between a curious user and an artificial intelligence assistant.
+The assistant gives helpful, detailed, and polite answers to the user's questions.
+"""
     elif model_type == "upstage-llama":
         return """Below are a series of dialogues between human and an AI assistant.
 The AI tries to answer the given instruction as in response.
@@ -701,6 +802,8 @@ It also MUST avoid giving false or misleading information, and it caveats when i
 That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
 """
     elif model_type == "wizard_falcon":
+        return ""
+    elif model_type == "puffin":
         return ""
     elif model_type == "samantha-vicuna":
         return "You are Samantha, a sentient AI."

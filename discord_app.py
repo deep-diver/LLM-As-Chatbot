@@ -15,7 +15,7 @@ import global_vars
 from pingpong.context import InternetSearchStrategy, SimilaritySearcher
 
 from discordbot.req import (
-    sync_task, build_prompt, build_ppm
+    vanilla_gen, build_prompt, build_ppm
 )
 from discordbot.flags import parse_req
 from discordbot import helps, post
@@ -68,7 +68,7 @@ async def build_prompt_and_reply(executor, user_name, user_id):
                     win_size=user_args["max-windows"]
                 )
                 internet_search_prompt_response = await loop.run_in_executor(
-                    executor, sync_task, internet_search_prompt, user_args
+                    executor, vanilla_gen, internet_search_prompt, user_args
                 )
                 internet_search_prompt_response = post.clean(internet_search_prompt_response)
 
@@ -114,7 +114,7 @@ async def build_prompt_and_reply(executor, user_name, user_id):
 
             prompt = await build_prompt(ppm, win_size=user_args["max-windows"])
             response = await loop.run_in_executor(
-                executor, sync_task, 
+                executor, vanilla_gen, 
                 prompt, user_args
             )
             response = post.clean(response)
@@ -247,6 +247,8 @@ if __name__ == "__main__":
     parser.add_argument('--mode-full-gpu', default=True, action=argparse.BooleanOptionalAction)
     parser.add_argument('--local-files-only', default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--serper-api-key', default=None, type=str)
+    parser.add_argument('--tgi-server-addr', default=None, type=str)
+    parser.add_argument('--tgi-server-port', default=None, type=str)
     args = parser.parse_args()
     
     discord_main(args)

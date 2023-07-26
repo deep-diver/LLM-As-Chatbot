@@ -18,6 +18,11 @@ PARENT_BLOCK_CSS = """
 
 MODEL_SELECTION_CSS = """
 
+.template-txt {
+    text-align: center;
+    font-size: 15pt !important;
+}
+
 .message {
     margin: 0px !important;
 }
@@ -638,6 +643,16 @@ code {
   margin: auto;
 }
 
+#nous-puffin-13b-llama2 {
+  background: url(https://i.ibb.co/L1RDS9q/puffin.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
 #airoboros-7b, #airoboros-13b {
   background: url(https://i.ibb.co/NLchBkB/airoboros.png);
   background-repeat: no-repeat;
@@ -678,7 +693,7 @@ code {
   margin: auto;
 }
 
-#wizardlm-13b, #wizardlm-30b {
+#wizardlm-13b, #wizardlm-30b, #wizardlm-13b-1-2 {
   background: url(https://i.ibb.co/SRXWKz9/WizardLM.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
@@ -748,7 +763,7 @@ code {
   margin: auto;
 }
 
-#upstage-llama-30b {
+#upstage-llama-30b, #upstage-llama2-70b {
   background: url(https://i.ibb.co/FX3Vf9K/upstage.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;

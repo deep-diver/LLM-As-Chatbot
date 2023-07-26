@@ -48,3 +48,34 @@ UPDATE_LEFT_BTNS_STATE = """
     }
   }
 }""" 
+
+UPDATE_PLACEHOLDERS = """
+function update_placeholders(txt, placeholder_txt1, placeholder_txt2, placeholder_txt3) {
+  let example_prompt = txt;
+
+  const regex = /\[([^\]]*)\]/g;
+  const matches = txt.match(regex);
+
+  if (matches != null) {
+    if (matches.length >= 1) {
+      if (placeholder_txt1 !== "") {
+        example_prompt = example_prompt.replace(matches[0], placeholder_txt1);
+      }
+    }
+    
+    if (matches.length >= 2) {
+      if (placeholder_txt2 !== "") {
+        example_prompt = example_prompt.replace(matches[1], placeholder_txt2);
+      }
+    }
+
+    if (matches.length >= 3) {
+      if (placeholder_txt1 !== "") {
+        example_prompt = example_prompt.replace(matches[2], placeholder_txt3);
+      }
+    }
+  }
+
+  return example_prompt
+}
+"""

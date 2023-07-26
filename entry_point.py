@@ -40,5 +40,7 @@ if __name__ == "__main__":
         parser.add_argument('--mode-full-gpu', default=True, action=argparse.BooleanOptionalAction)
         parser.add_argument('--local-files-only', default=local_files_only, action=argparse.BooleanOptionalAction)
         parser.add_argument('--serper-api-key', default=serper_api_key, type=str)
+        parser.add_argument('--tgi-server-addr', default=None, type=str)
+        parser.add_argument('--tgi-server-port', default=None, type=str)        
         args = parser.parse_args()
         discord_main(args)

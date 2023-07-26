@@ -3,14 +3,21 @@ from peft import PeftModel
 from transformers import LlamaTokenizer, LlamaForCausalLM
 from optimum.bettertransformer import BetterTransformer
 
+from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
+
 def load_model(
     base, 
     finetuned, 
+    gptq,
+    gptq_base,
     mode_cpu,
     mode_mps,
     mode_full_gpu,
     mode_8bit,
     mode_4bit,
+    mode_gptq,
+    mode_mps_gptq,
+    mode_cpu_gptq,
     force_download_ckpt,
     local_files_only
 ):
@@ -65,6 +72,58 @@ def load_model(
             )
         else:
             model = BetterTransformer.transform(model)
+
+    elif mode_gptq:
+        print("gpu(gptq) mode")
+        tokenizer = LlamaTokenizer.from_pretrained(
+            gptq, local_files_only=local_files_only
+        )
+        tokenizer.pad_token_id = 0
+        tokenizer.padding_side = "left"        
+        
+        model = AutoGPTQForCausalLM.from_quantized(
+            gptq,
+            model_basename=gptq_base,
+            use_safetensors=True,
+            trust_remote_code=False,
+            device_map="auto",
+            quantize_config=None,
+            local_files_only=local_files_only
+        )
+        
+#     elif mode_mps_gptq:
+#         print("mps(gptq) mode")
+#         tokenizer = LlamaTokenizer.from_pretrained(
+#             gptq, local_files_only=local_files_only
+#         )
+#         tokenizer.pad_token_id = 0
+#         tokenizer.padding_side = "left"        
+        
+#         model = AutoGPTQForCausalLM.from_quantized(
+#             gptq,
+#             model_basename=gptq_base,
+#             use_safetensors=True,
+#             trust_remote_code=False,
+#             device="mps",
+#             quantize_config=None,
+#             local_files_only=local_files_only
+#         )
+         
+#     elif mode_cpu_gptq:
+#         print("cpu(gptq) mode")
+#         tokenizer = LlamaTokenizer.from_pretrained(
+#             gptq, local_files_only=local_files_only
+#         )
+#         tokenizer.pad_token_id = 0
+#         tokenizer.padding_side = "left"        
+        
+#         quantize_config = BaseQuantizeConfig(bits=4, group_size=128)
+        
+#         model = AutoGPTQForCausalLM.from_pretrained(
+#             base,
+#             quantize_config,
+#             local_files_only=local_files_only
+        # )
             
     else:
         print("gpu mode")

@@ -69,6 +69,10 @@ def initialize_globals(args):
     model_type_tmp = "alpaca"
     if "stabilityai/freewilly2" in args.base_url.lower():
         model_type_tmp = "free-willy"
+    elif "redmond-puffin-" in args.base_url.lower():
+        model_type_tmp = "puffin"
+    elif "upstage/llama-2-70b-" in args.base_url.lower():
+        model_type_tmp = "upstage-llama2"
     elif "upstage/llama-" in args.base_url.lower():
         model_type_tmp = "upstage-llama"
     elif "llama-2" in args.base_url.lower():
@@ -83,7 +87,8 @@ def initialize_globals(args):
         model_type_tmp = "wizard-coder"
     elif "wizard-vicuna" in args.base_url.lower():
         model_type_tmp = "wizard-vicuna"
-    elif "llms/wizardlm" in args.base_url.lower():
+    elif "llms/wizardlm" in args.base_url.lower() or \
+        "wizardlm/wizardlm" in args.base_url.lower():
         model_type_tmp = "wizardlm"
     elif "chronos" in args.base_url.lower():
         model_type_tmp = "chronos"
@@ -150,9 +155,9 @@ def initialize_globals(args):
     print(f"determined model type: {model_type_tmp}")        
 
     device = "cpu"
-    if args.mode_cpu:
+    if args.mode_cpu or args.mode_cpu_gptq:
         device = "cpu"
-    elif args.mode_mps:
+    elif args.mode_mps or args.mode_mps_gptq:
         device = "mps"
     else:
         device = "cuda"
@@ -182,11 +187,16 @@ def initialize_globals(args):
     model, tokenizer = load_model(
         base=args.base_url,
         finetuned=args.ft_ckpt_url,
+        gptq=args.gptq_url,
+        gptq_base=args.gptq_base_url,
         mode_cpu=args.mode_cpu,
         mode_mps=args.mode_mps,
         mode_full_gpu=args.mode_full_gpu,
         mode_8bit=args.mode_8bit,
         mode_4bit=args.mode_4bit,
+        mode_gptq=args.mode_gptq,
+        mode_mps_gptq=args.mode_mps_gptq,
+        mode_cpu_gptq=args.mode_cpu_gptq,
         force_download_ckpt=args.force_download_ckpt,
         local_files_only=args.local_files_only
     )
@@ -208,9 +218,11 @@ def get_load_model(model_type):
         model_type == "openllama" or \
         model_type == "orcamini" or \
         model_type == "llama2" or \
-        model_type == "upstage-llama":
+        model_type == "upstage-llama" or \
+        model_type == "puffin":
         return alpaca.load_model
-    elif model_type == "free-willy":
+    elif model_type == "free-willy" or \
+        model_type == "upstage-llama2":
         return freewilly.load_model
     elif model_type == "stablelm" or model_type == "os-stablelm":
         return stablelm.load_model
@@ -225,7 +237,7 @@ def get_load_model(model_type):
     elif model_type == "t5-vicuna":
         return t5_vicuna.load_model
     elif model_type == "stable-vicuna":
-        return vicuna.load_model
+        return alpaca.load_model
     elif model_type == "starchat":
         return starchat.load_model
     elif model_type == "wizard-coder":
@@ -236,7 +248,7 @@ def get_load_model(model_type):
         model_type == "redpajama-instruct":
         return redpajama.load_model
     elif model_type == "vicuna":
-        return vicuna.load_model
+        return alpaca.load_model
     elif model_type == "evolinstruct-vicuna" or \
         model_type == "wizard-vicuna":
         return alpaca.load_model
