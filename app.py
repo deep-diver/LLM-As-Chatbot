@@ -594,6 +594,10 @@ def gradio_main(args):
                             llama2_7b = gr.Button("llama2-7b", elem_id="llama2-7b", elem_classes=["square"])
                             gr.Markdown("LLaMA 2", elem_classes=["center"])
 
+                        with gr.Column(min_width=20):
+                            nous_hermes_7b_v2 = gr.Button("nous-hermes-7b-llama2", elem_id="nous-hermes-7b-llama2", elem_classes=["square"])
+                            gr.Markdown("Nous Hermes 2", elem_classes=["center"])
+
                     gr.Markdown("## ~ 20B Parameters")
                     with gr.Row(elem_classes=["sub-container"]):
                         with gr.Column(min_width=20, visible=False):
@@ -760,8 +764,20 @@ def gradio_main(args):
                             
                         with gr.Column(min_width=20):
                             upstage_llama2_70b = gr.Button("upstage-llama2-70b", elem_id="upstage-llama2-70b", elem_classes=["square"])
-                            gr.Markdown("Upstage LLaMA 2", elem_classes=["center"])                            
-                            
+                            gr.Markdown("Upstage2", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            upstage_llama2_70b_2 = gr.Button("upstage-llama2-70b-2", elem_id="upstage-llama2-70b-2", elem_classes=["square"])
+                            gr.Markdown("Upstage2 v2", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            platypus2_70b = gr.Button("platypus2-70b", elem_id="platypus2-70b", elem_classes=["square"])
+                            gr.Markdown("Platypus2", elem_classes=["center"])
+
+                        with gr.Column(min_width=20):
+                            wizardlm_70b = gr.Button("wizardlm-70b", elem_id="wizardlm-70b", elem_classes=["square"])
+                            gr.Markdown("WizardLM", elem_classes=["center"])
+
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
         with gr.Column(visible=False) as byom_input_view:
@@ -986,7 +1002,7 @@ def gradio_main(args):
                             res_topp = gr.Slider(0.0, 2.0, 0, step=0.1, label="top_p", interactive=True)
                             res_topk = gr.Slider(20, 1000, 0, step=1, label="top_k", interactive=True)
                             res_rpen = gr.Slider(0.0, 2.0, 0, step=0.1, label="rep_penalty", interactive=True)
-                            res_mnts = gr.Slider(64, 2048, 0, step=1, label="new_tokens", interactive=True)                            
+                            res_mnts = gr.Slider(64, 8192, 0, step=1, label="new_tokens", interactive=True)                            
                             res_beams = gr.Slider(1, 4, 0, step=1, label="beams")
                             res_cache = gr.Radio([True, False], value=0, label="cache", interactive=True)
                             res_sample = gr.Radio([True, False], value=0, label="sample", interactive=True)
@@ -1000,7 +1016,7 @@ def gradio_main(args):
                             sum_topp = gr.Slider(0.0, 2.0, 0, step=0.1, label="top_p", interactive=True)
                             sum_topk = gr.Slider(20, 1000, 0, step=1, label="top_k", interactive=True)
                             sum_rpen = gr.Slider(0.0, 2.0, 0, step=0.1, label="rep_penalty", interactive=True)
-                            sum_mnts = gr.Slider(64, 2048, 0, step=1, label="new_tokens", interactive=True)
+                            sum_mnts = gr.Slider(64, 8192, 0, step=1, label="new_tokens", interactive=True)
                             sum_beams = gr.Slider(1, 8, 0, step=1, label="beams", interactive=True)
                             sum_cache = gr.Radio([True, False], value=0, label="cache", interactive=True)
                             sum_sample = gr.Radio([True, False], value=0, label="sample", interactive=True)
@@ -1022,7 +1038,7 @@ def gradio_main(args):
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, redpajama_instruct_7b, llama_deus_7b, 
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b, vicuna_7b_1_3,
                 falcon_7b, wizard_falcon_7b, airoboros_7b, samantha_7b, openllama_7b, orcamini_7b,
-                xgen_7b,llama2_7b,
+                xgen_7b, llama2_7b, nous_hermes_7b_v2,
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
                 baize_13b, guanaco_13b, nous_hermes_13b, airoboros_13b, samantha_13b, chronos_13b,
@@ -1030,7 +1046,7 @@ def gradio_main(args):
                 llama2_13b, nous_hermes_13b_v2, nous_puffin_13b_v2, wizardlm_13b_1_2, camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
                 wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b, upstage_llama_30b,
-                free_willy2_70b, upstage_llama2_70b
+                free_willy2_70b, upstage_llama2_70b, upstage_llama2_70b_2, platypus2_70b, wizardlm_70b
             ]
             for btn in btns:
                 btn.click(
@@ -1244,7 +1260,7 @@ def gradio_main(args):
                 inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
                 outputs=[instruction_txtbox, placeholder_txt1, placeholder_txt2, placeholder_txt3],
                 fn=get_final_template
-            )            
+            )
           
             demo.load(
               None,

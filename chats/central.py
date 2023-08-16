@@ -51,6 +51,15 @@ def chat_stream(
             internet_option, serper_api_key
         )        
     
+    elif model_type == "platypus2":
+        cs = alpaca.chat_stream(
+            idx, local_data, user_message, state,
+            global_context, ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
+        )        
+    
     elif model_type == "free-willy":
         cs = freewilly.chat_stream(
             idx, local_data, user_message, state,
@@ -267,7 +276,7 @@ def chat_stream(
             internet_option, serper_api_key
         )
         
-    elif model_type == "wizardlm":
+    elif model_type == "wizardlm" or model_type == "wizardlm2":
         cs = vicuna.chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,

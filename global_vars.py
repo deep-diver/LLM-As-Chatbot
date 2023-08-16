@@ -67,11 +67,16 @@ def initialize_globals(args):
     global gen_config_summarization
     
     model_type_tmp = "alpaca"
-    if "stabilityai/freewilly2" in args.base_url.lower():
+    print(args.base_url.lower())
+    if "wizardlm/wizardlm-70b" in args.base_url.lower():
+        model_type_tmp = "wizardlm2"
+    elif "garage-baind/platypus2-70b" in args.base_url.lower():
+        model_type_tmp = "platypus2"
+    elif "stabilityai/freewilly2" in args.base_url.lower():
         model_type_tmp = "free-willy"
     elif "redmond-puffin-" in args.base_url.lower():
         model_type_tmp = "puffin"
-    elif "upstage/llama-2-70b-" in args.base_url.lower():
+    elif "upstage/llama-2-70b" in args.base_url.lower():
         model_type_tmp = "upstage-llama2"
     elif "upstage/llama-" in args.base_url.lower():
         model_type_tmp = "upstage-llama"
@@ -222,7 +227,9 @@ def get_load_model(model_type):
         model_type == "puffin":
         return alpaca.load_model
     elif model_type == "free-willy" or \
-        model_type == "upstage-llama2":
+        model_type == "upstage-llama2" or \
+        model_type == "platypus2" or \
+        model_type == "wizardlm2":
         return freewilly.load_model
     elif model_type == "stablelm" or model_type == "os-stablelm":
         return stablelm.load_model

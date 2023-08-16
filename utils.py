@@ -566,7 +566,7 @@ def get_chat_manager(model_type):
         return GradioAlpacaChatPPManager()
     elif model_type == "chronos":
         return GradioAlpacaChatPPManager()
-    elif model_type == "wizardlm":
+    elif model_type == "wizardlm" or model_type == "wizardlm2":
         return GradioVicunaChatPPManager()
     elif model_type == "wizard-vicuna":
         return GradioVicunaChatPPManager()
@@ -586,6 +586,8 @@ def get_chat_manager(model_type):
         return GradioFreeWillyChatPPManager()
     elif model_type == "puffin":
         return GradioPuffinChatPPManager()
+    elif model_type == "platypus2":
+        return GradioAlpacaChatPPManager()
     else:
         return None
 
@@ -604,7 +606,16 @@ The AI MUST be helpful, polite, honest, sophisticated, emotionally aware, and hu
 The assistant MUST be happy to help with almost anything, and will do its best to understand exactly what is needed.
 It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
 That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
-"""        
+"""
+    elif model_type == "platypus2":
+        return """Below are a series of dialogues between human and an AI assistant.
+The AI tries to answer the given instruction as in response.
+The AI MUST not generate any text containing `### Response` or `### Instruction`.
+The AI MUST be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable.
+The assistant MUST be happy to help with almost anything, and will do its best to understand exactly what is needed.
+It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
+That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
+"""
     elif model_type == "llama2":
         return """\
 You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
@@ -742,7 +753,7 @@ The assistant gives helpful, detailed, and polite answers to the user's question
         return """A chat between a curious user and an artificial intelligence assistant.
 The assistant gives helpful, detailed, and polite answers to the user's questions.
 """
-    elif model_type == "wizardlm":
+    elif model_type == "wizardlm" or model_type == "wizardlm2":
         return """A chat between a curious user and an artificial intelligence assistant.
 The assistant gives helpful, detailed, and polite answers to the user's questions.
 """

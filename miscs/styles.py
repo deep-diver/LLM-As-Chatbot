@@ -633,7 +633,7 @@ code {
   margin: auto;
 }
 
-#nous-hermes-13b, #nous-hermes-13b-llama2 {
+#nous-hermes-13b, #nous-hermes-13b-llama2, #nous-hermes-7b-llama2 {
   background: url(https://i.ibb.co/sm8VgtL/nous-hermes.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
@@ -693,7 +693,7 @@ code {
   margin: auto;
 }
 
-#wizardlm-13b, #wizardlm-30b, #wizardlm-13b-1-2 {
+#wizardlm-13b, #wizardlm-30b, #wizardlm-13b-1-2, #wizardlm-70b {
   background: url(https://i.ibb.co/SRXWKz9/WizardLM.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
@@ -763,8 +763,18 @@ code {
   margin: auto;
 }
 
-#upstage-llama-30b, #upstage-llama2-70b {
+#upstage-llama-30b, #upstage-llama2-70b, #upstage-llama2-70b-2 {
   background: url(https://i.ibb.co/FX3Vf9K/upstage.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+#platypus2-70b {
+  background: url(https://i.ibb.co/wpv3Q43/platypus2.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;
   color: transparent;  
