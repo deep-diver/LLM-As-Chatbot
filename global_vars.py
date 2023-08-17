@@ -72,8 +72,8 @@ def initialize_globals(args):
         model_type_tmp = "wizardlm2"
     elif "garage-baind/platypus2-70b" in args.base_url.lower():
         model_type_tmp = "platypus2"
-    elif "stabilityai/freewilly2" in args.base_url.lower():
-        model_type_tmp = "free-willy"
+    elif "stable-beluga2-70b" in args.base_url.lower():
+        model_type_tmp = "stable-beluga2"
     elif "redmond-puffin-" in args.base_url.lower():
         model_type_tmp = "puffin"
     elif "upstage/llama-2-70b" in args.base_url.lower():
@@ -226,7 +226,7 @@ def get_load_model(model_type):
         model_type == "upstage-llama" or \
         model_type == "puffin":
         return alpaca.load_model
-    elif model_type == "free-willy" or \
+    elif model_type == "stable-beluga2" or \
         model_type == "upstage-llama2" or \
         model_type == "platypus2" or \
         model_type == "wizardlm2":

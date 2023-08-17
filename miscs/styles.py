@@ -783,7 +783,7 @@ code {
   margin: auto;
 }
 
-#free-willy2-70b {
+#stable-beluga2-70b {
   background: url(https://i.ibb.co/m0jd3P3/freewilly-mid.png);
   background-repeat: no-repeat;
   background-size: 100px 95px;

@@ -582,7 +582,7 @@ def get_chat_manager(model_type):
         return GradioAlpacaChatPPManager()
     elif model_type == "upstage-llama2":
         return GradioUpstageLLaMAChatPPManager()
-    elif model_type =="free-willy":
+    elif model_type =="stable-beluga2":
         return GradioFreeWillyChatPPManager()
     elif model_type == "puffin":
         return GradioPuffinChatPPManager()
@@ -592,7 +592,7 @@ def get_chat_manager(model_type):
         return None
 
 def get_global_context(model_type):
-    if model_type == "free-willy":
+    if model_type == "stable-beluga2":
         return """You are Free Willy, an AI that follows instructions extremely well. Help as much as you can. Remember, be safe, and don't do anything illegal."""
     elif model_type == "upstage-llama2":
         return """A chat between a curious user and an artificial intelligence assistant.

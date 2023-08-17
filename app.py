@@ -79,6 +79,12 @@ model_info = json.load(open("model_cards.json"))
 
 ###
 
+def model_view_toggle(toggler):
+    if toggler == "Recent Models":
+        return (gr.update(visible=False), gr.update(visible=True))
+    else:
+        return (gr.update(visible=True), gr.update(visible=False))
+
 def get_placeholders(text):
     """Returns all substrings in between <placeholder> and </placeholder>."""
     pattern = r"\[([^\]]*)\]"
@@ -488,295 +494,332 @@ def gradio_main(args):
             gr.Markdown("# Choose a Model", elem_classes=["center"])
             with gr.Row(elem_id="container"):
                 with gr.Column():
-                    gr.Markdown("## ~ 10B Parameters")
-                    with gr.Row(elem_classes=["sub-container"]):
-                        with gr.Column(min_width=20):
-                            t5_vicuna_3b = gr.Button("t5-vicuna-3b", elem_id="t5-vicuna-3b", elem_classes=["square"])
-                            gr.Markdown("T5 Vicuna", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20, visible=False):
-                            flan3b = gr.Button("flan-3b", elem_id="flan-3b", elem_classes=["square"])
-                            gr.Markdown("Flan-XL", elem_classes=["center"])
-
-                        # with gr.Column(min_width=20):
-                        #     replit_3b = gr.Button("replit-3b", elem_id="replit-3b", elem_classes=["square"])
-                        #     gr.Markdown("Replit Instruct", elem_classes=["center"])                        
-                        
-                        with gr.Column(min_width=20):
-                            camel5b = gr.Button("camel-5b", elem_id="camel-5b", elem_classes=["square"])
-                            gr.Markdown("Camel", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            alpaca_lora7b = gr.Button("alpaca-lora-7b", elem_id="alpaca-lora-7b", elem_classes=["square"])
-                            gr.Markdown("Alpaca-LoRA", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            stablelm7b = gr.Button("stablelm-7b", elem_id="stablelm-7b", elem_classes=["square"])
-                            gr.Markdown("StableLM", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20, visible=False):
-                            os_stablelm7b = gr.Button("os-stablelm-7b", elem_id="os-stablelm-7b", elem_classes=["square"])
-                            gr.Markdown("OA+StableLM", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            gpt4_alpaca_7b = gr.Button("gpt4-alpaca-7b", elem_id="gpt4-alpaca-7b", elem_classes=["square"])
-                            gr.Markdown("GPT4-Alpaca-LoRA", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            mpt_7b = gr.Button("mpt-7b", elem_id="mpt-7b", elem_classes=["square"])
-                            gr.Markdown("MPT", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            redpajama_7b = gr.Button("redpajama-7b", elem_id="redpajama-7b", elem_classes=["square"])
-                            gr.Markdown("RedPajama", elem_classes=["center"])
+                    recent_normal_toggler = gr.Radio(
+                        choices=["Recent Models", "Full Models"], value="Recent Models",
+                        label="Model List View Model", info="If you want to explore all models, choose Full Models"
+                    )
                     
-                        with gr.Column(min_width=20, visible=False):
-                            redpajama_instruct_7b = gr.Button("redpajama-instruct-7b", elem_id="redpajama-instruct-7b", elem_classes=["square"])
-                            gr.Markdown("RedPajama Instruct", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            vicuna_7b = gr.Button("vicuna-7b", elem_id="vicuna-7b", elem_classes=["square"])
-                            gr.Markdown("Vicuna", elem_classes=["center"])
+                    with gr.Column() as recent_section:
+                        gr.Markdown("## Recent Releases")
+                        with gr.Row(elem_classes=["sub-container"]):
+                            with gr.Column(min_width=20):
+                                stable_beluga2_70b_rr = gr.Button("stable-beluga2-70b", elem_id="stable-beluga2-70b", elem_classes=["square"])
+                                gr.Markdown("Stable Beluga 2 (70B)", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            vicuna_7b_1_3 = gr.Button("vicuna-7b-1-3", elem_id="vicuna-7b-1-3", elem_classes=["square"])
-                            gr.Markdown("Vicuna 1.3", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            llama_deus_7b = gr.Button("llama-deus-7b", elem_id="llama-deus-7b",elem_classes=["square"])
-                            gr.Markdown("LLaMA Deus", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            evolinstruct_vicuna_7b = gr.Button("evolinstruct-vicuna-7b", elem_id="evolinstruct-vicuna-7b", elem_classes=["square"])
-                            gr.Markdown("EvolInstruct Vicuna", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20, visible=False):
-                            alpacoom_7b = gr.Button("alpacoom-7b", elem_id="alpacoom-7b", elem_classes=["square"])
-                            gr.Markdown("Alpacoom", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            baize_7b = gr.Button("baize-7b", elem_id="baize-7b", elem_classes=["square"])
-                            gr.Markdown("Baize", elem_classes=["center"])                        
-                            
-                        with gr.Column(min_width=20):
-                            guanaco_7b = gr.Button("guanaco-7b", elem_id="guanaco-7b", elem_classes=["square"])
-                            gr.Markdown("Guanaco", elem_classes=["center"])  
-                            
-                        with gr.Column(min_width=20):
-                            falcon_7b = gr.Button("falcon-7b", elem_id="falcon-7b", elem_classes=["square"])
-                            gr.Markdown("Falcon", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                upstage_llama2_70b_2_rr = gr.Button("upstage-llama2-70b-2", elem_id="upstage-llama2-70b-2", elem_classes=["square"])
+                                gr.Markdown("Upstage2 v2 (70B)", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            wizard_falcon_7b = gr.Button("wizard-falcon-7b", elem_id="wizard-falcon-7b", elem_classes=["square"])
-                            gr.Markdown("Wizard Falcon", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            airoboros_7b = gr.Button("airoboros-7b", elem_id="airoboros-7b", elem_classes=["square"])
-                            gr.Markdown("Airoboros", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            samantha_7b = gr.Button("samantha-7b", elem_id="samantha-7b", elem_classes=["square"])
-                            gr.Markdown("Samantha", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            openllama_7b = gr.Button("openllama-7b", elem_id="openllama-7b", elem_classes=["square"])
-                            gr.Markdown("OpenLLaMA", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            orcamini_7b = gr.Button("orcamini-7b", elem_id="orcamini-7b", elem_classes=["square"])
-                            gr.Markdown("Orca Mini", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                platypus2_70b_rr = gr.Button("platypus2-70b", elem_id="platypus2-70b", elem_classes=["square"])
+                                gr.Markdown("Platypus2 (70B)", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            xgen_7b = gr.Button("xgen-7b", elem_id="xgen-7b", elem_classes=["square"])
-                            gr.Markdown("XGen", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            llama2_7b = gr.Button("llama2-7b", elem_id="llama2-7b", elem_classes=["square"])
-                            gr.Markdown("LLaMA 2", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                wizardlm_70b_rr = gr.Button("wizardlm-70b", elem_id="wizardlm-70b", elem_classes=["square"])
+                                gr.Markdown("WizardLM (70B)", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            nous_hermes_7b_v2 = gr.Button("nous-hermes-7b-llama2", elem_id="nous-hermes-7b-llama2", elem_classes=["square"])
-                            gr.Markdown("Nous Hermes 2", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                nous_hermes_13b_v2_rr = gr.Button("nous-hermes-13b-llama2", elem_id="nous-hermes-13b-llama2", elem_classes=["square"])
+                                gr.Markdown("Nous Hermes 2 (13B)", elem_classes=["center"])
 
-                    gr.Markdown("## ~ 20B Parameters")
-                    with gr.Row(elem_classes=["sub-container"]):
-                        with gr.Column(min_width=20, visible=False):
-                            flan11b = gr.Button("flan-11b", elem_id="flan-11b", elem_classes=["square"])
-                            gr.Markdown("Flan-XXL", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            koalpaca = gr.Button("koalpaca", elem_id="koalpaca", elem_classes=["square"])
-                            gr.Markdown("koalpaca", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                nous_puffin_13b_v2_rr = gr.Button("nous-puffin-13b-llama2", elem_id="nous-puffin-13b-llama2", elem_classes=["square"])
+                                gr.Markdown("Nous Puffin 2 (13B)", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            kullm = gr.Button("kullm", elem_id="kullm", elem_classes=["square"])
-                            gr.Markdown("KULLM", elem_classes=["center"])
-                        
-                        with gr.Column(min_width=20):
-                            alpaca_lora13b = gr.Button("alpaca-lora-13b", elem_id="alpaca-lora-13b", elem_classes=["square"])
-                            gr.Markdown("Alpaca-LoRA", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            gpt4_alpaca_13b = gr.Button("gpt4-alpaca-13b", elem_id="gpt4-alpaca-13b", elem_classes=["square"])
-                            gr.Markdown("GPT4-Alpaca-LoRA", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            stable_vicuna_13b = gr.Button("stable-vicuna-13b", elem_id="stable-vicuna-13b", elem_classes=["square"])
-                            gr.Markdown("Stable-Vicuna", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            starchat_15b = gr.Button("starchat-15b", elem_id="starchat-15b", elem_classes=["square"])
-                            gr.Markdown("StarChat", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                wizardlm_13b_1_2_rr = gr.Button("wizardlm-13b-1-2", elem_id="wizardlm-13b-1-2", elem_classes=["square"])
+                                gr.Markdown("WizardLM 1.2 (13B)", elem_classes=["center"])
+                                
+                    with gr.Column(visible=False) as full_section:                            
+                        gr.Markdown("## ~ 10B Parameters")
+                        with gr.Row(elem_classes=["sub-container"]):
+                            with gr.Column(min_width=20):
+                                t5_vicuna_3b = gr.Button("t5-vicuna-3b", elem_id="t5-vicuna-3b", elem_classes=["square"])
+                                gr.Markdown("T5 Vicuna", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            starchat_beta_15b = gr.Button("starchat-beta-15b", elem_id="starchat-beta-15b", elem_classes=["square"])
-                            gr.Markdown("StarChat β", elem_classes=["center"])
+                            with gr.Column(min_width=20, visible=False):
+                                flan3b = gr.Button("flan-3b", elem_id="flan-3b", elem_classes=["square"])
+                                gr.Markdown("Flan-XL", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            vicuna_13b = gr.Button("vicuna-13b", elem_id="vicuna-13b", elem_classes=["square"])
-                            gr.Markdown("Vicuna", elem_classes=["center"])
+                            # with gr.Column(min_width=20):
+                            #     replit_3b = gr.Button("replit-3b", elem_id="replit-3b", elem_classes=["square"])
+                            #     gr.Markdown("Replit Instruct", elem_classes=["center"])                        
 
-                        with gr.Column(min_width=20):
-                            vicuna_13b_1_3 = gr.Button("vicuna-13b-1-3", elem_id="vicuna-13b-1-3", elem_classes=["square"])
-                            gr.Markdown("Vicuna 1.3", elem_classes=["center"])                            
-    
-                        with gr.Column(min_width=20):
-                            evolinstruct_vicuna_13b = gr.Button("evolinstruct-vicuna-13b", elem_id="evolinstruct-vicuna-13b", elem_classes=["square"])
-                            gr.Markdown("EvolInstruct Vicuna", elem_classes=["center"])
-    
-                        with gr.Column(min_width=20):
-                            baize_13b = gr.Button("baize-13b", elem_id="baize-13b", elem_classes=["square"])
-                            gr.Markdown("Baize", elem_classes=["center"])                          
-                            
-                        with gr.Column(min_width=20):
-                            guanaco_13b = gr.Button("guanaco-13b", elem_id="guanaco-13b", elem_classes=["square"])
-                            gr.Markdown("Guanaco", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                camel5b = gr.Button("camel-5b", elem_id="camel-5b", elem_classes=["square"])
+                                gr.Markdown("Camel", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            nous_hermes_13b = gr.Button("nous-hermes-13b", elem_id="nous-hermes-13b", elem_classes=["square"])
-                            gr.Markdown("Nous Hermes", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            airoboros_13b = gr.Button("airoboros-13b", elem_id="airoboros-13b", elem_classes=["square"])
-                            gr.Markdown("Airoboros", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            samantha_13b = gr.Button("samantha-13b", elem_id="samantha-13b", elem_classes=["square"])
-                            gr.Markdown("Samantha", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            chronos_13b = gr.Button("chronos-13b", elem_id="chronos-13b", elem_classes=["square"])
-                            gr.Markdown("Chronos", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            wizardlm_13b = gr.Button("wizardlm-13b", elem_id="wizardlm-13b", elem_classes=["square"])
-                            gr.Markdown("WizardLM", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            wizard_vicuna_13b = gr.Button("wizard-vicuna-13b", elem_id="wizard-vicuna-13b", elem_classes=["square"])
-                            gr.Markdown("Wizard Vicuna (Uncensored)", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            wizard_coder_15b = gr.Button("wizard-coder-15b", elem_id="wizard-coder-15b", elem_classes=["square"])
-                            gr.Markdown("Wizard Coder", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            openllama_13b = gr.Button("openllama-13b", elem_id="openllama-13b", elem_classes=["square"])
-                            gr.Markdown("OpenLLaMA", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            orcamini_13b = gr.Button("orcamini-13b", elem_id="orcamini-13b", elem_classes=["square"])
-                            gr.Markdown("Orca Mini", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                alpaca_lora7b = gr.Button("alpaca-lora-7b", elem_id="alpaca-lora-7b", elem_classes=["square"])
+                                gr.Markdown("Alpaca-LoRA", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            llama2_13b = gr.Button("llama2-13b", elem_id="llama2-13b", elem_classes=["square"])
-                            gr.Markdown("LLaMA 2", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                stablelm7b = gr.Button("stablelm-7b", elem_id="stablelm-7b", elem_classes=["square"])
+                                gr.Markdown("StableLM", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            nous_hermes_13b_v2 = gr.Button("nous-hermes-13b-llama2", elem_id="nous-hermes-13b-llama2", elem_classes=["square"])
-                            gr.Markdown("Nous Hermes 2", elem_classes=["center"])
+                            with gr.Column(min_width=20, visible=False):
+                                os_stablelm7b = gr.Button("os-stablelm-7b", elem_id="os-stablelm-7b", elem_classes=["square"])
+                                gr.Markdown("OA+StableLM", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            nous_puffin_13b_v2 = gr.Button("nous-puffin-13b-llama2", elem_id="nous-puffin-13b-llama2", elem_classes=["square"])
-                            gr.Markdown("Nous Puffin 2", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            wizardlm_13b_1_2 = gr.Button("wizardlm-13b-1-2", elem_id="wizardlm-13b-1-2", elem_classes=["square"])
-                            gr.Markdown("WizardLM 1.2", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                gpt4_alpaca_7b = gr.Button("gpt4-alpaca-7b", elem_id="gpt4-alpaca-7b", elem_classes=["square"])
+                                gr.Markdown("GPT4-Alpaca-LoRA", elem_classes=["center"])
 
-                    gr.Markdown("## ~ 30B Parameters", visible=False)
-                    with gr.Row(elem_classes=["sub-container"], visible=False):
-                        with gr.Column(min_width=20):
-                            camel20b = gr.Button("camel-20b", elem_id="camel-20b", elem_classes=["square"])
-                            gr.Markdown("Camel", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                mpt_7b = gr.Button("mpt-7b", elem_id="mpt-7b", elem_classes=["square"])
+                                gr.Markdown("MPT", elem_classes=["center"])
 
-                    gr.Markdown("## ~ 40B Parameters")
-                    with gr.Row(elem_classes=["sub-container"]):
-                        with gr.Column(min_width=20):
-                            guanaco_33b = gr.Button("guanaco-33b", elem_id="guanaco-33b", elem_classes=["square"])
-                            gr.Markdown("Guanaco", elem_classes=["center"])
-                        
-                        with gr.Column(min_width=20):
-                            falcon_40b = gr.Button("falcon-40b", elem_id="falcon-40b", elem_classes=["square"])
-                            gr.Markdown("Falcon", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                redpajama_7b = gr.Button("redpajama-7b", elem_id="redpajama-7b", elem_classes=["square"])
+                                gr.Markdown("RedPajama", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            wizard_falcon_40b = gr.Button("wizard-falcon-40b", elem_id="wizard-falcon-40b", elem_classes=["square"])
-                            gr.Markdown("Wizard Falcon", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            samantha_33b = gr.Button("samantha-33b", elem_id="samantha-33b", elem_classes=["square"])
-                            gr.Markdown("Samantha", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            lazarus_30b = gr.Button("lazarus-30b", elem_id="lazarus-30b", elem_classes=["square"])
-                            gr.Markdown("Lazarus", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            chronos_33b = gr.Button("chronos-33b", elem_id="chronos-33b", elem_classes=["square"])
-                            gr.Markdown("Chronos", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            wizardlm_30b = gr.Button("wizardlm-30b", elem_id="wizardlm-30b", elem_classes=["square"])
-                            gr.Markdown("WizardLM", elem_classes=["center"])
+                            with gr.Column(min_width=20, visible=False):
+                                redpajama_instruct_7b = gr.Button("redpajama-instruct-7b", elem_id="redpajama-instruct-7b", elem_classes=["square"])
+                                gr.Markdown("RedPajama Instruct", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            wizard_vicuna_30b = gr.Button("wizard-vicuna-30b", elem_id="wizard-vicuna-30b", elem_classes=["square"])
-                            gr.Markdown("Wizard Vicuna (Uncensored)", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                vicuna_7b = gr.Button("vicuna-7b", elem_id="vicuna-7b", elem_classes=["square"])
+                                gr.Markdown("Vicuna", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            vicuna_33b_1_3 = gr.Button("vicuna-33b-1-3", elem_id="vicuna-33b-1-3", elem_classes=["square"])
-                            gr.Markdown("Vicuna 1.3", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                vicuna_7b_1_3 = gr.Button("vicuna-7b-1-3", elem_id="vicuna-7b-1-3", elem_classes=["square"])
+                                gr.Markdown("Vicuna 1.3", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            mpt_30b = gr.Button("mpt-30b", elem_id="mpt-30b", elem_classes=["square"])
-                            gr.Markdown("MPT", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            upstage_llama_30b = gr.Button("upstage-llama-30b", elem_id="upstage-llama-30b", elem_classes=["square"])
-                            gr.Markdown("Upstage LLaMA", elem_classes=["center"])
-                            
-                    gr.Markdown("## ~ 70B Parameters")
-                    with gr.Row(elem_classes=["sub-container"]):
-                        with gr.Column(min_width=20):
-                            free_willy2_70b = gr.Button("free-willy2-70b", elem_id="free-willy2-70b", elem_classes=["square"])
-                            gr.Markdown("Free Willy 2", elem_classes=["center"])
-                            
-                        with gr.Column(min_width=20):
-                            upstage_llama2_70b = gr.Button("upstage-llama2-70b", elem_id="upstage-llama2-70b", elem_classes=["square"])
-                            gr.Markdown("Upstage2", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                llama_deus_7b = gr.Button("llama-deus-7b", elem_id="llama-deus-7b",elem_classes=["square"])
+                                gr.Markdown("LLaMA Deus", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            upstage_llama2_70b_2 = gr.Button("upstage-llama2-70b-2", elem_id="upstage-llama2-70b-2", elem_classes=["square"])
-                            gr.Markdown("Upstage2 v2", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                evolinstruct_vicuna_7b = gr.Button("evolinstruct-vicuna-7b", elem_id="evolinstruct-vicuna-7b", elem_classes=["square"])
+                                gr.Markdown("EvolInstruct Vicuna", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            platypus2_70b = gr.Button("platypus2-70b", elem_id="platypus2-70b", elem_classes=["square"])
-                            gr.Markdown("Platypus2", elem_classes=["center"])
+                            with gr.Column(min_width=20, visible=False):
+                                alpacoom_7b = gr.Button("alpacoom-7b", elem_id="alpacoom-7b", elem_classes=["square"])
+                                gr.Markdown("Alpacoom", elem_classes=["center"])
 
-                        with gr.Column(min_width=20):
-                            wizardlm_70b = gr.Button("wizardlm-70b", elem_id="wizardlm-70b", elem_classes=["square"])
-                            gr.Markdown("WizardLM", elem_classes=["center"])
+                            with gr.Column(min_width=20):
+                                baize_7b = gr.Button("baize-7b", elem_id="baize-7b", elem_classes=["square"])
+                                gr.Markdown("Baize", elem_classes=["center"])                        
+
+                            with gr.Column(min_width=20):
+                                guanaco_7b = gr.Button("guanaco-7b", elem_id="guanaco-7b", elem_classes=["square"])
+                                gr.Markdown("Guanaco", elem_classes=["center"])  
+
+                            with gr.Column(min_width=20):
+                                falcon_7b = gr.Button("falcon-7b", elem_id="falcon-7b", elem_classes=["square"])
+                                gr.Markdown("Falcon", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                wizard_falcon_7b = gr.Button("wizard-falcon-7b", elem_id="wizard-falcon-7b", elem_classes=["square"])
+                                gr.Markdown("Wizard Falcon", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                airoboros_7b = gr.Button("airoboros-7b", elem_id="airoboros-7b", elem_classes=["square"])
+                                gr.Markdown("Airoboros", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                samantha_7b = gr.Button("samantha-7b", elem_id="samantha-7b", elem_classes=["square"])
+                                gr.Markdown("Samantha", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                openllama_7b = gr.Button("openllama-7b", elem_id="openllama-7b", elem_classes=["square"])
+                                gr.Markdown("OpenLLaMA", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                orcamini_7b = gr.Button("orcamini-7b", elem_id="orcamini-7b", elem_classes=["square"])
+                                gr.Markdown("Orca Mini", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                xgen_7b = gr.Button("xgen-7b", elem_id="xgen-7b", elem_classes=["square"])
+                                gr.Markdown("XGen", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                llama2_7b = gr.Button("llama2-7b", elem_id="llama2-7b", elem_classes=["square"])
+                                gr.Markdown("LLaMA 2", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                nous_hermes_7b_v2 = gr.Button("nous-hermes-7b-llama2", elem_id="nous-hermes-7b-llama2", elem_classes=["square"])
+                                gr.Markdown("Nous Hermes 2", elem_classes=["center"])
+
+                        gr.Markdown("## ~ 20B Parameters")
+                        with gr.Row(elem_classes=["sub-container"]):
+                            with gr.Column(min_width=20, visible=False):
+                                flan11b = gr.Button("flan-11b", elem_id="flan-11b", elem_classes=["square"])
+                                gr.Markdown("Flan-XXL", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                koalpaca = gr.Button("koalpaca", elem_id="koalpaca", elem_classes=["square"])
+                                gr.Markdown("koalpaca", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                kullm = gr.Button("kullm", elem_id="kullm", elem_classes=["square"])
+                                gr.Markdown("KULLM", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                alpaca_lora13b = gr.Button("alpaca-lora-13b", elem_id="alpaca-lora-13b", elem_classes=["square"])
+                                gr.Markdown("Alpaca-LoRA", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                gpt4_alpaca_13b = gr.Button("gpt4-alpaca-13b", elem_id="gpt4-alpaca-13b", elem_classes=["square"])
+                                gr.Markdown("GPT4-Alpaca-LoRA", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                stable_vicuna_13b = gr.Button("stable-vicuna-13b", elem_id="stable-vicuna-13b", elem_classes=["square"])
+                                gr.Markdown("Stable-Vicuna", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                starchat_15b = gr.Button("starchat-15b", elem_id="starchat-15b", elem_classes=["square"])
+                                gr.Markdown("StarChat", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                starchat_beta_15b = gr.Button("starchat-beta-15b", elem_id="starchat-beta-15b", elem_classes=["square"])
+                                gr.Markdown("StarChat β", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                vicuna_13b = gr.Button("vicuna-13b", elem_id="vicuna-13b", elem_classes=["square"])
+                                gr.Markdown("Vicuna", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                vicuna_13b_1_3 = gr.Button("vicuna-13b-1-3", elem_id="vicuna-13b-1-3", elem_classes=["square"])
+                                gr.Markdown("Vicuna 1.3", elem_classes=["center"])                            
+
+                            with gr.Column(min_width=20):
+                                evolinstruct_vicuna_13b = gr.Button("evolinstruct-vicuna-13b", elem_id="evolinstruct-vicuna-13b", elem_classes=["square"])
+                                gr.Markdown("EvolInstruct Vicuna", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                baize_13b = gr.Button("baize-13b", elem_id="baize-13b", elem_classes=["square"])
+                                gr.Markdown("Baize", elem_classes=["center"])                          
+
+                            with gr.Column(min_width=20):
+                                guanaco_13b = gr.Button("guanaco-13b", elem_id="guanaco-13b", elem_classes=["square"])
+                                gr.Markdown("Guanaco", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                nous_hermes_13b = gr.Button("nous-hermes-13b", elem_id="nous-hermes-13b", elem_classes=["square"])
+                                gr.Markdown("Nous Hermes", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                airoboros_13b = gr.Button("airoboros-13b", elem_id="airoboros-13b", elem_classes=["square"])
+                                gr.Markdown("Airoboros", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                samantha_13b = gr.Button("samantha-13b", elem_id="samantha-13b", elem_classes=["square"])
+                                gr.Markdown("Samantha", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                chronos_13b = gr.Button("chronos-13b", elem_id="chronos-13b", elem_classes=["square"])
+                                gr.Markdown("Chronos", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                wizardlm_13b = gr.Button("wizardlm-13b", elem_id="wizardlm-13b", elem_classes=["square"])
+                                gr.Markdown("WizardLM", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                wizard_vicuna_13b = gr.Button("wizard-vicuna-13b", elem_id="wizard-vicuna-13b", elem_classes=["square"])
+                                gr.Markdown("Wizard Vicuna (Uncensored)", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                wizard_coder_15b = gr.Button("wizard-coder-15b", elem_id="wizard-coder-15b", elem_classes=["square"])
+                                gr.Markdown("Wizard Coder", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                openllama_13b = gr.Button("openllama-13b", elem_id="openllama-13b", elem_classes=["square"])
+                                gr.Markdown("OpenLLaMA", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                orcamini_13b = gr.Button("orcamini-13b", elem_id="orcamini-13b", elem_classes=["square"])
+                                gr.Markdown("Orca Mini", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                llama2_13b = gr.Button("llama2-13b", elem_id="llama2-13b", elem_classes=["square"])
+                                gr.Markdown("LLaMA 2", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                nous_hermes_13b_v2 = gr.Button("nous-hermes-13b-llama2", elem_id="nous-hermes-13b-llama2", elem_classes=["square"])
+                                gr.Markdown("Nous Hermes 2", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                nous_puffin_13b_v2 = gr.Button("nous-puffin-13b-llama2", elem_id="nous-puffin-13b-llama2", elem_classes=["square"])
+                                gr.Markdown("Nous Puffin 2", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                wizardlm_13b_1_2 = gr.Button("wizardlm-13b-1-2", elem_id="wizardlm-13b-1-2", elem_classes=["square"])
+                                gr.Markdown("WizardLM 1.2", elem_classes=["center"])
+
+                        gr.Markdown("## ~ 30B Parameters", visible=False)
+                        with gr.Row(elem_classes=["sub-container"], visible=False):
+                            with gr.Column(min_width=20):
+                                camel20b = gr.Button("camel-20b", elem_id="camel-20b", elem_classes=["square"])
+                                gr.Markdown("Camel", elem_classes=["center"])
+
+                        gr.Markdown("## ~ 40B Parameters")
+                        with gr.Row(elem_classes=["sub-container"]):
+                            with gr.Column(min_width=20):
+                                guanaco_33b = gr.Button("guanaco-33b", elem_id="guanaco-33b", elem_classes=["square"])
+                                gr.Markdown("Guanaco", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                falcon_40b = gr.Button("falcon-40b", elem_id="falcon-40b", elem_classes=["square"])
+                                gr.Markdown("Falcon", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                wizard_falcon_40b = gr.Button("wizard-falcon-40b", elem_id="wizard-falcon-40b", elem_classes=["square"])
+                                gr.Markdown("Wizard Falcon", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                samantha_33b = gr.Button("samantha-33b", elem_id="samantha-33b", elem_classes=["square"])
+                                gr.Markdown("Samantha", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                lazarus_30b = gr.Button("lazarus-30b", elem_id="lazarus-30b", elem_classes=["square"])
+                                gr.Markdown("Lazarus", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                chronos_33b = gr.Button("chronos-33b", elem_id="chronos-33b", elem_classes=["square"])
+                                gr.Markdown("Chronos", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                wizardlm_30b = gr.Button("wizardlm-30b", elem_id="wizardlm-30b", elem_classes=["square"])
+                                gr.Markdown("WizardLM", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                wizard_vicuna_30b = gr.Button("wizard-vicuna-30b", elem_id="wizard-vicuna-30b", elem_classes=["square"])
+                                gr.Markdown("Wizard Vicuna (Uncensored)", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                vicuna_33b_1_3 = gr.Button("vicuna-33b-1-3", elem_id="vicuna-33b-1-3", elem_classes=["square"])
+                                gr.Markdown("Vicuna 1.3", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                mpt_30b = gr.Button("mpt-30b", elem_id="mpt-30b", elem_classes=["square"])
+                                gr.Markdown("MPT", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                upstage_llama_30b = gr.Button("upstage-llama-30b", elem_id="upstage-llama-30b", elem_classes=["square"])
+                                gr.Markdown("Upstage LLaMA", elem_classes=["center"])
+
+                        gr.Markdown("## ~ 70B Parameters")
+                        with gr.Row(elem_classes=["sub-container"]):
+                            with gr.Column(min_width=20):
+                                stable_beluga2_70b = gr.Button("stable-beluga2-70b", elem_id="stable-beluga2-70b", elem_classes=["square"])
+                                gr.Markdown("Stable Beluga 2", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                upstage_llama2_70b = gr.Button("upstage-llama2-70b", elem_id="upstage-llama2-70b", elem_classes=["square"])
+                                gr.Markdown("Upstage2", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                upstage_llama2_70b_2 = gr.Button("upstage-llama2-70b-2", elem_id="upstage-llama2-70b-2", elem_classes=["square"])
+                                gr.Markdown("Upstage2 v2", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                platypus2_70b = gr.Button("platypus2-70b", elem_id="platypus2-70b", elem_classes=["square"])
+                                gr.Markdown("Platypus2", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                wizardlm_70b = gr.Button("wizardlm-70b", elem_id="wizardlm-70b", elem_classes=["square"])
+                                gr.Markdown("WizardLM", elem_classes=["center"])
 
                     progress_view = gr.Textbox(label="Progress", elem_classes=["progress-view"])
 
@@ -1032,7 +1075,13 @@ def gradio_main(args):
                                 label="design a prompt to summarize the conversations",
                                 visible=False
                             )
-    
+
+            recent_normal_toggler.select(
+                model_view_toggle,
+                recent_normal_toggler,
+                [recent_section, full_section]
+            )
+
             btns = [
                 t5_vicuna_3b, flan3b, camel5b, alpaca_lora7b, stablelm7b,
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, redpajama_instruct_7b, llama_deus_7b, 
@@ -1046,7 +1095,9 @@ def gradio_main(args):
                 llama2_13b, nous_hermes_13b_v2, nous_puffin_13b_v2, wizardlm_13b_1_2, camel20b,
                 guanaco_33b, falcon_40b, wizard_falcon_40b, samantha_33b, lazarus_30b, chronos_33b,
                 wizardlm_30b, wizard_vicuna_30b, vicuna_33b_1_3, mpt_30b, upstage_llama_30b,
-                free_willy2_70b, upstage_llama2_70b, upstage_llama2_70b_2, platypus2_70b, wizardlm_70b
+                stable_beluga2_70b, upstage_llama2_70b, upstage_llama2_70b_2, platypus2_70b, wizardlm_70b,
+                
+                stable_beluga2_70b_rr, upstage_llama2_70b_2_rr, platypus2_70b_rr, wizardlm_70b_rr, nous_hermes_13b_v2_rr, nous_puffin_13b_v2_rr, wizardlm_13b_1_2_rr
             ]
             for btn in btns:
                 btn.click(
