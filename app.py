@@ -170,11 +170,11 @@ def move_to_second_view_from_tb(tb, evt: gr.SelectData):
 
 def model_view_toggle(toggler):   
     if toggler == "Icon View(Recent)":
-        return (gr.update(visible=True), gr.update(visible=False), gr.update(visible=False))
+        return (gr.update(visible=True), gr.update(visible=False), gr.update(visible=False), "   ")
     elif toggler == "Icon View(Full)":
-        return (gr.update(visible=False), gr.update(visible=True), gr.update(visible=False))
+        return (gr.update(visible=False), gr.update(visible=True), gr.update(visible=False), "     ")
     else:
-        return (gr.update(visible=False), gr.update(visible=False), gr.update(visible=True))
+        return (gr.update(visible=False), gr.update(visible=False), gr.update(visible=True), "        ")
         
 
 def get_placeholders(text):
@@ -612,6 +612,8 @@ def gradio_main(args):
                             datatype=["markdown", "str", "number", "number", "number", "number", "number", "number"],
                             col_count=(8, "fixed"),
                             row_count=1,
+                            max_rows=10,
+                            interactive=False,
                             wrap=True
                         )
                     
@@ -1200,7 +1202,7 @@ def gradio_main(args):
             recent_normal_toggler.change(
                 model_view_toggle,
                 recent_normal_toggler,
-                [recent_section, full_section, table_section]
+                [recent_section, full_section, table_section, progress_view]
             )
             
             model_table_view.select(
