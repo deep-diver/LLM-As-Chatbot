@@ -48,14 +48,6 @@ code {
 }
 
 .landing-btn {
-    font-size: 2.3vw !important;
-    margin-top: 25px !important;
-    border-radius: 25px !important;
-    height: 120px !important;
-    
-    @media screen and (max-width: 1000px) {
-        font-size: 20px !important;
-    }
 }
 
 #landing-bottom {
@@ -315,9 +307,13 @@ code {
 }
 
 
-#container {
-  max-width: 70%;
+#model-selection-container {
+  max-width: 80%;
   margin: auto;
+
+  @media screen and (max-width: 1000px) {
+      max-width: 100% !important;
+  }
 }
 
 #container2 {

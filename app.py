@@ -76,14 +76,105 @@ summarization_configs = [
 ]
 
 model_info = json.load(open("model_cards.json"))
+table_data = []
 
+for name, attributes in model_info.items():
+    thumbnail = attributes["thumb-tiny"]
+    olld_avg = attributes["ollb_average"]
+    olld_arc = attributes["ollb_arc"]
+    ollb_hellaswag = attributes["ollb_hellaswag"]
+    ollb_mmlu = attributes["ollb_mmlu"]
+    ollb_truthfulqa = attributes["ollb_truthfulqa"]
+    
+    table_data.append(
+        [f"![]({thumbnail})", name, olld_avg, olld_arc, ollb_hellaswag, ollb_mmlu, ollb_truthfulqa]
+    )
+
+table_data.sort(key=lambda elem: elem[2], reverse=True)
+    
 ###
 
-def model_view_toggle(toggler):
-    if toggler == "Recent Models":
-        return (gr.update(visible=False), gr.update(visible=True))
+def move_to_second_view_from_tb(tb, evt: gr.SelectData):
+    selected_model = tb.iloc[evt.index[0]]['Model']
+
+    info = model_info[selected_model]
+
+    guard_vram = 2 * 1024.
+    vram_req_full = int(info["vram(full)"]) + guard_vram
+    vram_req_8bit = int(info["vram(8bit)"]) + guard_vram
+    vram_req_4bit = int(info["vram(4bit)"]) + guard_vram
+    vram_req_gptq = info["vram(gptq)"]
+    if vram_req_gptq != "N/A":
+        vram_req_gptq = int(vram_req_gptq) + guard_vram
+    
+    load_mode_list = []
+    
+    if global_vars.cuda_availability:
+        print(f"total vram = {global_vars.available_vrams_mb}")
+        print(f"required vram(full={info['vram(full)']}, 8bit={info['vram(8bit)']}, 4bit={info['vram(4bit)']})")
+        
+        if global_vars.available_vrams_mb >= vram_req_full:
+            load_mode_list.append("gpu(half)")
+            
+        if global_vars.available_vrams_mb >= vram_req_8bit:
+            load_mode_list.append("gpu(load_in_8bit)")
+            
+        if global_vars.available_vrams_mb >= vram_req_4bit:
+            load_mode_list.append("gpu(load_in_4bit)")
+            
+        if vram_req_gptq != "N/A" and global_vars.available_vrams_mb >= vram_req_gptq:
+            load_mode_list.append("gpu(gptq)")
+
+    if global_vars.mps_availability:
+        load_mode_list.append("apple silicon")
+        # load_mode_list.append("apple silicon(gptq)")
+
+    # load_mode_list.append("cpu(gptq)")
+    load_mode_list.append("cpu")
+    
+    print(info['hub(gptq_base)'])
+    vram_req_gptq_in_gb = vram_req_gptq
+    if vram_req_gptq != "N/A":
+        vram_req_gptq_in_gb = f"{round(vram_req_gptq_in_gb/1024., 1)}GiB"
+    
+    return (
+        gr.update(visible=False),
+        gr.update(visible=True),
+        info["thumb"],
+        f"## {selected_model}",
+        f"**Parameters**\n: Approx. {info['parameters']}",
+        f"**🤗 Hub(base)**\n: {info['hub(base)']}",
+        f"**🤗 Hub(LoRA)**\n: {info['hub(ckpt)']}",
+        f"**🤗 Hub(GPTQ)**\n: {info['hub(gptq)']}",
+        f"**🤗 Hub(GPTQ_BASE)**\n: {info['hub(gptq_base)']}",
+        info['desc'],
+        f"""**Min VRAM requirements** :
+|             half precision            |             load_in_8bit           |              load_in_4bit          |
+| ------------------------------------- | ---------------------------------- | ---------------------------------- |
+|   {round(vram_req_full/1024., 1)}GiB  | {round(vram_req_8bit/1024., 1)}GiB | {round(vram_req_4bit/1024., 1)}GiB |
+
+|                 GPTQ                  | 
+| ------------------------------------- |
+|         {vram_req_gptq_in_gb}         |
+""",
+        info['default_gen_config'],
+        info['example1'],
+        info['example2'],
+        info['example3'],
+        info['example4'],
+        info['thumb-tiny'],        
+        gr.update(choices=load_mode_list, value=load_mode_list[0]),
+        "",
+    )    
+
+def model_view_toggle(toggler):   
+    if toggler == "Icon View(Recent)":
+        return (gr.update(visible=True), gr.update(visible=False), gr.update(visible=False))
+    elif toggler == "Icon View(Full)":
+        return (gr.update(visible=False), gr.update(visible=True), gr.update(visible=False))
     else:
-        return (gr.update(visible=True), gr.update(visible=False))
+        return (gr.update(visible=False), gr.update(visible=False), gr.update(visible=True))
+        
 
 def get_placeholders(text):
     """Returns all substrings in between <placeholder> and </placeholder>."""
@@ -479,25 +570,37 @@ def gradio_main(args):
 
 **Use currently selected model**: If you have already selected, but if you came back to this landing page accidently, you can directly go back to the chatting mode with this menu                    
 """)                    
-                    
-                    byom = gr.Button("🫵🏼 Bring your own model", elem_id="go-byom-select", elem_classes=["square", "landing-btn"])
-                    select_model = gr.Button("🦙 Select a model from model pool", elem_id="go-model-select", elem_classes=["square", "landing-btn"])
-                    chosen_model = gr.Button("↪️ Use currently selected model", elem_id="go-use-selected-model", elem_classes=["square", "landing-btn"])
+                    with gr.Row():
+                        byom = gr.Button("custom model", elem_id="go-byom-select", elem_classes=["square", "landing-btn"])
+                        select_model = gr.Button("model selection", elem_id="go-model-select", elem_classes=["square", "landing-btn"])
+                        chosen_model = gr.Button("back to current model", elem_id="go-use-selected-model", elem_classes=["square", "landing-btn"])
 
                     with gr.Column(elem_id="landing-bottom"):
                         progress_view0 = gr.Textbox(label="Progress", elem_classes=["progress-view"])
                         gr.Markdown("""[project](https://github.com/deep-diver/LLM-As-Chatbot)
-[developer](https://github.com/deep-diver)
-""", elem_classes=["center"])
+    [developer](https://github.com/deep-diver)
+    """, elem_classes=["center"])
     
-        with gr.Column(visible=False) as model_choice_view:
+        with gr.Column(visible=False, elem_id="model-selection-container") as model_choice_view:
             gr.Markdown("# Choose a Model", elem_classes=["center"])
             with gr.Row(elem_id="container"):
                 with gr.Column():
                     recent_normal_toggler = gr.Radio(
-                        choices=["Recent Models", "Full Models"], value="Recent Models",
-                        label="Model List View Model", info="If you want to explore all models, choose Full Models"
+                        choices=["Icon View(Recent)", "Table View", "Icon View(Full)"], value="Icon View(Recent)",
+                        label="Model list view modes", info="If you want to explore all models, choose Full Models"
                     )
+                    
+                    with gr.Column(visible=False) as table_section:
+                        gr.Markdown("## 🤗 Open LLM Leaderboard")
+                        
+                        model_table_view = gr.Dataframe(
+                            value=table_data,
+                            headers=["Icon", "Model", "Avg.", "ARC", "HellaSwag", "MMLU", "TruthfulQA"],
+                            datatype=["markdown", "str", "number", "number", "number", "number", "number"],
+                            col_count=(7, "fixed"),
+                            row_count=1,
+                            wrap=True
+                        )
                     
                     with gr.Column() as recent_section:
                         gr.Markdown("## Recent Releases")
@@ -1076,10 +1179,23 @@ def gradio_main(args):
                                 visible=False
                             )
 
-            recent_normal_toggler.select(
+            recent_normal_toggler.change(
                 model_view_toggle,
                 recent_normal_toggler,
-                [recent_section, full_section]
+                [recent_section, full_section, table_section]
+            )
+            
+            model_table_view.select(
+                move_to_second_view_from_tb,
+                model_table_view,
+                [
+                    model_choice_view, model_review_view,
+                    model_image, model_name, model_params, model_base, model_ckpt, model_gptq, model_gptq_base,
+                    model_desc, model_vram, gen_config_path, 
+                    example_showcase1, example_showcase2, example_showcase3, example_showcase4,
+                    model_thumbnail_tiny, load_mode, 
+                    progress_view
+                ]
             )
 
             btns = [
