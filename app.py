@@ -80,17 +80,18 @@ table_data = []
 
 for name, attributes in model_info.items():
     thumbnail = attributes["thumb-tiny"]
-    olld_avg = attributes["ollb_average"]
-    olld_arc = attributes["ollb_arc"]
-    ollb_hellaswag = attributes["ollb_hellaswag"]
-    ollb_mmlu = attributes["ollb_mmlu"]
-    ollb_truthfulqa = attributes["ollb_truthfulqa"]
+    parameters = float(attributes["parameters"])
+    olld_avg = float(attributes["ollb_average"])
+    olld_arc = float(attributes["ollb_arc"])
+    ollb_hellaswag = float(attributes["ollb_hellaswag"])
+    ollb_mmlu = float(attributes["ollb_mmlu"])
+    ollb_truthfulqa = float(attributes["ollb_truthfulqa"])
     
     table_data.append(
-        [f"![]({thumbnail})", name, olld_avg, olld_arc, ollb_hellaswag, ollb_mmlu, ollb_truthfulqa]
+        [f"![]({thumbnail})", name, parameters, olld_avg, olld_arc, ollb_hellaswag, ollb_mmlu, ollb_truthfulqa]
     )
 
-table_data.sort(key=lambda elem: elem[2], reverse=True)
+table_data.sort(key=lambda elem: elem[3], reverse=True)
     
 ###
 
@@ -592,12 +593,24 @@ def gradio_main(args):
                     
                     with gr.Column(visible=False) as table_section:
                         gr.Markdown("## 🤗 Open LLM Leaderboard")
+                        gr.Markdown(
+                            "This view organizes the list of models based on [🤗 Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard). "
+                            "Not all models are evaluated on the leader board, so those models' score is indicated with the value `-1`. Also, this application does not "
+                            "come with all the open source LLMs on the leader board as well. That is because the actual functionalities are not fully tested, so if you "
+                            "want to add more models in this application, please write an [issue](https://github.com/deep-diver/LLM-As-Chatbot/issues) for that."
+                        )
+                        gr.Markdown(
+                            "If you are curious how the models are evaluated and what each score categories are, please find them on [🤗 Open LLM Leaderboard]"
+                            "(https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard). For quick reference, please visit [ARC(AI2 Reasoning Challenge)]"
+                            "(https://arxiv.org/abs/1803.05457), [HellaSwag](https://arxiv.org/abs/1905.07830), [MMLU(Measuring Massive Multitask Language Understanding)]"
+                            "(https://arxiv.org/abs/2009.03300), and [TruthfulQA: Measuring How Models Mimic Human Falsehoods](https://arxiv.org/abs/2109.07958)."
+                        )
                         
                         model_table_view = gr.Dataframe(
                             value=table_data,
-                            headers=["Icon", "Model", "Avg.", "ARC", "HellaSwag", "MMLU", "TruthfulQA"],
-                            datatype=["markdown", "str", "number", "number", "number", "number", "number"],
-                            col_count=(7, "fixed"),
+                            headers=["Icon", "Model", "Params(B)", "Avg.", "ARC", "HellaSwag", "MMLU", "TruthfulQA"],
+                            datatype=["markdown", "str", "number", "number", "number", "number", "number", "number"],
+                            col_count=(8, "fixed"),
                             row_count=1,
                             wrap=True
                         )
@@ -979,7 +992,12 @@ def gradio_main(args):
             gr.Markdown("# Confirm the chosen model", elem_classes=["center"])
 
             with gr.Column(elem_id="container2"):
-                gr.Markdown("Please expect loading time to be longer than expected. Depending on the size of models, it will probably take from 100 to 1000 seconds or so. Please be patient.")
+                gr.Markdown(
+                    "Expect that loading time could take very long depending on the model type and the size of the model of your choice. "
+                    "Especially, if your model has not been downloaded yet, it will take very long time from downloading to loading up "
+                    "the model since each model's size varies between 13GB ~ 150GB. So expect loading time at least 100 seconds, and it "
+                    "could take more than several minitues."
+                )
 
                 with gr.Row():
                     model_image = gr.Image(None, interactive=False, show_label=False)
