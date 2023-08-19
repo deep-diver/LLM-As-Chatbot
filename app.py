@@ -244,7 +244,11 @@ def use_chosen_model():
     try:
         test = global_vars.model
     except AttributeError:
-        if global_vars.remote_addr.strip() == "":
+        try:
+            test2 = global_vars.remote_addr
+            if global_vars.remote_addr.strip() == "":
+                raise gr.Error("There is no previously chosen model")
+        except AttributeError:
             raise gr.Error("There is no previously chosen model")
 
     gen_config = global_vars.gen_config
@@ -259,7 +263,7 @@ def use_chosen_model():
         "Preparation done!",
         gr.update(visible=False),
         gr.update(visible=True),
-        gr.update(label=global_vars.model_type),
+        gr.update(label=global_vars.model_name),
         {
             "ppmanager_type": ppmanager_type,
             "model_type": global_vars.model_type,
