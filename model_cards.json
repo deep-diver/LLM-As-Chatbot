@@ -2703,5 +2703,32 @@
     "ollb_hellaswag": 84.41,
     "ollb_mmlu": 64.05,
     "ollb_truthfulqa": 54.81
+  },
+  "llama2-70b": {
+    "category": "<70B",
+    "display_name": "LLaMA2 Chat",
+    "thumb": "https://i.ibb.co/TtK8wPb/llama2.png",
+    "thumb-mid": "https://i.ibb.co/dDr1Kv7/llama2-mid.png",
+    "thumb-tiny": "https://i.ibb.co/yy9Fn7n/llama2-tiny.png",
+    "parameters": "70",
+    "vram(full)": "130308",
+    "vram(8bit)": "73792",
+    "vram(4bit)": "43476",
+    "vram(gptq)": "40708",
+    "hub(base)": "meta-llama/Llama-2-70b-chat-hf",
+    "hub(ckpt)": "N/A",
+    "hub(gptq)": "TheBloke/Llama-2-70B-chat-GPTQ",
+    "hub(gptq_base)": "gptq_model-4bit- -1g.safetensors",
+    "default_gen_config": "configs/response_configs/llama2.yaml",
+    "desc": "Llama 2 is a collection of pretrained and fine-tuned generative text models ranging in scale from 7 billion to 70 billion parameters. This is the repository for the 70B fine-tuned model, optimized for dialogue use cases and converted for the Hugging Face Transformers format. Links to other models can be found in the index at the bottom.",
+    "example1": [],
+    "example2": [],
+    "example3": [],
+    "example4": [],
+    "ollb_average": 66.8,
+    "ollb_arc": 64.59,
+    "ollb_hellaswag": 85.88,
+    "ollb_mmlu": 63.91,
+    "ollb_truthfulqa": 52.8
   }
 }

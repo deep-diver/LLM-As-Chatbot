@@ -132,6 +132,7 @@ def move_to_second_view_from_tb(tb, evt: gr.SelectData):
 
     # load_mode_list.append("cpu(gptq)")
     load_mode_list.append("cpu")
+    load_mode_list.append("remote(TGI)")
     
     print(info['hub(gptq_base)'])
     vram_req_gptq_in_gb = vram_req_gptq
@@ -243,7 +244,8 @@ def use_chosen_model():
     try:
         test = global_vars.model
     except AttributeError:
-        raise gr.Error("There is no previously chosen model")
+        if global_vars.remote_addr.strip() == "":
+            raise gr.Error("There is no previously chosen model")
 
     gen_config = global_vars.gen_config
     gen_sum_config = global_vars.gen_config_summarization
@@ -396,6 +398,7 @@ def move_to_second_view(btn):
 
     # load_mode_list.append("cpu(gptq)")
     load_mode_list.append("cpu")
+    load_mode_list.append("remote(TGI)")
     
     print(info['hub(gptq_base)'])
     vram_req_gptq_in_gb = vram_req_gptq
@@ -446,12 +449,16 @@ def download_completed(
     load_mode,
     thumbnail_tiny,
     force_download,
+    remote_addr,
+    remote_port,
+    remote_token
 ):
     global local_files_only
     
     print(model_gptq_base)
     
     tmp_args = types.SimpleNamespace()
+    tmp_args.model_name = model_name[4:-6]
     tmp_args.base_url = model_base.split(":")[-1].split("</p")[0].strip()
     tmp_args.ft_ckpt_url = model_ckpt.split(":")[-1].split("</p")[0].strip()
     tmp_args.gptq_url = model_gptq.split(":")[-1].split("</p")[0].strip()
@@ -469,9 +476,12 @@ def download_completed(
     tmp_args.mode_mps_gptq = True if load_mode == "apple silicon(gptq)" else False
     tmp_args.mode_cpu_gptq = True if load_mode == "cpu(gptq)" else False
     tmp_args.mode_full_gpu = True if load_mode == "gpu(half)" else False
+    tmp_args.mode_remote_tgi = True if load_mode == "remote(TGI)" else False
     tmp_args.local_files_only = local_files_only
     
-    print(tmp_args)
+    tmp_args.remote_addr = remote_addr
+    tmp_args.remote_port = remote_port
+    tmp_args.remote_token = remote_token
     
     try:
         global_vars.initialize_globals(tmp_args)
@@ -493,7 +503,7 @@ def move_to_third_view():
         "Preparation done!",
         gr.update(visible=False),
         gr.update(visible=True),
-        gr.update(label=global_vars.model_type),
+        gr.update(label=global_vars.model_name),
         {
             "ppmanager_type": ppmanager_type,
             "model_type": global_vars.model_type,
@@ -562,15 +572,20 @@ def gradio_main(args):
             gr.Markdown("# Chat with LLM", elem_classes=["center"])
             with gr.Row(elem_id="landing-container-selection"):
                 with gr.Column():
-                    gr.Markdown("""This is the landing page of the project, [LLM As Chatbot](https://github.com/deep-diver/LLM-As-Chatbot). This appliction is designed for personal use only. A single model will be selected at a time even if you open up a new browser or a tab. As an initial choice, please select one of the following menu""")
+                    gr.Markdown(
+                        "This is the landing page of the project, [LLM As Chatbot](https://github.com/deep-diver/LLM-As-Chatbot). "
+                        "This appliction is designed for personal use only. A single model will be selected at a time even if you "
+                        "open up a new browser or a tab. As an initial choice, please select one of the following menu"
+                    )
 
-                    gr.Markdown("""      
-**Bring your own model**: You can chat with arbitrary models. If your own custom model is based on 🤗 Hugging Face's [transformers](https://huggingface.co/docs/transformers/index) library, you will propbably be able to bring it into this application with this menu
-
-**Select a model from model pool**: You can chat with one of the popular open source Large Language Model
-
-**Use currently selected model**: If you have already selected, but if you came back to this landing page accidently, you can directly go back to the chatting mode with this menu                    
-""")                    
+                    gr.Markdown(
+                        "**Bring your own model**: You can chat with arbitrary models. If your own custom model is based on "
+                        "🤗 Hugging Face's [transformers](https://huggingface.co/docs/transformers/index) library, you will "
+                        "propbably be able to bring it into this application with this menu \n\n"
+                        "**Select a model from model pool**: You can chat with one of the popular open source Large Language Model \n\n"
+                        "**Use currently selected model**: If you have already selected, but if you came back to this landing page "
+                        "accidently, you can directly go back to the chatting mode with this menu"
+                    )                    
                     with gr.Row():
                         byom = gr.Button("custom model", elem_id="go-byom-select", elem_classes=["square", "landing-btn"])
                         select_model = gr.Button("model selection", elem_id="go-model-select", elem_classes=["square", "landing-btn"])
@@ -1040,6 +1055,12 @@ def gradio_main(args):
                             elem_classes=["load-mode-selector"]
                         )
                         force_redownload = gr.Checkbox(label="Force Re-download", interactive=False, visible=False)
+                        
+                    with gr.Column(visible=False) as remote_config_view:
+                        remote_addr = gr.Textbox("", label="address", placeholder="to destination")
+                        with gr.Row():
+                            remote_port = gr.Textbox("", label="port", placeholder="to destination")
+                            remote_token = gr.Textbox("", label="token", placeholder="for authorization")
 
                     with gr.Accordion("Example showcases", open=False):
                         with gr.Tab("Ex1"):
@@ -1249,6 +1270,12 @@ def gradio_main(args):
                     ]
                 )
 
+            load_mode.change(
+                lambda mode: gr.update(visible=True) if mode == "remote(TGI)" else gr.update(visible=False),
+                load_mode,
+                remote_config_view
+            )
+                
             select_model.click(
                 move_to_model_select_view,
                 None,
@@ -1310,7 +1337,8 @@ def gradio_main(args):
             ).then(
                 download_completed,
                 [model_name, model_base, model_ckpt, model_gptq, model_gptq_base,
-                 gen_config_path, gen_config_sum_path, load_mode, model_thumbnail_tiny, force_redownload],
+                 gen_config_path, gen_config_sum_path, load_mode, model_thumbnail_tiny, force_redownload,
+                 remote_addr, remote_port, remote_token],
                 [progress_view2]
             ).then(
                 lambda: "Model is fully loaded...", None, txt_view
@@ -1352,7 +1380,7 @@ def gradio_main(args):
             
             send_event = instruction_txtbox.submit(
                 central.chat_stream,
-                [idx, local_data, instruction_txtbox, chat_state,
+                [load_mode, idx, local_data, instruction_txtbox, chat_state,
                 global_context, ctx_num_lconv, ctx_sum_prompt,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,
@@ -1371,7 +1399,7 @@ def gradio_main(args):
                 [instruction_txtbox, chatbot, local_data, regenerate]
             ).then(
                 central.chat_stream,
-                [idx, local_data, instruction_txtbox, chat_state,
+                [load_mode, idx, local_data, instruction_txtbox, chat_state,
                 global_context, ctx_num_lconv, ctx_sum_prompt,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,

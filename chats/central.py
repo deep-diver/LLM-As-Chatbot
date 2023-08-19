@@ -19,7 +19,91 @@ from chats import llama2
 from chats import freewilly
 from chats import custom
 
-def chat_stream(
+import copy
+import json
+import requests
+import sseclient
+import global_vars
+from pingpong import PingPong
+from chats import remote_tgi
+from chats import pre, post
+from chats.utils import build_prompts, text_stream, internet_search
+
+async def chat_stream(
+    load_mode,    
+    idx, local_data, user_message, state,
+    global_context, ctx_num_lconv, ctx_sum_prompt,
+    res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+    sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,
+    internet_option, serper_api_key
+):
+    if "remote" in load_mode:
+        if internet_option == "on" and serper_api_key.strip() != "":       
+            internet_option = True
+        else:
+            internet_option = False        
+        
+        res = [
+          state["ppmanager_type"].from_json(json.dumps(ppm))
+          for ppm in local_data
+        ]
+
+        ppm = res[idx]
+
+        # add_ping returns a prompt structured in Alpaca form
+        ppm.add_pingpong(
+            PingPong(user_message, "")
+        )
+        prompt = build_prompts(ppm, global_context, ctx_num_lconv)
+
+        #######
+        print("internet_option", internet_option)
+        if internet_option:
+            search_prompt = None
+            for tmp_prompt, uis in internet_search(ppm, serper_api_key, global_context, ctx_num_lconv):
+                search_prompt = tmp_prompt
+                yield "", uis, prompt, str(res)
+                
+        count = 0
+                
+        async for result in remote_tgi.gen_text(
+            prompt, 
+            remote_addr=global_vars.remote_addr, 
+            remote_port=global_vars.remote_port, 
+            remote_token=global_vars.remote_token,
+            parameters={
+                'max_new_tokens': res_mnts,
+                'do_sample': res_sample,
+                'return_full_text': False,
+                'temperature': res_temp,
+                'top_k': res_topk,
+                # 'top_p": res_topp
+                'repetition_penalty': res_rpen           
+            }
+        ):
+            if count == 0:
+                ppm.append_pong(f"![]({global_vars.model_thumbnail_tiny})***[{global_vars.model_name}]***\n")
+                count = count + 1
+                
+            ppm.append_pong(result)
+            yield "", ppm.build_uis(), prompt, str(res)
+
+        ppm = post.strip_pong(ppm)
+        yield "", ppm.build_uis(), prompt, str(res)
+        
+    else:
+        cs = sync_chat_stream(
+            idx, local_data, user_message, state, 
+            global_context, ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,
+            internet_option, serper_api_key            
+        )
+        
+        for idx, x in enumerate(cs):
+            yield x 
+
+def sync_chat_stream(
     idx, local_data, user_message, state, 
     global_context, ctx_num_lconv, ctx_sum_prompt,
     res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
@@ -394,5 +478,5 @@ def chat_stream(
         )        
         
     for idx, x in enumerate(cs):
-        yield x        
+        yield x 
         
