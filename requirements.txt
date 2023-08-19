@@ -17,3 +17,4 @@ tiktoken
 discord
 urlextract
 auto-gptq
+sseclient-py
