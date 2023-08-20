@@ -13,9 +13,11 @@ async def gen_text(
         remote_addr = f"{remote_addr}:{remote_port}"
         
     headers={
-      'Authorization': f'Bearer {remote_token}',
       'Content-type': 'application/json'
     }
+    if remote_token is not None:
+        headers["Authorization"] = f'Bearer {remote_token}'
+
     data = {
       'inputs': prompt,
       'stream': True,

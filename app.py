@@ -1384,7 +1384,7 @@ def gradio_main(args):
             
             send_event = instruction_txtbox.submit(
                 central.chat_stream,
-                [load_mode, idx, local_data, instruction_txtbox, chat_state,
+                [idx, local_data, instruction_txtbox, chat_state,
                 global_context, ctx_num_lconv, ctx_sum_prompt,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,
@@ -1403,7 +1403,7 @@ def gradio_main(args):
                 [instruction_txtbox, chatbot, local_data, regenerate]
             ).then(
                 central.chat_stream,
-                [load_mode, idx, local_data, instruction_txtbox, chat_state,
+                [idx, local_data, instruction_txtbox, chat_state,
                 global_context, ctx_num_lconv, ctx_sum_prompt,
                 res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
                 sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,
