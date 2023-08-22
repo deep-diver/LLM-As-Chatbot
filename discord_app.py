@@ -44,8 +44,6 @@ async def build_prompt_and_reply(executor, user_name, user_id):
     user_msg, user_args = parse_req(
         msg.content.replace(f"@{user_name} ", "").replace(f"<@{user_id}> ", ""), global_vars.gen_config
     )
-    user_args.tgi_server_addr = tgi_server_addr
-    user_args.tgi_server_port = tgi_server_port
     
     if user_msg == "help":
         await msg.channel.send(helps.get_help())
@@ -69,9 +67,12 @@ async def build_prompt_and_reply(executor, user_name, user_id):
                     ctx_include=False,
                     win_size=user_args["max-windows"]
                 )
-                internet_search_prompt_response = await loop.run_in_executor(
-                    executor, gen_method, internet_search_prompt, user_args
-                )
+                if tgi_server_addr is None:
+                    internet_search_prompt_response = await loop.run_in_executor(
+                        executor, gen_method, internet_search_prompt, user_args
+                    )
+                else:
+                    internet_search_prompt_response = await gen_method(internet_search_prompt, user_args)
                 internet_search_prompt_response = post.clean(internet_search_prompt_response)
 
                 ppm.pingpongs[-1].ping = internet_search_prompt_response
@@ -115,8 +116,11 @@ async def build_prompt_and_reply(executor, user_name, user_id):
                             break
 
             prompt = await build_prompt(ppm, win_size=user_args["max-windows"])
-            response = await loop.run_in_executor(executor, gen_method, prompt, user_args)
-            response = post.clean(response)
+            if tgi_server_addr is None:
+                response = await loop.run_in_executor(executor, gen_method, prompt, user_args)
+                response = post.clean(response)
+            else:
+                response = await gen_method(prompt, user_args)
 
             response = f"**{model_name}** 💬\n{response.strip()}"
             if len(response) >= max_response_length:
@@ -217,16 +221,10 @@ def discord_main(args):
     tgi_server_addr = None
     tgi_server_port = None
     
-    if args.tgi_server_addr is not None and \
-        args.tgi_server_port is not None:
-        tgi_server_addr = args.tgi_server_addr
-        tgi_server_port = args.tgi_server_port
-        
-        gen_method = tgi_gen
-    
     selected_model_info = model_info[model_name]
     
     tmp_args = types.SimpleNamespace()
+    tmp_args.model_name = args.model_name
     tmp_args.base_url = selected_model_info['hub(base)']
     tmp_args.ft_ckpt_url = selected_model_info['hub(ckpt)']
     tmp_args.gptq_url = None
@@ -244,8 +242,22 @@ def discord_main(args):
     tmp_args.mode_gptq = False
     tmp_args.mode_mps_gptq = False
     tmp_args.mode_cpu_gptq = False
+    tmp_args.mode_remote_tgi = False
     tmp_args.local_files_only = args.local_files_only
     
+    if args.tgi_server_addr is not None and \
+        args.tgi_server_port is not None:
+        
+        tgi_server_addr = args.tgi_server_addr
+        tgi_server_port = args.tgi_server_port
+        
+        tmp_args.mode_remote_tgi = True
+        tmp_args.remote_addr = args.tgi_server_addr
+        tmp_args.remote_port = args.tgi_server_port
+        tmp_args.remote_token = None
+        
+        gen_method = tgi_gen
+        
     try:
         global_vars.initialize_globals(tmp_args)
     except RuntimeError as e:

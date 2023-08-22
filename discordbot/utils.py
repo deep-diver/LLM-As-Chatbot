@@ -12,6 +12,75 @@ from pingpong.baize import BaizeChatPPManager
 from pingpong.pingpong import PPManager
 from pingpong.pingpong import PromptFmt
 
+class PuffinChatPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""{context}
+
+"""
+    
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""### human: {ping}
+
+### response: {pong}
+"""    
+
+class PuffinChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=PuffinChatPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results
+
+##
+
+class UpstageLLaMAChatPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""### System:
+{context}
+
+"""
+    
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size]
+        return f"""### User:
+{ping} 
+
+### Assistant:
+{pong}
+"""    
+
+class UpstageLLaMAChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=UpstageLLaMAChatPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results
+
+##
+
 class FreeWillyChatPromptFmt(PromptFmt):
     @classmethod
     def ctx(cls, context):
@@ -334,14 +403,55 @@ def get_chat_manager(model_type):
         return LLaMA2ChatPPManager()
     elif model_type == "upstage-llama":
         return AlpacaChatPPManager()
-    elif model_type =="free-willy":
-        return FreeWillyChatPPManager()    
+    elif model_type == "upstage-llama2":
+        return UpstageLLaMAChatPPManager()
+    elif model_type =="stable-beluga2":
+        return FreeWillyChatPPManager()
+    elif model_type == "puffin":
+        return PuffinChatPPManager()
+    elif model_type == "platypus2":
+        return AlpacaChatPPManager()
     else:
         return None
 
 def get_global_context(model_type):
-    if model_type == "free-willy":
-        return """You are Free Willy, an AI that follows instructions extremely well. Help as much as you can. Remember, be safe, and don't do anything illegal."""    
+    if model_type == "stable-beluga2":
+        return """You are Free Willy, an AI that follows instructions extremely well. Help as much as you can. Remember, be safe, and don't do anything illegal."""
+    elif model_type == "upstage-llama2":
+        return """A chat between a curious user and an artificial intelligence assistant.
+The assistant gives helpful, detailed, and polite answers to the user's questions.
+"""
+    elif model_type == "upstage-llama":
+        return """Below are a series of dialogues between human and an AI assistant.
+The AI tries to answer the given instruction as in response.
+The AI MUST not generate any text containing `### Response` or `### Instruction`.
+The AI MUST be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable.
+The assistant MUST be happy to help with almost anything, and will do its best to understand exactly what is needed.
+It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
+That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
+"""
+    elif model_type == "platypus2":
+        return """Below are a series of dialogues between human and an AI assistant.
+The AI tries to answer the given instruction as in response.
+The AI MUST not generate any text containing `### Response` or `### Instruction`.
+The AI MUST be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable.
+The assistant MUST be happy to help with almost anything, and will do its best to understand exactly what is needed.
+It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
+That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
+"""
+    elif model_type == "llama2":
+        return """\
+You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
+
+If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
+
+In each conversation, question is placed after [INST] while your answer should be placed after [/INST]. By looking [INST] and [/INST], you must consider multi-turn conversations."""    
+    elif model_type == "xgen":
+        return """A chat between a curious human and an artificial intelligence assistant.
+The assistant gives helpful, detailed, and polite answers to the human's questions."""
+    elif model_type == "orcamini":
+        return """You are an AI assistant that follows instruction extremely well. Help as much as you can.
+"""
     elif model_type == "upstage-llama":
         return """Below are a series of dialogues between human and an AI assistant.
 The AI tries to answer the given instruction as in response.
@@ -351,19 +461,6 @@ The assistant MUST be happy to help with almost anything, and will do its best t
 It also MUST avoid giving false or misleading information, and it caveats when it isn’t entirely sure about the right answer.
 That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
 """        
-    elif model_type == "llama2":
-        return """\
-You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
-
-If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
-
-In each conversation, question is placed after [INST] while your answer should be placed after [/INST]. By looking [INST] and [/INST], you must consider multi-turn conversations."""
-    elif model_type == "xgen":
-        return """A chat between a curious human and an artificial intelligence assistant.
-The assistant gives helpful, detailed, and polite answers to the human's questions."""
-    elif model_type == "orcamini":
-        return """You are an AI assistant that follows instruction extremely well. Help as much as you can.
-"""
     elif model_type == "alpaca":
         return """Below are a series of dialogues between human and an AI assistant.
 The AI tries to answer the given instruction as in response.
@@ -479,7 +576,7 @@ The assistant gives helpful, detailed, and polite answers to the user's question
         return """A chat between a curious user and an artificial intelligence assistant.
 The assistant gives helpful, detailed, and polite answers to the user's questions.
 """
-    elif model_type == "wizardlm":
+    elif model_type == "wizardlm" or model_type == "wizardlm2":
         return """A chat between a curious user and an artificial intelligence assistant.
 The assistant gives helpful, detailed, and polite answers to the user's questions.
 """
@@ -539,6 +636,8 @@ It also MUST avoid giving false or misleading information, and it caveats when i
 That said, the assistant is practical and really does its best, and doesn’t let caution get too much in the way of being useful.
 """
     elif model_type == "wizard_falcon":
+        return ""
+    elif model_type == "puffin":
         return ""
     elif model_type == "samantha-vicuna":
         return "You are Samantha, a sentient AI."
