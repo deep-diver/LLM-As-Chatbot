@@ -36,7 +36,7 @@ async def chat_stream(
     sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid,
     internet_option, serper_api_key
 ):
-    if global_vars.remote_addr != "":
+    if global_vars.remote_addr is not None and global_vars.remote_addr != "":
         if internet_option == "on" and serper_api_key.strip() != "":       
             internet_option = True
         else:
@@ -161,15 +161,18 @@ def sync_chat_stream(
             internet_option, serper_api_key
         )
     
-    elif model_type == "llama2":
+    elif model_type == "llama2" or \
+        model_type == "codellama" or \
+        model_type == "llama2-70b" or \
+        model_type == "codellama2-70b":
         cs = llama2.chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
             res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
             sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
             internet_option, serper_api_key
-        )        
-    
+        )
+        
     elif model_type == "xgen":
         cs = xgen.chat_stream(
             idx, local_data, user_message, state,
@@ -224,6 +227,15 @@ def sync_chat_stream(
             internet_option, serper_api_key
         )
         
+    elif model_type == "godzilla2":
+        cs = alpaca.chat_stream(
+            idx, local_data, user_message, state,
+            global_context, ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
+        )
+        
     elif model_type == "openllama":
         cs = alpaca.chat_stream(
             idx, local_data, user_message, state,
@@ -234,6 +246,15 @@ def sync_chat_stream(
         )
         
     elif model_type == "orcamini":
+        cs = alpaca.chat_stream(
+            idx, local_data, user_message, state,
+            global_context, ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
+        )
+        
+    elif model_type == "orcamini2":
         cs = alpaca.chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,
@@ -259,6 +280,15 @@ def sync_chat_stream(
             sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
             internet_option, serper_api_key
         )
+        
+    elif model_type == "nous-hermes2":
+        cs = alpaca.chat_stream(
+            idx, local_data, user_message, state,
+            global_context, ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
+        )        
 
     elif model_type == "replit-instruct":
         cs = alpaca.chat_stream(
@@ -387,6 +417,15 @@ def sync_chat_stream(
         )
         
     elif model_type == "samantha-vicuna":
+        cs = vicuna.chat_stream(
+            idx, local_data, user_message, state,
+            global_context, ctx_num_lconv, ctx_sum_prompt,
+            res_temp, res_topp, res_topk, res_rpen, res_mnts, res_beams, res_cache, res_sample, res_eosid, res_padid,
+            sum_temp, sum_topp, sum_topk, sum_rpen, sum_mnts, sum_beams, sum_cache, sum_sample, sum_eosid, sum_padid, 
+            internet_option, serper_api_key
+        )
+        
+    elif model_type == "samantha2":
         cs = vicuna.chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,

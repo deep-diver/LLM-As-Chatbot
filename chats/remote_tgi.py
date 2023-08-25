@@ -15,7 +15,7 @@ async def gen_text(
     headers={
       'Content-type': 'application/json'
     }
-    if remote_token is not None:
+    if remote_token is not None and remote_token != "":
         headers["Authorization"] = f'Bearer {remote_token}'
 
     data = {

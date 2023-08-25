@@ -69,7 +69,19 @@ def initialize_globals(args):
     
     model_type_tmp = "alpaca"
     print(args.base_url.lower())
-    if "wizardlm/wizardlm-70b" in args.base_url.lower():
+    if "meta-llama/llama-2-70b-hf" in args.base_url.lower():
+        model_type_tmp = "llama2-70b"
+    elif "codellama/codellama-34b-instruct-hf" in args.base_url.lower():
+        model_type_tmp = "codellama2-70b"
+    elif "nousresearch/nous-hermes-llama2-70b" in args.base_url.lower():
+        model_type_tmp = "nous-hermes2"
+    elif "mayaph/godzilla2-70b" in args.base_url.lower():
+        model_type_tmp = "godzilla2"
+    elif "ehartford/samantha-1.11-70b" in args.base_url.lower():
+        model_type_tmp = "samantha2"
+    elif "psmathur/orca_mini_v3_70b" in args.base_url.lower():
+        model_type_tmp = "orcamini2"
+    elif "wizardlm/wizardlm-70b" in args.base_url.lower():
         model_type_tmp = "wizardlm2"
     elif "garage-baind/platypus2-70b" in args.base_url.lower():
         model_type_tmp = "platypus2"
@@ -81,6 +93,8 @@ def initialize_globals(args):
         model_type_tmp = "upstage-llama2"
     elif "upstage/llama-" in args.base_url.lower():
         model_type_tmp = "upstage-llama"
+    elif "codellama/codellama-" in args.base_url.lower():
+        model_type_tmp = "codellama"        
     elif "llama-2" in args.base_url.lower():
         model_type_tmp = "llama2"
     elif "xgen" in args.base_url.lower():
@@ -192,6 +206,9 @@ def initialize_globals(args):
 
     model_type = model_type_tmp
     model_name = args.model_name
+    remote_addr = None
+    remote_port = None
+    remote_token = None
     
     if not args.mode_remote_tgi:
         load_model = get_load_model(model_type_tmp)
@@ -234,12 +251,19 @@ def get_load_model(model_type):
         model_type == "orcamini" or \
         model_type == "llama2" or \
         model_type == "upstage-llama" or \
-        model_type == "puffin":
+        model_type == "puffin" or \
+        model_type == "codellama":
         return alpaca.load_model
     elif model_type == "stable-beluga2" or \
         model_type == "upstage-llama2" or \
         model_type == "platypus2" or \
-        model_type == "wizardlm2":
+        model_type == "wizardlm2" or \
+        model_type == "orcamini2" or \
+        model_type == "samantha2" or \
+        model_type == "godzilla2" or \
+        model_type == "nous-hermes2" or \
+        model_type == "llama2-70b" or \
+        model_type == "codellama2-70b":
         return freewilly.load_model
     elif model_type == "stablelm" or model_type == "os-stablelm":
         return stablelm.load_model
