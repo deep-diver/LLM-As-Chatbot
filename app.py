@@ -442,6 +442,13 @@ def move_to_second_view(btn):
 def move_to_first_view():
     return (gr.update(visible=True), gr.update(visible=False))
 
+def clean_up(model_base):
+    pattern = r":\s*(\w+/[\w-]+)"
+    match = re.search(pattern, model_base)
+
+    result = match.group(1) if match else None
+    return result
+
 def download_completed(
     model_name,
     model_base,
@@ -461,10 +468,19 @@ def download_completed(
     
     print(f"model_name: {model_name}")
     print(f"model_base: {model_base}")
+    model_name = model_name.replace("<h2>","").replace("</h2>","").strip()
+    model_base = clean_up(model_base)
+    model_ckpt = clean_up(model_ckpt)
+    model_gptq = clean_up(model_gptq)
+    
+    print(f"model_name_after: {model_name}")
+    print(f"model_base_after: {model_base}")
+    print(f"model_check_after: {model_ckpt}")
+    print(f"model_gptq_after: {model_gptq}")
     
     tmp_args = types.SimpleNamespace()
-    tmp_args.model_name = model_name[3:]
-    tmp_args.base_url = model_base.split(":")[-1].strip()
+    tmp_args.model_name = model_name
+    tmp_args.base_url = model_base
     tmp_args.ft_ckpt_url = model_ckpt.split(":")[-1].strip()
     tmp_args.gptq_url = model_gptq.split(":")[-1].strip()
     tmp_args.gptq_base_url = model_gptq_base.split(":")[-1].strip().replace(' ', '')
@@ -487,6 +503,8 @@ def download_completed(
     tmp_args.remote_addr = remote_addr
     tmp_args.remote_port = remote_port
     tmp_args.remote_token = remote_token
+
+    print("tmp_args",tmp_args)
     
     try:
         global_vars.initialize_globals(tmp_args)
