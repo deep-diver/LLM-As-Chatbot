@@ -5,11 +5,11 @@ loralib
 sentencepiece
 git+https://github.com/huggingface/transformers.git
 git+https://github.com/huggingface/peft.git
-gradio
+gradio<4.0.0
 bingbong
 git+https://github.com/huggingface/optimum.git
 git+https://github.com/huggingface/accelerate.git
-tokenizers==0.13.3
+tokenizers>=0.14.0
 einops
 scipy
 protobuf==3.20.*
@@ -18,3 +18,4 @@ discord
 urlextract
 auto-gptq
 sseclient-py
+text-generation
