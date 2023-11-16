@@ -1524,7 +1524,7 @@
     "vram(8bit)": "8254",
     "vram(4bit)": "5140",
     "vram(gptq)": "N/A",
-    "hub(base)": "NousResearch/Nous-Hermes-Llama2-7b",
+    "hub(base)": "NousResearch/Nous-Hermes-Llama-2-7b",
     "hub(ckpt)": "N/A",
     "hub(gptq)": "N/A",
     "hub(gptq_base)": "N/A",
