@@ -28,7 +28,7 @@ def text_stream(ppmanager, streamer):
     
     for new_text in streamer:
         if count == 0:
-            ppmanager.append_pong(f"![]({global_vars.model_thumbnail_tiny})***[{global_vars.model_name}]***\n")
+            ppmanager.append_pong(f"![]({global_vars.model_thumbnail_tiny})***[{global_vars.model_name}]***\n\n")
             count = count + 1
             
         ppmanager.append_pong(new_text)
