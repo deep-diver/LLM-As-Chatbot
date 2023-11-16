@@ -632,7 +632,7 @@ def gradio_main(args):
                             datatype=["markdown", "str", "number", "number", "number", "number", "number", "number"],
                             col_count=(8, "fixed"),
                             row_count=1,
-                            max_rows=10,
+                            height=1000,
                             interactive=False,
                             wrap=True
                         )
@@ -1151,7 +1151,7 @@ def gradio_main(args):
                     with gr.Column(
                         elem_id="initial-popup", visible=False
                     ) as example_block:
-                        with gr.Row(scale=1):
+                        with gr.Row():
                             with gr.Column(elem_id="initial-popup-left-pane"):
                                 gr.Markdown("GradioChat", elem_id="initial-popup-title")
                                 gr.Markdown("Making the community's best AI chat models available to everyone.")
@@ -1405,7 +1405,7 @@ def gradio_main(args):
                     [chatbot, idx, example_block, regenerate]
                 ).then(
                     None, btn, None, 
-                    _js=UPDATE_LEFT_BTNS_STATE        
+                    js=UPDATE_LEFT_BTNS_STATE        
                 )
             
             for btn in ex_btns:
@@ -1436,7 +1436,7 @@ def gradio_main(args):
             
             instruction_txtbox.submit(
                 None, local_data, None, 
-                _js="(v)=>{ setStorage('local_data',v) }"
+                js="(v)=>{ setStorage('local_data',v) }"
             )
     
             regenerate.click(
@@ -1457,7 +1457,7 @@ def gradio_main(args):
                 regenerate
             ).then(
                 None, local_data, None, 
-                _js="(v)=>{ setStorage('local_data',v) }"  
+                js="(v)=>{ setStorage('local_data',v) }"  
             )
             
             stop.click(
@@ -1471,7 +1471,7 @@ def gradio_main(args):
                 [instruction_txtbox, chatbot, local_data, example_block, regenerate]
             ).then(
                 None, local_data, None, 
-                _js="(v)=>{ setStorage('local_data',v) }"
+                js="(v)=>{ setStorage('local_data',v) }"
             )
 
             chat_back_btn.click(
@@ -1485,7 +1485,7 @@ def gradio_main(args):
                 inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
                 outputs=[template_md],
                 show_progress=False,
-                _js=UPDATE_PLACEHOLDERS,
+                js=UPDATE_PLACEHOLDERS,
                 fn=None
             )
 
@@ -1493,7 +1493,7 @@ def gradio_main(args):
                 inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
                 outputs=[template_md],
                 show_progress=False,
-                _js=UPDATE_PLACEHOLDERS,
+                js=UPDATE_PLACEHOLDERS,
                 fn=None
             )
 
@@ -1501,7 +1501,7 @@ def gradio_main(args):
                 inputs=[template_txt, placeholder_txt1, placeholder_txt2, placeholder_txt3],
                 outputs=[template_md],
                 show_progress=False,
-                _js=UPDATE_PLACEHOLDERS,
+                js=UPDATE_PLACEHOLDERS,
                 fn=None
             )
 
@@ -1527,7 +1527,7 @@ def gradio_main(args):
               None,
               inputs=None,
               outputs=[chatbot, local_data],
-              _js=GET_LOCAL_STORAGE,
+              js=GET_LOCAL_STORAGE,
             ) 
             
     demo.queue().launch(

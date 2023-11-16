@@ -5,7 +5,7 @@ loralib
 sentencepiece
 git+https://github.com/huggingface/transformers.git
 git+https://github.com/huggingface/peft.git
-gradio<4.0.0
+gradio
 bingbong
 git+https://github.com/huggingface/optimum.git
 git+https://github.com/huggingface/accelerate.git
