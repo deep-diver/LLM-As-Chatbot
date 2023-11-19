@@ -6,6 +6,7 @@ from models import alpaca, stablelm, koalpaca, flan_alpaca, mpt
 from models import camel, t5_vicuna, vicuna, starchat, redpajama, bloom
 from models import baize, guanaco, falcon, kullm, replit, airoboros
 from models import samantha_vicuna, wizard_coder, xgen, freewilly
+from models import mistral
 from models import byom
 
 cuda_availability = False
@@ -69,7 +70,11 @@ def initialize_globals(args):
     
     model_type_tmp = "alpaca"
     print(args.base_url.lower())
-    if "meta-llama/llama-2-70b-hf" in args.base_url.lower():
+    if "mistralai/mistral" in args.base_url.lower():
+        model_type_tmp = "mistral"
+    elif "huggingfaceh4/zephyr" in args.base_url.lower():
+        model_type_tmp = "zephyr"
+    elif "meta-llama/llama-2-70b-hf" in args.base_url.lower():
         model_type_tmp = "llama2-70b"
     elif "codellama/codellama-34b-instruct-hf" in args.base_url.lower():
         model_type_tmp = "codellama2-70b"
@@ -309,6 +314,10 @@ def get_load_model(model_type):
         return samantha_vicuna.load_model
     elif model_type == "xgen":
         return xgen.load_model
+    elif model_type == "mistral":
+        return mistral.load_model
+    elif model_type == "zephyr":
+        return mistral.load_model
     else:
         return None
     

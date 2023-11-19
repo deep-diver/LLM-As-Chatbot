@@ -641,44 +641,12 @@ def gradio_main(args):
                         gr.Markdown("## Recent Releases")
                         with gr.Row(elem_classes=["sub-container"]):
                             with gr.Column(min_width=20):
-                                codellama_7b_rr = gr.Button("codellama-7b", elem_id="codellama-7b", elem_classes=["square"])
-                                gr.Markdown("Code LLaMA (7B)", elem_classes=["center"])
-                                
-                            with gr.Column(min_width=20):
-                                codellama_13b_rr = gr.Button("codellama-13b", elem_id="codellama-13b", elem_classes=["square"])
-                                gr.Markdown("Code LLaMA (13B)", elem_classes=["center"])
-                                
-                            with gr.Column(min_width=20):
-                                codellama_34b_rr = gr.Button("codellama-34b", elem_id="codellama-34b", elem_classes=["square"])
-                                gr.Markdown("Code LLaMA (34B)", elem_classes=["center"])
-                                
-                            with gr.Column(min_width=20):
-                                upstage_llama2_70b_2_rr = gr.Button("upstage-llama2-70b-2", elem_id="upstage-llama2-70b-2", elem_classes=["square"])
-                                gr.Markdown("Upstage2 v2 (70B)", elem_classes=["center"])
+                                mistral_7b_rr = gr.Button("mistral-7b", elem_id="mistral-7b", elem_classes=["square"])
+                                gr.Markdown("Mistral (7B)", elem_classes=["center"])
 
                             with gr.Column(min_width=20):
-                                platypus2_70b_rr = gr.Button("platypus2-70b", elem_id="platypus2-70b", elem_classes=["square"])
-                                gr.Markdown("Platypus2 (70B)", elem_classes=["center"])
-
-                            with gr.Column(min_width=20):
-                                wizardlm_70b_rr = gr.Button("wizardlm-70b", elem_id="wizardlm-70b", elem_classes=["square"])
-                                gr.Markdown("WizardLM (70B)", elem_classes=["center"])
-
-                            with gr.Column(min_width=20):
-                                orcamini_70b_rr = gr.Button("orcamini-70b", elem_id="orcamini-70b", elem_classes=["square"])
-                                gr.Markdown("Orca Mini (70B)", elem_classes=["center"])
-                                
-                            with gr.Column(min_width=20):
-                                samantha_70b_rr = gr.Button("samantha-70b", elem_id="samantha-70b", elem_classes=["square"])
-                                gr.Markdown("Samantha (70B)", elem_classes=["center"])
-                                
-                            with gr.Column(min_width=20):
-                                godzilla_70b_rr = gr.Button("godzilla-70b", elem_id="godzilla-70b", elem_classes=["square"])
-                                gr.Markdown("GadziLLa (70B)", elem_classes=["center"])
-                                
-                            with gr.Column(min_width=20):
-                                nous_hermes_70b_rr = gr.Button("nous-hermes-70b", elem_id="nous-hermes-70b", elem_classes=["square"])
-                                gr.Markdown("Nous Hermes 2 (70B)", elem_classes=["center"])
+                                zephyr_7b_rr = gr.Button("zephyr-7b", elem_id="zephyr-7b", elem_classes=["square"])
+                                gr.Markdown("Zephyr (7B)", elem_classes=["center"])
                                 
                     with gr.Column(visible=False) as full_section:                            
                         gr.Markdown("## ~ 10B Parameters")
@@ -790,6 +758,14 @@ def gradio_main(args):
                             with gr.Column(min_width=20):
                                 codellama_7b = gr.Button("codellama-7b", elem_id="codellama-7b", elem_classes=["square"])
                                 gr.Markdown("Code LLaMA", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                mistral_7b = gr.Button("mistral-7b", elem_id="mistral-7b", elem_classes=["square"])
+                                gr.Markdown("Mistral", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                zephyr_7b = gr.Button("zephyr-7b", elem_id="zephyr-7b", elem_classes=["square"])
+                                gr.Markdown("Zephyr", elem_classes=["center"])
 
                         gr.Markdown("## ~ 20B Parameters")
                         with gr.Row(elem_classes=["sub-container"]):
@@ -1285,7 +1261,7 @@ def gradio_main(args):
                 gpt4_alpaca_7b, os_stablelm7b, mpt_7b, redpajama_7b, redpajama_instruct_7b, llama_deus_7b, 
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b, vicuna_7b_1_3,
                 falcon_7b, wizard_falcon_7b, airoboros_7b, samantha_7b, openllama_7b, orcamini_7b,
-                xgen_7b, llama2_7b, nous_hermes_7b_v2, codellama_7b,
+                xgen_7b, llama2_7b, nous_hermes_7b_v2, codellama_7b, mistral_7b, zephyr_7b,
                 
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
@@ -1299,8 +1275,7 @@ def gradio_main(args):
                 stable_beluga2_70b, upstage_llama2_70b, upstage_llama2_70b_2, platypus2_70b, wizardlm_70b, orcamini_70b,
                 samantha_70b, godzilla_70b, nous_hermes_70b,
                 
-                codellama_7b_rr, codellama_13b_rr, codellama_34b_rr, upstage_llama2_70b_2_rr, platypus2_70b_rr, 
-                wizardlm_70b_rr, orcamini_70b_rr, samantha_70b_rr, godzilla_70b_rr, nous_hermes_70b_rr
+                mistral_7b_rr, zephyr_7b_rr
             ]
             for btn in btns:
                 btn.click(

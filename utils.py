@@ -12,6 +12,7 @@ from chats import alpacoom
 from chats import baize
 from chats import guanaco
 from chats import falcon
+from chats import mistral
 
 from pingpong.gradio import GradioAlpacaChatPPManager
 from pingpong.gradio import GradioKoAlpacaChatPPManager
@@ -28,6 +29,95 @@ from pingpong.pingpong import PPManager
 from pingpong.pingpong import PromptFmt
 from pingpong.pingpong import UIFmt
 from pingpong.gradio import GradioChatUIFmt
+
+class ZephyrChatPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""<|system|>
+{context}</s>
+"""
+    
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None or pingpong.pong == "" else pingpong.pong[:truncate_size] + "</s>"
+        return f"""<|user|>
+{ping}</s>
+<|assistant|>
+{pong}
+"""
+
+class ZephyrChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=ZephyrChatPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results        
+
+class GradioZephyrChatPPManager(ZephyrChatPPManager):
+    def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+        
+        results = []
+        
+        for pingpong in self.pingpongs[from_idx:to_idx]:
+            results.append(fmt.ui(pingpong))
+            
+        return results  
+
+##
+
+class MistralChatPromptFmt(PromptFmt):
+    @classmethod
+    def ctx(cls, context):
+        if context is None or context == "":
+            return ""
+        else:
+            return f"""{context}
+
+"""
+    
+    @classmethod
+    def prompt(cls, pingpong, truncate_size):
+        ping = pingpong.ping[:truncate_size]
+        pong = "" if pingpong.pong is None else pingpong.pong[:truncate_size] + "</s>"
+        return f"""<s>[INST] {ping} [/INST] {pong}
+"""    
+
+class MistralChatPPManager(PPManager):
+    def build_prompts(self, from_idx: int=0, to_idx: int=-1, fmt: PromptFmt=MistralChatPromptFmt, truncate_size: int=None):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+            
+        results = fmt.ctx(self.ctx)
+        
+        for idx, pingpong in enumerate(self.pingpongs[from_idx:to_idx]):
+            results += fmt.prompt(pingpong, truncate_size=truncate_size)
+            
+        return results        
+
+class GradioMistralChatPPManager(MistralChatPPManager):
+    def build_uis(self, from_idx: int=0, to_idx: int=-1, fmt: UIFmt=GradioChatUIFmt):
+        if to_idx == -1 or to_idx >= len(self.pingpongs):
+            to_idx = len(self.pingpongs)
+        
+        results = []
+        
+        for pingpong in self.pingpongs[from_idx:to_idx]:
+            results.append(fmt.ui(pingpong))
+            
+        return results  
+
+##
 
 class PuffinChatPromptFmt(PromptFmt):
     @classmethod
@@ -594,11 +684,17 @@ def get_chat_manager(model_type):
         return GradioAlpacaChatPPManager()
     elif model_type == "godzilla2":
         return GradioAlpacaChatPPManager()
+    elif model_type == "mistral" or model_type == "zephyr":
+        return GradioZephyrChatPPManager()
     else:
         return None
 
 def get_global_context(model_type):
-    if model_type == "stable-beluga2":
+    if model_type == "mistral":
+        return ""
+    elif model_type == "zephyr":
+        return "You are a friendly chatbot who always responds in the style of a pirate."
+    elif model_type == "stable-beluga2":
         return """You are Free Willy, an AI that follows instructions extremely well. Help as much as you can. Remember, be safe, and don't do anything illegal."""
     elif model_type == "upstage-llama2":
         return """A chat between a curious user and an artificial intelligence assistant.
