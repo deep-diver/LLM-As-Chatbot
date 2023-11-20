@@ -647,6 +647,18 @@ def gradio_main(args):
                             with gr.Column(min_width=20):
                                 zephyr_7b_rr = gr.Button("zephyr-7b", elem_id="zephyr-7b", elem_classes=["square"])
                                 gr.Markdown("Zephyr (7B)", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                mistral_trismegistus_7b_rr = gr.Button("mistral-trismegistus-7b", elem_id="mistral-trismegistus-7b", elem_classes=["square"])
+                                gr.Markdown("Mistral Trismegistus (7B)", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                hermes_trismegistus_7b_rr = gr.Button("hermes-trismegistus-7b", elem_id="hermes-trismegistus-7b", elem_classes=["square"])
+                                gr.Markdown("Hermes Trismegistus (7B)", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                mistral_openhermes_2_5_7b_rr = gr.Button("mistral-openherems-2-5-7b", elem_id="mistral-openherems-2-5-7b", elem_classes=["square"])
+                                gr.Markdown("Mistral OpenHermes 2.5 (7B)", elem_classes=["center"])
                                 
                     with gr.Column(visible=False) as full_section:                            
                         gr.Markdown("## ~ 10B Parameters")
@@ -766,6 +778,18 @@ def gradio_main(args):
                             with gr.Column(min_width=20):
                                 zephyr_7b = gr.Button("zephyr-7b", elem_id="zephyr-7b", elem_classes=["square"])
                                 gr.Markdown("Zephyr", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                mistral_trismegistus_7b = gr.Button("mistral-trismegistus-7b", elem_id="mistral-trismegistus-7b", elem_classes=["square"])
+                                gr.Markdown("Mistral Trismegistus (7B)", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                hermes_trismegistus_7b = gr.Button("hermes-trismegistus-7b", elem_id="hermes-trismegistus-7b", elem_classes=["square"])
+                                gr.Markdown("Hermes Trismegistus (7B)", elem_classes=["center"])
+
+                            with gr.Column(min_width=20):
+                                mistral_openhermes_2_5_7b = gr.Button("mistral-openherems-2-5-7b", elem_id="mistral-openherems-2-5-7b", elem_classes=["square"])
+                                gr.Markdown("Mistral OpenHermes 2.5 (7B)", elem_classes=["center"])
 
                         gr.Markdown("## ~ 20B Parameters")
                         with gr.Row(elem_classes=["sub-container"]):
@@ -1262,6 +1286,7 @@ def gradio_main(args):
                 evolinstruct_vicuna_7b, alpacoom_7b, baize_7b, guanaco_7b, vicuna_7b_1_3,
                 falcon_7b, wizard_falcon_7b, airoboros_7b, samantha_7b, openllama_7b, orcamini_7b,
                 xgen_7b, llama2_7b, nous_hermes_7b_v2, codellama_7b, mistral_7b, zephyr_7b,
+                mistral_trismegistus_7b, hermes_trismegistus_7b, mistral_openhermes_2_5_7b,
                 
                 flan11b, koalpaca, kullm, alpaca_lora13b, gpt4_alpaca_13b, stable_vicuna_13b,
                 starchat_15b, starchat_beta_15b, vicuna_7b, vicuna_13b, evolinstruct_vicuna_13b, 
@@ -1275,7 +1300,7 @@ def gradio_main(args):
                 stable_beluga2_70b, upstage_llama2_70b, upstage_llama2_70b_2, platypus2_70b, wizardlm_70b, orcamini_70b,
                 samantha_70b, godzilla_70b, nous_hermes_70b,
                 
-                mistral_7b_rr, zephyr_7b_rr
+                mistral_7b_rr, zephyr_7b_rr, mistral_trismegistus_7b_rr, hermes_trismegistus_7b_rr, mistral_openhermes_2_5_7b_rr
             ]
             for btn in btns:
                 btn.click(

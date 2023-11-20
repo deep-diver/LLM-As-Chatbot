@@ -829,6 +829,36 @@ code {
   margin: auto;
 }
 
+#mistral-trismegistus-7b {
+  background: url(https://i.ibb.co/HxxSZMX/trismegistus-mid.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;  
+}
+
+#hermes-trismegistus-7b {
+  background: url(https://i.ibb.co/Ks0thXt/hermes-trismegistus-mid.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;  
+}
+
+#mistral-openherems-2-5-7b {
+  background: url(https://i.ibb.co/BfH3xyF/open-hermes-2-5-mid.png);
+  background-repeat: no-repeat;
+  background-size: 100px 95px;
+  color: transparent;  
+  width: 100px;
+  height: 100px;
+  margin: auto;    
+}
+
 #replit-3b {
   background: url(https://i.ibb.co/BrKCKYq/replit.png);
   background-repeat: no-repeat;

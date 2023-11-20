@@ -126,7 +126,9 @@ def sync_chat_stream(
             internet_option, serper_api_key
         )
     
-    elif model_type == "mistral" or model_type == "zephyr":
+    elif model_type == "mistral" or model_type == "zephyr" or \
+        model_type == "mistral-trismegistus" or model_type == "hermes-trismegistus" or \
+        model_type == "mistral-openhermes-2.5":
         cs = mistral.chat_stream(
             idx, local_data, user_message, state,
             global_context, ctx_num_lconv, ctx_sum_prompt,

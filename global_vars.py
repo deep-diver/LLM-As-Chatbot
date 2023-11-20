@@ -72,6 +72,12 @@ def initialize_globals(args):
     print(args.base_url.lower())
     if "mistralai/mistral" in args.base_url.lower():
         model_type_tmp = "mistral"
+    elif "teknium/mistral-trismegistus-7b" in args.base_url.lower():
+        model_type_tmp = "mistral-trismegistus"
+    elif "teknium/hermes-trismegistus-mistral-7b" in args.base_url.lower():
+        model_type_tmp = "hermes-trismegistus"
+    elif "teknium/openhermes-2.5-mistral-7b" in args.base_url.lower():
+        model_type_tmp = "mistral-openhermes-2.5"
     elif "huggingfaceh4/zephyr" in args.base_url.lower():
         model_type_tmp = "zephyr"
     elif "meta-llama/llama-2-70b-hf" in args.base_url.lower():
@@ -314,9 +320,11 @@ def get_load_model(model_type):
         return samantha_vicuna.load_model
     elif model_type == "xgen":
         return xgen.load_model
-    elif model_type == "mistral":
-        return mistral.load_model
-    elif model_type == "zephyr":
+    elif model_type == "mistral" or \
+        model_type == "zephyr" or \
+        model_type == "mistral-trismegistus" or \
+        model_type == "hermes-trismegistus" or \
+        model_type == "mistral-openhermes-2.5":
         return mistral.load_model
     else:
         return None
