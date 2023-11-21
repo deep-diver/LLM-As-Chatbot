@@ -75,7 +75,7 @@ summarization_configs = [
     if isfile(join("configs/summarization_configs", f))
 ]
 
-model_info = json.load(open("model_cards.json"))
+model_info = json.load(open("model_cards.json", "r", encoding="utf8"))
 table_data = []
 
 for name, attributes in model_info.items():

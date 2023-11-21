@@ -1,5 +1,6 @@
 torch
-bitsandbytes
+bitsandbytes; platform_system != "Windows"
+bitsandbytes-windows; platform_system == "Windows"
 datasets
 loralib
 sentencepiece
