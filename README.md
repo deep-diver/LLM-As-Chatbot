@@ -1,5 +1,5 @@
 ## UPDATE
-- **Internet search support**: you can enable **internet search** capability in Gradio application and Discord bot. For gradio, there is a `internet mode` option in the control panel. For discord, you need to specify `--internet` option in your prompt. For both cases, you need a Serper API Key which you can get one from [serper.dev](https://serper.dev/). By signing up, you will get free 2,500 free google searches which is pretty much sufficient for a long-term test.
+- **Internet search support**: you can enable **internet search** capability in Gradio application and Discord bot. For gradio, there is a `internet mode` option in the control panel. For discord, you need to specify `--internet` option in your prompt. Gradio internet mode uses free [Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp), powered by Fast mode, when the Serper key is empty. No account or API key is needed. A supplied Serper key keeps using Serper. Discord internet search still requires a [Serper API key](https://serper.dev/).
 - **Discord Bot support**: you can serve any model from the model zoo as Discord Bot. Find how to do this in the instruction section below.
 
 # 💬🚀 LLM as a Chatbot Service
@@ -49,7 +49,11 @@ Use the `gradio.dstack.yml` and `discord.dstack.yml` configurations to run the G
 
     Hugging Face libraries stores downloaded contents under `~/.cache` by default, and this application assumes so. However, if you downloaded weights in different location for some reasons, you can set `HF_HOME` environment variable. Find more about the [environment variables here](https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables)
 
-   In order to leverage **internet search** capability, you need Serper API Key. You can set it manually in the control panel or in CLI. When specifying the Serper API Key in CLI, it will be injected into the corresponding UI control. If you don't have it yet, please get one from [serper.dev](https://serper.dev/). By signing up, you will get free 2,500 free google searches which is pretty much sufficient for a long-term test.
+   For **internet search**, turn the Control Panel's Internet search mode **on** and leave the Serper key empty to use free [Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp). Search uses Fast mode without an account or API key. Questions containing HTTP(S) URLs fetch relevant page excerpts instead. The excerpts and source URLs are included in the model prompt without downloading an embedding model for retrieval.
+
+   Internet search stays **off** by default. Enabling it sends your current question or URLs to Parallel when no Serper key is supplied. To keep using Serper, enter its key in the control panel or pass `--serper-api-key` as below; `LLMCHAT_SERPER_API_KEY` is also preserved when launching through `entry_point.py`. A configured provider's failure is reported without switching providers. Parallel's anonymous service has usage limits, and an error or empty result stops that response rather than generating an answer without web evidence. Network operations have a 20-second socket timeout per MCP request; an in-flight synchronous request may take that long to return after Stop is pressed.
+
+   Parallel conversation IDs are random and kept per channel in the browser session's Gradio state. Follow-up searches and page fetches reuse the channel's ID; resetting the chat creates a new one. Reloading the application starts a new session even if local chat history is restored. No Parallel credentials are read from the environment.
 
     ```console
     $ python app.py --root-path "" \
