@@ -29,6 +29,7 @@ from pingpong import PingPong
 from chats import remote_tgi
 from chats import pre, post
 from chats.utils import build_prompts, text_stream, internet_search
+from chats.search_sessions import search_session, search_session_stream
 
 async def chat_stream(
     idx, local_data, user_message, state,
@@ -38,7 +39,7 @@ async def chat_stream(
     internet_option, serper_api_key
 ):
     if global_vars.remote_addr is not None and global_vars.remote_addr != "":
-        if internet_option == "on" and serper_api_key.strip() != "":       
+        if internet_option == "on":
             internet_option = True
         else:
             internet_option = False        
@@ -60,14 +61,17 @@ async def chat_stream(
         print("internet_option", internet_option)
         if internet_option:
             search_prompt = None
-            for tmp_prompt, uis in internet_search(ppm, serper_api_key, global_context, ctx_num_lconv):
+            for tmp_prompt, uis in internet_search(
+                ppm, serper_api_key, global_context, ctx_num_lconv,
+                session_id=search_session(state, idx)
+            ):
                 search_prompt = tmp_prompt
                 yield "", uis, prompt, str(res)
                 
         count = 0
                 
         async for result in remote_tgi.gen_text(
-            prompt, 
+            search_prompt if internet_option else prompt,
             remote_addr=global_vars.remote_addr, 
             remote_port=global_vars.remote_port, 
             remote_token=global_vars.remote_token,
@@ -112,7 +116,7 @@ def sync_chat_stream(
 ):
     model_type = state["model_type"]
     
-    if internet_option == "on" and serper_api_key.strip() != "":       
+    if internet_option == "on":
         internet_option = True
     else:
         internet_option = False
@@ -527,6 +531,5 @@ def sync_chat_stream(
             internet_option, serper_api_key
         )        
         
-    for idx, x in enumerate(cs):
-        yield x 
-        
+    for x in search_session_stream(cs, search_session(state, idx)):
+        yield x

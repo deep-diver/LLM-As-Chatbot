@@ -545,6 +545,8 @@ def toggle_inspector(view_selector):
 
 
 def reset_chat(idx, ld, state):
+    from chats.search_sessions import reset_search_session
+    reset_search_session(state, idx)
     res = [state["ppmanager_type"].from_json(json.dumps(ppm_str)) for ppm_str in ld]
     res[idx].pingpongs = []
         
@@ -1220,9 +1222,12 @@ def gradio_main(args):
                             internet_option = gr.Radio(choices=["on", "off"], value="off", label="mode")
                             serper_api_key = gr.Textbox(
                                 value= "" if args.serper_api_key is None else args.serper_api_key,
-                                placeholder="Get one by visiting serper.dev", 
-                                label="Serper api key"
+                                placeholder="Leave empty for free Parallel search",
+                                label="Serper API key (optional)"
                             )
+                        gr.Markdown("With mode on and no Serper key, your question or URLs are sent to "
+                                    "[Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp). "
+                                    "A supplied Serper key keeps using Serper.")
                         
                         gr.Markdown("#### GenConfig for **response** text generation")
                         with gr.Row():
